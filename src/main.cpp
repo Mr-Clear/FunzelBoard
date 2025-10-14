@@ -35,6 +35,7 @@ void setup() {
 }
 
 bool showAdcValues = true;
+bool scanI2C = false;
 int delayMs = 100;
 
 int loopCount = 0;
@@ -52,12 +53,30 @@ void loop() {
 
   Serial.print(loopCount);
   Serial.print(": ");
+
   if (showAdcValues) {
     for(const auto value : data.adcValues) {
       Serial.print(ADC::progress_bar(value, 5));
       Serial.print(" ");
     }
   }
+
+  if (scanI2C) {
+    const auto devices = I2C::scan();
+    if (devices.empty()) {
+      Serial.print("NoI2C devices found");
+    } else {
+      Serial.print("I2C: ");
+      for (const auto addr : devices) {
+        Serial.print("0x");
+        if (addr < 16)
+          Serial.print("0");
+        Serial.print(addr, HEX);
+        Serial.print(" ");
+      }
+    }
+  }
+
   Serial.println();
   if (delayMs > 0)
     delay(delayMs);
@@ -69,6 +88,9 @@ void handleSerial() {
     switch (cmd) {
       case 'a':
         showAdcValues = !showAdcValues;
+        break;
+      case 'i':
+        scanI2C = true;
         break;
       case '0':
         delayMs = 0;
@@ -99,6 +121,7 @@ void handleSerial() {
           Serial.print(i);
           delay(1000);
         }
+        Serial.println();
         break;
       default:
         Serial.println("Unknown command: '" + String((char)cmd) + "' (" + String((int)cmd) + ")");
