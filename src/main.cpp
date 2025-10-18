@@ -2,11 +2,13 @@
 #include "buzzer.h"
 #include "color.h"
 #include "config.h"
+#include "data.h"
 #include "i2c.h"
+#include "logic.h"
+#include "pixels.h"
 
 #include <ADS1115.h>
 #include <Adafruit_MCP23X17.h>
-#include <Adafruit_NeoPixel.h>
 
 #include <Arduino.h>
 
@@ -14,43 +16,11 @@
 
 std::vector<String> setupErrors;
 Adafruit_MCP23X17 mcp;
-Adafruit_NeoPixel pixels(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void handleSerial();
 
 constexpr float MAX_BRIGHTNESS = 1.0f;
 constexpr float MIN_BRIGHTNESS = 1.f / 255.f;
-
-struct Data {
-  std::array<float, 8> adcValues;
-  uint16_t pins;
-
-  bool pin(uint8_t pinIndex) {
-    return (pins & (1 << pinIndex)) == 0;
-  }
-
-  bool button(uint8_t buttonIndex) {
-    if (buttonIndex >= BUTTONS_MAP.size())
-      return false;
-    return pin(BUTTONS_MAP[buttonIndex]);
-  }
-
-  bool switch2(uint8_t switchIndex) {
-    if (switchIndex >= SWITCHES2_MAP.size())
-      return false;
-    return pin(SWITCHES2_MAP[switchIndex]);
-  }
-
-  int8_t switch3() {
-    return (pin(SWITCHES3_MAP.first) ? 1 : 0) - (pin(SWITCHES3_MAP.second) ? 1 : 0);
-  }
-
-  bool plug(uint8_t plugIndex) {
-    if (plugIndex >= PLUGS_MAP.size())
-      return false;
-    return pin(PLUGS_MAP[plugIndex]);
-  }
-};
 
 bool showPotis = true;
 bool showButtons = true;
@@ -82,7 +52,7 @@ void setup() {
     setupErrors.push_back("Failed to initialize MCP23017");
   }
 
-  if (!pixels.begin()) {
+  if (!Pixels::init()) {
     setupErrors.push_back("Failed to initialize NeoPixel");
   }
 
@@ -122,7 +92,7 @@ void loop() {
   data.adcValues = std::get<1>(adcResults);
   data.pins = mcp.readGPIOAB();
 
-  float brightness = std::clamp(data.adcValues[POTI_CONFIG_BRIGHTNESS] * data.adcValues[POTI_BRIGHTNESS], MIN_BRIGHTNESS, MAX_BRIGHTNESS);
+  const float brightness = std::clamp(data.adcValues[POTI_CONFIG_BRIGHTNESS] * data.adcValues[POTI_BRIGHTNESS], MIN_BRIGHTNESS, MAX_BRIGHTNESS);
 
   Serial.print(loopCount);
   Serial.print(": ");
@@ -194,23 +164,8 @@ void loop() {
 
   Serial.println();
 
-  pixels.clear();
-  constexpr Color off = BLACK;
-  for (uint8_t button = 0; button < BUTTONS_MAP.size(); button++) {
-    pixels.setPixelColor(button, data.pin(BUTTONS_MAP[button]) ? WHITE * brightness : off);
-  }
-  for (uint8_t swtch = 0; swtch < SWITCHES2_MAP.size(); swtch++) {
-    pixels.setPixelColor(swtch + 8, data.pin(SWITCHES2_MAP[swtch]) ? WHITE * brightness : off);
-  }
-  pixels.setPixelColor(14, data.switch3() > 0
-    ? RED * brightness
-    : (data.switch3() < 0
-      ? GREEN * brightness
-      : off));
-  pixels.setPixelColor(16, data.plug(0) ? BLUE * brightness : off);
-  pixels.setPixelColor(17, data.plug(1) ? RED * brightness : off);
-  pixels.setPixelColor(18, data.plug(2) ? YELLOW * brightness : off);
-  pixels.show();
+  Pixels::setBrightness(brightness);
+  Logic::loop(loopCount, data);
 
   if (delayMs > 0)
     delay(delayMs);
@@ -304,13 +259,13 @@ void handleSerial() {
         Serial.println();
         break;
       case 't':
-        Buzzer::tone(0, 1000, 0.5f);
+        Buzzer::tone(0, 1000);
         break;
       case 'T':
         Buzzer::off(0);
         break;
       case 'z':
-        Buzzer::tone(1, 2000, .5f);
+        Buzzer::tone(1, 2000);
         break;
       case 'Z':
         Buzzer::off(1);

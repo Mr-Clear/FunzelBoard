@@ -4,6 +4,6 @@
 
 namespace Buzzer {
     void init();
-    void tone(uint8_t buzzer, uint32_t hz, float volume = 0.5f);
+    void tone(uint8_t buzzer, float hz);
     void off(uint8_t buzzer);
 }  // namespace Buzzer

@@ -4,13 +4,17 @@
 
 #include <driver/ledc.h>
 
+#include <cmath>
+
 namespace {
-    constexpr uint8_t BUZZER_RES_BITS = 10;
-    constexpr uint32_t BUZZER_MAX_DUTY = (1u << BUZZER_RES_BITS) - 1;
+  constexpr uint8_t BUZZER_RES_BITS = 13;
+  constexpr uint32_t BUZZER_MAX_DUTY = (1u << BUZZER_RES_BITS) - 1;
+  constexpr uint32_t BUZZER_DUTY = BUZZER_MAX_DUTY / 2;
+  std::array<uint32_t, 2> currentFrequencies = {0, 0};
 }  // namespace
 
 void Buzzer::init() {
-      for (int i = 0; i < 2; ++i) {
+  for (int i = 0; i < 2; ++i) {
     ledc_timer_config_t timer_cfg = {
       .speed_mode       = LEDC_LOW_SPEED_MODE,
       .duty_resolution  = static_cast<ledc_timer_bit_t>(BUZZER_RES_BITS),
@@ -34,18 +38,22 @@ void Buzzer::init() {
   }
 }
 
-void Buzzer::tone(uint8_t buzzer, uint32_t hz, float volume) {
-  if (buzzer >= BUZZER_PINS.size() || hz == 0)
+void Buzzer::tone(uint8_t buzzer, float hz) {
+  if (buzzer >= BUZZER_PINS.size())
     return;
-  const uint32_t duty = BUZZER_MAX_DUTY / 2;
-  ledc_set_freq(LEDC_LOW_SPEED_MODE, static_cast<ledc_timer_t>(buzzer), hz);
-  ledc_set_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(buzzer), duty);
+  const uint32_t freq = static_cast<uint32_t>(std::round(hz));
+  if (currentFrequencies[buzzer] == freq)
+    return;
+  currentFrequencies[buzzer] = freq;
+  ledc_set_freq(LEDC_LOW_SPEED_MODE, static_cast<ledc_timer_t>(buzzer), freq);
+  ledc_set_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(buzzer), BUZZER_DUTY);
   ledc_update_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(buzzer));
 }
 
 void Buzzer::off(uint8_t buzzer) {
   if (buzzer >= BUZZER_PINS.size())
     return;
+  currentFrequencies[buzzer] = 0;
   ledc_set_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(buzzer), 0);
   ledc_update_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(buzzer));
 }
