@@ -1,0 +1,17 @@
+#pragma once
+
+#include <array>
+#include <cstdint>
+
+constexpr uint8_t BLINK_LED_PIN = 5;
+constexpr int NUM_LEDS = 100;
+constexpr uint8_t LED_PIN = 10;
+constexpr std::array<uint8_t, 2> BUZZER_PINS = {4, 3};
+
+constexpr std::array<uint8_t, 8> POTI_MAP = {4, 7, 6, 5, 1, 2, 3, 0};
+constexpr uint8_t POTI_CONFIG_BRIGHTNESS = POTI_MAP[0];
+constexpr uint8_t POTI_BRIGHTNESS = POTI_MAP[2];
+constexpr std::array<uint8_t, 5> BUTTONS_MAP = {4, 3, 2, 1, 0};
+constexpr std::array<uint8_t, 6> SWITCHES2_MAP = {15, 14, 13, 12, 11, 10};
+constexpr std::pair<uint8_t, uint8_t> SWITCHES3_MAP = {8, 9};
+constexpr std::array<uint8_t, 3> PLUGS_MAP = {7, 6, 5};

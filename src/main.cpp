@@ -1,5 +1,7 @@
 #include "adc.h"
+#include "buzzer.h"
 #include "color.h"
+#include "config.h"
 #include "i2c.h"
 
 #include <ADS1115.h>
@@ -10,22 +12,11 @@
 
 #include <array>
 
-constexpr uint8_t BLINK_LED_PIN = 5;
-constexpr int NUM_LEDS = 100;
-constexpr uint8_t LED_PIN = 10;
 std::vector<String> setupErrors;
 Adafruit_MCP23X17 mcp;
 Adafruit_NeoPixel pixels(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 void handleSerial();
-
-constexpr std::array<uint8_t, 8> POTI_MAP = {4, 7, 6, 5, 1, 2, 3, 0};
-constexpr uint8_t POTI_CONFIG_BRIGHTNESS = POTI_MAP[0];
-constexpr uint8_t POTI_BRIGHTNESS = POTI_MAP[2];
-constexpr std::array<uint8_t, 5> BUTTONS_MAP = {4, 3, 2, 1, 0};
-constexpr std::array<uint8_t, 6> SWITCHES2_MAP = {15, 14, 13, 12, 11, 10};
-constexpr std::pair<uint8_t, uint8_t> SWITCHES3_MAP = {8, 9};
-constexpr std::array<uint8_t, 3> PLUGSS_MAP = {7, 6, 5};
 
 constexpr float MAX_BRIGHTNESS = 1.0f;
 constexpr float MIN_BRIGHTNESS = 1.f / 255.f;
@@ -55,9 +46,9 @@ struct Data {
   }
 
   bool plug(uint8_t plugIndex) {
-    if (plugIndex >= PLUGSS_MAP.size())
+    if (plugIndex >= PLUGS_MAP.size())
       return false;
-    return pin(PLUGSS_MAP[plugIndex]);
+    return pin(PLUGS_MAP[plugIndex]);
   }
 };
 
@@ -70,7 +61,7 @@ bool showPinValues = false;
 bool showBrightness = false;
 bool scanI2C = false;
 bool blink = false;
-int delayMs = 100;
+int delayMs = 1;
 
 void setup() {
   Serial.begin(115200);
@@ -94,6 +85,8 @@ void setup() {
   if (!pixels.begin()) {
     setupErrors.push_back("Failed to initialize NeoPixel");
   }
+
+  Buzzer::init();
 
   if (!setupErrors.empty()) {
     blink = true;
@@ -160,7 +153,7 @@ void loop() {
   }
 
   if (showPlugs) {
-    for (const auto index : PLUGSS_MAP) {
+    for (const auto index : PLUGS_MAP) {
       Serial.print(data.pin(index) ? "◎" : "○");
       Serial.print(" ");
     }
@@ -207,16 +200,16 @@ void loop() {
     pixels.setPixelColor(button, data.pin(BUTTONS_MAP[button]) ? WHITE * brightness : off);
   }
   for (uint8_t swtch = 0; swtch < SWITCHES2_MAP.size(); swtch++) {
-    pixels.setPixelColor(swtch + 5, data.pin(SWITCHES2_MAP[swtch]) ? WHITE * brightness : off);
+    pixels.setPixelColor(swtch + 8, data.pin(SWITCHES2_MAP[swtch]) ? WHITE * brightness : off);
   }
-  pixels.setPixelColor(11, data.switch3() > 0
+  pixels.setPixelColor(14, data.switch3() > 0
     ? RED * brightness
     : (data.switch3() < 0
       ? GREEN * brightness
       : off));
-  pixels.setPixelColor(12, data.plug(0) ? BLUE * brightness : off);
-  pixels.setPixelColor(13, data.plug(1) ? RED * brightness : off);
-  pixels.setPixelColor(14, data.plug(2) ? YELLOW * brightness : off);
+  pixels.setPixelColor(16, data.plug(0) ? BLUE * brightness : off);
+  pixels.setPixelColor(17, data.plug(1) ? RED * brightness : off);
+  pixels.setPixelColor(18, data.plug(2) ? YELLOW * brightness : off);
   pixels.show();
 
   if (delayMs > 0)
@@ -287,11 +280,21 @@ void handleSerial() {
       case 'e':
         if (setupErrors.empty()) {
           Serial.println("No setup errors.");
-          break;
         }
         for (const auto& err : setupErrors) {
           Serial.println("Setup Error: " + err);
         }
+
+        // Print SDK versions
+        Serial.printf("Arduino-ESP32: %d.%d.%d\n",
+                      ESP_ARDUINO_VERSION_MAJOR,
+                      ESP_ARDUINO_VERSION_MINOR,
+                      ESP_ARDUINO_VERSION_PATCH);
+        Serial.printf("ESP-IDF: %s (%d.%d.%d)\n",
+                      esp_get_idf_version(),
+                      ESP_IDF_VERSION_MAJOR,
+                      ESP_IDF_VERSION_MINOR,
+                      ESP_IDF_VERSION_PATCH);
         break;
       case 'q':
         for (int i = 9; i > 0; i--) {
@@ -299,6 +302,18 @@ void handleSerial() {
           delay(1000);
         }
         Serial.println();
+        break;
+      case 't':
+        Buzzer::tone(0, 1000, 0.5f);
+        break;
+      case 'T':
+        Buzzer::off(0);
+        break;
+      case 'z':
+        Buzzer::tone(1, 2000, .5f);
+        break;
+      case 'Z':
+        Buzzer::off(1);
         break;
       default:
         Serial.println("Unknown command: '" + String((char)cmd) + "' (" + String((int)cmd) + ")");
