@@ -23,6 +23,7 @@ void handleSerial();
 constexpr float MAX_BRIGHTNESS = 1.0f;
 constexpr float MIN_BRIGHTNESS = 1.f / 255.f;
 
+bool serialOutput = true;
 bool showPotis = true;
 bool showButtons = true;
 bool showSwitches = true;
@@ -32,7 +33,7 @@ bool showPinValues = false;
 bool showBrightness = false;
 bool scanI2C = false;
 bool blink = false;
-int delayMs = 1;
+int delayMs = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -95,74 +96,76 @@ void loop() {
   currentData.update(std::get<1>(adcResults), mcp.readGPIOAB());
   const float brightness = std::clamp(currentData.adcValue(POTI_CONFIG_BRIGHTNESS) * currentData.adcValue(POTI_BRIGHTNESS), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
 
-  Serial.print(loopCount);
-  Serial.print(": ");
+  if (serialOutput) {
+    Serial.print(loopCount);
+    Serial.print(": ");
 
-  if (showPotis) {
-    for(const auto index : POTI_MAP) {
-      Serial.print(ADC::progress_bar(currentData.adcValue(index), 5));
-      Serial.print(" ");
-    }
-  }
-
-  if (showButtons) {
-    for (const auto index : BUTTONS_MAP) {
-      Serial.print(currentData.pin(index) ? "●" : "○");
-      Serial.print(" ");
-    }
-    Serial.print(" ");
-  }
-
-  if (showSwitches) {
-    for (const auto index : SWITCHES2_MAP) {
-      Serial.print(currentData.pin(index) ? "▲" : "▼");
-    }
-    Serial.print(currentData.pin(SWITCHES3_MAP.first)
-     ? (currentData.pin(SWITCHES3_MAP.second) ? "x" : "▼")
-     : (currentData.pin(SWITCHES3_MAP.second) ? "▲" : "■"));
-    Serial.print(" ");
-  }
-
-  if (showPlugs) {
-    for (const auto index : PLUGS_MAP) {
-      Serial.print(currentData.pin(index) ? "◎" : "○");
-      Serial.print(" ");
-    }
-  }
-
-  if (showAdcValues) {
-    for (const auto& val : currentData.adcValues()) {
-      Serial.print(val, 3);
-      Serial.print(" ");
-    }
-  }
-
-  if (showPinValues) {
-    for (uint8_t pin = 0; pin < 16; pin++) {
-      Serial.print(currentData.pin(pin) ? "0" : "1");
-    }
-    Serial.print(" ");
-  }
-
-  if (showBrightness) {
-    Serial.print(String(brightness, 5));
-  }
-
-  if (scanI2C) {
-    const auto devices = I2C::scan();
-    if (devices.empty()) {
-      Serial.print("NoI2C devices found ");
-    } else {
-      for (const auto addr : devices) {
-        Serial.print("0x");
-        if (addr < 16)
-          Serial.print("0");
-        Serial.print(addr, HEX);
+    if (showPotis) {
+      for(const auto index : POTI_MAP) {
+        Serial.print(ADC::progress_bar(currentData.adcValue(index), 5));
         Serial.print(" ");
       }
     }
+
+    if (showButtons) {
+      for (const auto index : BUTTONS_MAP) {
+        Serial.print(currentData.pin(index) ? "●" : "○");
+        Serial.print(" ");
+      }
+      Serial.print(" ");
+    }
+
+    if (showSwitches) {
+      for (const auto index : SWITCHES2_MAP) {
+        Serial.print(currentData.pin(index) ? "▲" : "▼");
+      }
+      Serial.print(currentData.pin(SWITCHES3_MAP.first)
+        ? (currentData.pin(SWITCHES3_MAP.second) ? "x" : "▼")
+        : (currentData.pin(SWITCHES3_MAP.second) ? "▲" : "■"));
+      Serial.print(" ");
+    }
+
+    if (showPlugs) {
+      for (const auto index : PLUGS_MAP) {
+        Serial.print(currentData.pin(index) ? "◎" : "○");
+        Serial.print(" ");
+      }
+    }
+
+    if (showAdcValues) {
+      for (const auto& val : currentData.adcValues()) {
+        Serial.print(val, 3);
+        Serial.print(" ");
+      }
+    }
+
+    if (showPinValues) {
+      for (uint8_t pin = 0; pin < 16; pin++) {
+        Serial.print(currentData.pin(pin) ? "0" : "1");
+      }
+      Serial.print(" ");
+    }
+
+    if (showBrightness) {
+      Serial.print(String(brightness, 5));
+    }
+
+    if (scanI2C) {
+      const auto devices = I2C::scan();
+      if (devices.empty()) {
+        Serial.print("NoI2C devices found ");
+      } else {
+        for (const auto addr : devices) {
+          Serial.print("0x");
+          if (addr < 16)
+            Serial.print("0");
+          Serial.print(addr, HEX);
+          Serial.print(" ");
+        }
+      }
+    }
+    Serial.println();
   }
-  Serial.println();
 
   Pixels::setBrightness(brightness);
   Logic::loop(loopCount);
@@ -175,6 +178,9 @@ void handleSerial() {
   while (Serial.available()) {
     const auto cmd = Serial.read();
     switch (cmd) {
+      case ' ':
+        serialOutput = !serialOutput;
+        break;
       case 'p':
         showPotis = !showPotis;
         break;
