@@ -4,7 +4,10 @@
 #include "buzzer.h"
 #include "config.h"
 #include "color.h"
+#include "motor.h"
 #include "pixels.h"
+
+#include <Arduino.h>
 
 #include <algorithm>
 #include <array>
@@ -102,6 +105,8 @@ void Logic::loop(int loopCount, const Data& data) {
       Buzzer::off(1);
     }
   }
+
+  Motor::setSpeed(data.adcValues[POTI_MAP[3]]);
 
   Pixels::show();
 }

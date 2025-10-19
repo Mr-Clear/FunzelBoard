@@ -5,6 +5,7 @@
 #include "data.h"
 #include "i2c.h"
 #include "logic.h"
+#include "motor.h"
 #include "pixels.h"
 
 #include <ADS1115.h>
@@ -57,6 +58,7 @@ void setup() {
   }
 
   Buzzer::init();
+  Motor::init();
 
   if (!setupErrors.empty()) {
     blink = true;

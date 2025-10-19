@@ -18,7 +18,7 @@ void Buzzer::init() {
     ledc_timer_config_t timer_cfg = {
       .speed_mode       = LEDC_LOW_SPEED_MODE,
       .duty_resolution  = static_cast<ledc_timer_bit_t>(BUZZER_RES_BITS),
-      .timer_num        = static_cast<ledc_timer_t>(i),
+      .timer_num        = static_cast<ledc_timer_t>(BUZZER_TIMERS[i]),
       .freq_hz          = 1000 + i * 1000,
       .clk_cfg          = LEDC_AUTO_CLK
     };
@@ -27,9 +27,9 @@ void Buzzer::init() {
     ledc_channel_config_t chan_cfg = {
       .gpio_num   = BUZZER_PINS[i],
       .speed_mode = LEDC_LOW_SPEED_MODE,
-      .channel    = static_cast<ledc_channel_t>(i),
+      .channel    = static_cast<ledc_channel_t>(BUZZER_CHANNELS[i]),
       .intr_type  = LEDC_INTR_DISABLE,
-      .timer_sel  = static_cast<ledc_timer_t>(i),
+      .timer_sel  = static_cast<ledc_timer_t>(BUZZER_TIMERS[i]),
       .duty       = 0,
       .hpoint     = 0,
       .flags      = { .output_invert = 0 }
