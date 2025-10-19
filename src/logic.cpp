@@ -9,24 +9,27 @@
 #include <algorithm>
 #include <array>
 #include <bitset>
+#include <cmath>
 #include <list>
 #include <iterator>
 
 namespace {
   constexpr std::array<float, 5> tones{261.63f, 293.66f, 329.63f, 392.00f, 440.00f};
-  float octave = 1.0f;
+  // Patterns to detect octave up/down sequences
+  constexpr std::array<uint8_t, 6> seq_up   {0, 1, 2, 3, 4, 0};
+  constexpr std::array<uint8_t, 6> seq_down {4, 3, 2, 1, 0, 4};
+
+  int octave = 4;
+  float octaveMultiplier = 1.0f;
   std::bitset<BUTTONS_MAP.size()> lastButtons;
   std::list<uint8_t> lastPressedButtons;
+  std::list<uint8_t> buttonPressedOrder;
 
   template <typename T, std::size_t N>
   bool ends_with(const std::list<T>& lst, const std::array<T, N>& pat) {
     if (lst.size() < N) return false;
     return std::equal(pat.rbegin(), pat.rend(), lst.rbegin());
   }
-
-  // Patterns to detect octave up/down sequences
-  constexpr std::array<uint8_t, 6> seq_up   {0, 1, 2, 3, 4, 0};
-  constexpr std::array<uint8_t, 6> seq_down {4, 3, 2, 1, 0, 4};
 }
 
 void Logic::loop(int loopCount, const Data& data) {
@@ -35,8 +38,14 @@ void Logic::loop(int loopCount, const Data& data) {
   lastButtons = data.pressedButtons();
 
   for (int i = 0; i < BUTTONS_MAP.size(); i++) {
+    if (buttonsUp.test(i) || buttonsDown.test(i)) {
+      buttonPressedOrder.remove(i);
+    }
+  }
+  for (int i = 0; i < BUTTONS_MAP.size(); i++) {
     if (buttonsDown.test(i)) {
       lastPressedButtons.push_back(i);
+      buttonPressedOrder.push_back(i);
     }
   }
   while (lastPressedButtons.size() > 10) {
@@ -60,23 +69,39 @@ void Logic::loop(int loopCount, const Data& data) {
   Pixels::setColor(16, data.plug(0) ? BLUE : off);
   Pixels::setColor(17, data.plug(1) ? RED : off);
   Pixels::setColor(18, data.plug(2) ? YELLOW : off);
-  Pixels::show();
 
   if (buttonsDown.any()) {
     if (ends_with(lastPressedButtons, seq_up)) {
-      octave = std::min(octave * 2.0f, 32.0f);
+      octave = std::min(octave + 1, 8);
+      octaveMultiplier = std::pow(2.0f, octave - 4);
     } else if (ends_with(lastPressedButtons, seq_down)) {
-      octave = std::max(octave / 2.0f, 1.f / 4.f);
+      octave = std::max(octave - 1, 1);
+      octaveMultiplier = std::pow(2.0f, octave - 4);
     }
   }
 
-  for (int i = 0; i < BUTTONS_MAP.size(); i++) {
-    if (buttonsDown.test(i)) {
-      Buzzer::tone(0, tones[i % tones.size()] * octave);
-      return;
+  for (int i = 0; i < 12; i++) {
+    Pixels::setColor(PIXELS_OCTAVE_OFFSET + i, RED);
+  }
+
+  for (int i = 0; i < 5; i++) {
+    Pixels::setColor(PIXELS_OCTAVE_OFFSET + octave - 1 + i, GREEN / 2.f);
+  }
+
+  if (buttonPressedOrder.empty()) {
+    Buzzer::off(0);
+    Buzzer::off(1);
+  } else {
+    Buzzer::tone(0, tones[buttonPressedOrder.back() % tones.size()] * octaveMultiplier);
+    Pixels::setColor(PIXELS_OCTAVE_OFFSET + octave - 1 + buttonPressedOrder.back(), WHITE);
+    if (buttonPressedOrder.size() > 1) {
+      auto secondLast = std::next(buttonPressedOrder.rbegin());
+      Buzzer::tone(1, tones[*secondLast % tones.size()] * octaveMultiplier);
+      Pixels::setColor(PIXELS_OCTAVE_OFFSET + octave - 1 + *secondLast, WHITE);
+    } else {
+      Buzzer::off(1);
     }
   }
-  if (data.pressedButtons().none()) {
-    Buzzer::off(0);
-  }
+
+  Pixels::show();
 }
