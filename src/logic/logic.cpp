@@ -23,8 +23,10 @@ namespace {
   public:
     Carousel(time_t timestamp, int position = 0) : DelayedAction(timestamp), _position(position) { }
     void run() override {
-      Pixels::setColor(_position + 24, WHITE);
-      actions.emplace(std::make_unique<Carousel>(timestamp() + 100, (_position + 1) % 16));
+      Pixels::setColor(_position + 24, BLACK);
+      const auto nextPos = (_position + 1) % 16;
+      Pixels::setColor(nextPos + 24, WHITE);
+      actions.emplace(std::make_unique<Carousel>(timestamp() + 100, nextPos));
     }
   private:
     int _position;
@@ -40,8 +42,6 @@ void Logic::start()
 
 void Logic::loop(int loopCount)
 {
-  Pixels::clear();
-
   while (actions.size() && (*actions.begin())->timestamp() <= currentData.now()) {
     auto nextAction = std::move(actions.extract(actions.begin()).value());
     nextAction->run();
