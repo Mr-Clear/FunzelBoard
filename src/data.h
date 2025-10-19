@@ -5,48 +5,42 @@
 #include <array>
 #include <cstdint>
 #include <bitset>
+#include <list>
+#include <time.h>
 
-struct Data {
-  std::array<float, 8> adcValues;
-  uint16_t pins;
+class Data {
+public:
+  using ButtonSet = std::bitset<BUTTONS_MAP.size()>;
 
-  bool pin(uint8_t pinIndex) const {
-    return (pins & (1 << pinIndex)) == 0;
-  }
+  void update(const std::array<float, 8>& adcValues, uint16_t pins);
 
-  bool button(uint8_t buttonIndex) const {
-    if (buttonIndex >= BUTTONS_MAP.size())
-      return false;
-    return pin(BUTTONS_MAP[buttonIndex]);
-  }
+  time_t now() const;
+  std::array<float, 8> adcValues() const;
+  uint16_t pins() const;
+  ButtonSet pressedButtons() const;
+  std::list<uint8_t> lastPressedButtons() const;
+  std::list<uint8_t> buttonPressedOrder() const;
+  ButtonSet buttonsDown() const;
+  ButtonSet buttonsUp() const;
 
-  bool anyButton() const {
-    return (pins & BUTTON_MASK) != BUTTON_MASK;
-  }
+  float adcValue(uint8_t index) const;
+  bool pin(uint8_t pinIndex) const;
+  bool button(uint8_t buttonIndex) const;
+  bool anyButton() const;
+  bool switch2(uint8_t switchIndex) const;
+  int8_t switch3() const;
+  bool plug(uint8_t plugIndex) const;
 
-  std::bitset<BUTTONS_MAP.size()> pressedButtons() const {
-    std::bitset<BUTTONS_MAP.size()> result;
-    for (uint8_t i = 0; i < BUTTONS_MAP.size(); i++) {
-      if (button(i)) {
-        result.set(i);
-      }
-    }
-    return result;
-  }
+private:
+  time_t _now;
+  std::array<float, 8> _adcValues;
+  uint16_t _pins;
+  ButtonSet _pressedButtons;
+  std::list<uint8_t> _lastPressedButtons;
+  std::list<uint8_t> _buttonPressedOrder;
+  ButtonSet _buttonsDown;
+  ButtonSet _buttonsUp;
 
-  bool switch2(uint8_t switchIndex) const {
-    if (switchIndex >= SWITCHES2_MAP.size())
-      return false;
-    return pin(SWITCHES2_MAP[switchIndex]);
-  }
-
-  int8_t switch3() const {
-    return (pin(SWITCHES3_MAP.first) ? 1 : 0) - (pin(SWITCHES3_MAP.second) ? 1 : 0);
-  }
-
-  bool plug(uint8_t plugIndex) const {
-    if (plugIndex >= PLUGS_MAP.size())
-      return false;
-    return pin(PLUGS_MAP[plugIndex]);
-  }
 };
+
+extern Data currentData;

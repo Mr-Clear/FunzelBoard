@@ -4,7 +4,7 @@
 #include "config.h"
 #include "data.h"
 #include "i2c.h"
-#include "logic.h"
+#include "logic/logic.h"
 #include "motor.h"
 #include "pixels.h"
 
@@ -71,6 +71,8 @@ void setup() {
       Serial.println(err);
     }
   }
+
+  Logic::start();
 }
 
 bool blinkOn = false;
@@ -84,31 +86,28 @@ void loop() {
   }
 
   handleSerial();
-  Data data;
   const auto adcResults = ADC::readAll();
   if (!std::get<0>(adcResults).empty()) {
     for (const auto& err : std::get<0>(adcResults)) {
       Serial.println("ADC Error: " + err);
     }
   }
-  data.adcValues = std::get<1>(adcResults);
-  data.pins = mcp.readGPIOAB();
-
-  const float brightness = std::clamp(data.adcValues[POTI_CONFIG_BRIGHTNESS] * data.adcValues[POTI_BRIGHTNESS], MIN_BRIGHTNESS, MAX_BRIGHTNESS);
+  currentData.update(std::get<1>(adcResults), mcp.readGPIOAB());
+  const float brightness = std::clamp(currentData.adcValue(POTI_CONFIG_BRIGHTNESS) * currentData.adcValue(POTI_BRIGHTNESS), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
 
   Serial.print(loopCount);
   Serial.print(": ");
 
   if (showPotis) {
     for(const auto index : POTI_MAP) {
-      Serial.print(ADC::progress_bar(data.adcValues[index], 5));
+      Serial.print(ADC::progress_bar(currentData.adcValue(index), 5));
       Serial.print(" ");
     }
   }
 
   if (showButtons) {
     for (const auto index : BUTTONS_MAP) {
-      Serial.print(data.pin(index) ? "●" : "○");
+      Serial.print(currentData.pin(index) ? "●" : "○");
       Serial.print(" ");
     }
     Serial.print(" ");
@@ -116,23 +115,23 @@ void loop() {
 
   if (showSwitches) {
     for (const auto index : SWITCHES2_MAP) {
-      Serial.print(data.pin(index) ? "▲" : "▼");
+      Serial.print(currentData.pin(index) ? "▲" : "▼");
     }
-    Serial.print(data.pin(SWITCHES3_MAP.first)
-     ? (data.pin(SWITCHES3_MAP.second) ? "x" : "▼")
-     : (data.pin(SWITCHES3_MAP.second) ? "▲" : "■"));
+    Serial.print(currentData.pin(SWITCHES3_MAP.first)
+     ? (currentData.pin(SWITCHES3_MAP.second) ? "x" : "▼")
+     : (currentData.pin(SWITCHES3_MAP.second) ? "▲" : "■"));
     Serial.print(" ");
   }
 
   if (showPlugs) {
     for (const auto index : PLUGS_MAP) {
-      Serial.print(data.pin(index) ? "◎" : "○");
+      Serial.print(currentData.pin(index) ? "◎" : "○");
       Serial.print(" ");
     }
   }
 
   if (showAdcValues) {
-    for (const auto& val : data.adcValues) {
+    for (const auto& val : currentData.adcValues()) {
       Serial.print(val, 3);
       Serial.print(" ");
     }
@@ -140,7 +139,7 @@ void loop() {
 
   if (showPinValues) {
     for (uint8_t pin = 0; pin < 16; pin++) {
-      Serial.print(data.pin(pin) ? "0" : "1");
+      Serial.print(currentData.pin(pin) ? "0" : "1");
     }
     Serial.print(" ");
   }
@@ -163,11 +162,10 @@ void loop() {
       }
     }
   }
-
   Serial.println();
 
   Pixels::setBrightness(brightness);
-  Logic::loop(loopCount, data);
+  Logic::loop(loopCount);
 
   if (delayMs > 0)
     delay(delayMs);
