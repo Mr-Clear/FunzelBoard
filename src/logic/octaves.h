@@ -2,7 +2,4 @@
 
 #include "actions.h"
 
-class Octaves : public Action {
-public:
-  void run() override;
-};
+void octaves();

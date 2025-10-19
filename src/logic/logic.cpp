@@ -13,42 +13,40 @@
 #include <array>
 #include <bitset>
 #include <list>
+#include <map>
 #include <memory>
-#include <set>
 
 namespace {
-  std::multiset<std::unique_ptr<DelayedAction>, ActionOrder> actions;
+  std::multimap<time_t, ScheduledAction> scheduledActions;
 
-  class Carousel : public DelayedAction {
-  public:
-    Carousel(time_t timestamp, int position = 0) : DelayedAction(timestamp), _position(position) { }
-    void run() override {
-      Pixels::setColor(_position + 24, BLACK);
-      const auto nextPos = (_position + 1) % 16;
-      Pixels::setColor(nextPos + 24, WHITE);
-      actions.emplace(std::make_unique<Carousel>(timestamp() + 100, nextPos));
-    }
-  private:
-    int _position;
-  };
+  uint16_t carouselPosition = 0;
+  uint16_t carouselPixel(uint16_t pos) {
+    const uint16_t p = pos < 8 ? pos : 23 - pos;
+    return (p + 24) % NUM_PIXELS;
+  }
 
-  Octaves octaves;
+  void carousel(time_t scheduledTime) {
+    Pixels::setColor(carouselPixel(carouselPosition), BLACK);
+    carouselPosition = (carouselPosition + 1) % 16;
+    Pixels::setColor(carouselPixel(carouselPosition), WHITE);
+    scheduledActions.emplace(scheduledTime + 100, &carousel);
+  }
 }
 
 void Logic::start()
 {
-  actions.emplace(std::make_unique<Carousel>(0));
+  scheduledActions.emplace(0, &carousel);
 }
 
 void Logic::loop(int loopCount)
 {
-  while (actions.size() && (*actions.begin())->timestamp() <= currentData.now()) {
-    auto nextAction = std::move(actions.extract(actions.begin()).value());
-    nextAction->run();
+  while (!scheduledActions.empty() && scheduledActions.begin()->first <= millis()) {
+    const auto handle = scheduledActions.extract(scheduledActions.begin());
+    handle.mapped()(handle.key());
   }
 
   for (uint8_t button = 0; button < BUTTONS_MAP.size(); button++) {
-    Pixels::setColor(button, currentData.pin(BUTTONS_MAP[button]) ? WHITE : BLACK);
+    Pixels::setColor(button + 3, currentData.pin(BUTTONS_MAP[button]) ? WHITE : BLACK);
   }
   for (uint8_t swtch = 0; swtch < SWITCHES2_MAP.size(); swtch++) {
     Pixels::setColor(swtch + 8, currentData.pin(SWITCHES2_MAP[swtch]) ? WHITE : BLACK);
@@ -62,7 +60,7 @@ void Logic::loop(int loopCount)
   Pixels::setColor(17, currentData.plug(1) ? RED : BLACK);
   Pixels::setColor(18, currentData.plug(2) ? YELLOW : BLACK);
 
-  octaves.run();
+  octaves();
 
   Motor::setSpeed(currentData.adcValue(POTI_MAP[3]));
 

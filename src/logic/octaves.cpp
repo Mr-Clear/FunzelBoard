@@ -24,7 +24,7 @@ namespace {
   }
 }
 
-void Octaves::run()
+void octaves()
 {
 
   if (currentData.buttonsDown().any())
