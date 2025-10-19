@@ -1,12 +1,13 @@
 #include "logic.h"
 
-#include "actions.h"
 #include "data.h"
+#include "carousel.h"
 #include "config.h"
 #include "color.h"
 #include "motor.h"
 #include "octaves.h"
 #include "pixels.h"
+#include "scheduler.h"
 
 #include <Arduino.h>
 
@@ -16,34 +17,14 @@
 #include <map>
 #include <memory>
 
-namespace {
-  std::multimap<time_t, ScheduledAction> scheduledActions;
-
-  uint16_t carouselPosition = 0;
-  uint16_t carouselPixel(uint16_t pos) {
-    const uint16_t p = pos < 8 ? pos : 23 - pos;
-    return (p + 24) % NUM_PIXELS;
-  }
-
-  void carousel(time_t scheduledTime) {
-    Pixels::setColor(carouselPixel(carouselPosition), BLACK);
-    carouselPosition = (carouselPosition + 1) % 16;
-    Pixels::setColor(carouselPixel(carouselPosition), WHITE);
-    scheduledActions.emplace(scheduledTime + 100, &carousel);
-  }
-}
-
 void Logic::start()
 {
-  scheduledActions.emplace(0, &carousel);
+  Scheduler::schedule(0, &carousel);
 }
 
 void Logic::loop(int loopCount)
 {
-  while (!scheduledActions.empty() && scheduledActions.begin()->first <= millis()) {
-    const auto handle = scheduledActions.extract(scheduledActions.begin());
-    handle.mapped()(handle.key());
-  }
+  Scheduler::run();
 
   for (uint8_t button = 0; button < BUTTONS_MAP.size(); button++) {
     Pixels::setColor(button + 3, currentData.pin(BUTTONS_MAP[button]) ? WHITE : BLACK);
