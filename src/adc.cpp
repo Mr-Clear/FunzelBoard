@@ -1,4 +1,6 @@
-#include <adc.h>
+#include "adc.h"
+
+#include "config.h"
 
 #include <ADS1115.h>
 
@@ -8,7 +10,6 @@ std::array<std::tuple<ADS1115::ADS1115_ADC, int>, 2> adcs =
   {{{ADS1115::ADS1115_ADC(ADS1115::I2CAddress::Scl), 0},
     {ADS1115::ADS1115_ADC(ADS1115::I2CAddress::Sda), 1}}};
 
-constexpr int MAX = 26300;
 constexpr auto pga = ADS1115::Pga::FSR_4_096V;
 constexpr auto dataRate = ADS1115::DataRate::SPS_475;
 
@@ -40,11 +41,10 @@ std::vector<String> ADC::init() {
 
 std::tuple<std::vector<String>, std::array<float, 8>> ADC::readAll() {
   std::vector<String> errors;
-  std::array<float, 8> results = {0};
   const auto channels = {
     std::tuple{ADS1115::Mux::P0_GND, 0}, {ADS1115::Mux::P1_GND, 1}, {ADS1115::Mux::P2_GND, 2}, {ADS1115::Mux::P3_GND, 3},
   };
-
+  std::array<int16_t, 8> raw = {0};
   ADS1115::Status status;
   for (int c = 0; c < 4; c++) {
     for (auto& [adc, adc_index] : adcs) {
@@ -79,8 +79,15 @@ std::tuple<std::vector<String>, std::array<float, 8>> ADC::readAll() {
         errors.push_back(String("Failed to read conversion on ADC 0x") + static_cast<int>(adc.getAddress()) + " A" + static_cast<int>(c) + ": " + static_cast<int>(status));
         continue;
       }
-      results[adc_index * 4 + c] = std::clamp(static_cast<float>(result) / static_cast<float>(MAX), 0.0f, 1.0f);
+      raw[adc_index * 4 + c] = result;
     }
+  }
+  std::array<float, 8> results = {0};
+  const int16_t min = raw[POTI_MAP[0]];
+  const int16_t max = raw[POTI_MAP[1]];
+  for (int i = 0; i < 8; i++) {
+    results[i] = (static_cast<float>(raw[i]) - min) / (max - min);
+    results[i] = std::clamp(results[i], 0.0f, 1.0f);
   }
   return {errors, results};
 }
