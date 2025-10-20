@@ -10,6 +10,7 @@ constexpr std::array<uint8_t, 2> BUZZER_PINS = {4, 3};
 constexpr std::array<uint8_t, 2> BUZZER_TIMERS = {0, 1};
 constexpr std::array<uint8_t, 2> BUZZER_CHANNELS = {0, 1};
 constexpr int PIXELS_RING_OFFSET = 64;
+constexpr int PIXELS_RUNG_COUNT = 16;
 constexpr int PIXELS_OCTAVE_OFFSET = PIXELS_RING_OFFSET + 2;
 constexpr uint8_t MOTOR_PIN  = 2;
 constexpr uint8_t MOTOR_TIMER = 2;

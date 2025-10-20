@@ -2,7 +2,7 @@
 
 #include "state.h"
 
-class OctavesState : public State {
+class LoudnessState : public State {
 public:
   void enter() override;
   void update() override;

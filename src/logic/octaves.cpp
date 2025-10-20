@@ -16,6 +16,7 @@ namespace {
 
   int octave = 4;
   float octaveMultiplier = 1.0f;
+  time_t stateEntered = 0;
 
   template <typename T, std::size_t N>
   bool ends_with(const std::list<T>& lst, const std::array<T, N>& pat) {
@@ -24,9 +25,11 @@ namespace {
   }
 }
 
-void octaves()
-{
+void OctavesState::enter() {
+  stateEntered = currentData.now();
+}
 
+void OctavesState::update() {
   if (currentData.buttonsDown().any())
   {
     if (ends_with(currentData.lastPressedButtons(), seq_up)) {
@@ -59,5 +62,13 @@ void octaves()
     } else {
       Buzzer::off(1);
     }
+  }
+}
+
+void OctavesState::exit() {
+  Buzzer::off(0);
+  Buzzer::off(1);
+  for (int i = 0; i < PIXELS_RUNG_COUNT; i++) {
+    Pixels::setColor(PIXELS_OCTAVE_OFFSET + i, BLACK);
   }
 }

@@ -1,13 +1,16 @@
 #include "logic.h"
 
 #include "data.h"
-#include "carousel.h"
 #include "config.h"
 #include "color.h"
+#include "leds.h"
+#include "loudness.h"
 #include "motor.h"
+#include "music.h"
+#include "noneState.h"
 #include "octaves.h"
+#include "panic.h"
 #include "pixels.h"
-#include "scheduler.h"
 
 #include <Arduino.h>
 
@@ -17,33 +20,52 @@
 #include <map>
 #include <memory>
 
+namespace {
+  enum class Mode {
+    NONE,
+    OCTAVES,
+    MUSIC,
+    LOUDNESS,
+    PANIC
+  };
+
+  Mode lastMode = Mode::NONE;
+
+  std::map<Mode, std::unique_ptr<State>> states;
+} // namespace
+
 void Logic::start()
 {
-  Scheduler::schedule(0, &carousel);
+  states[Mode::NONE] = std::make_unique<NoneState>();
+  states[Mode::OCTAVES] = std::make_unique<OctavesState>();
+  states[Mode::PANIC] = std::make_unique<PanicState>();
+  states[Mode::MUSIC] = std::make_unique<MusicState>();
+  states[Mode::LOUDNESS] = std::make_unique<LoudnessState>();
 }
 
 void Logic::loop(int loopCount)
 {
-  Scheduler::run();
-
-  for (uint8_t button = 0; button < BUTTONS_MAP.size(); button++) {
-    Pixels::setColor(button + 3, currentData.pin(BUTTONS_MAP[button]) ? WHITE : BLACK);
+  Mode currentMode = Mode::NONE;
+  if (currentData.plug(0) + currentData.plug(1) + currentData.plug(2) > 1) {
+    currentMode = Mode::PANIC;
+  } else if (currentData.plug(0)) {
+    currentMode = Mode::OCTAVES;
+  } else if (currentData.plug(1)) {
+    currentMode = Mode::MUSIC;
+  } else if (currentData.plug(2)) {
+    currentMode = Mode::LOUDNESS;
   }
-  for (uint8_t swtch = 0; swtch < SWITCHES2_MAP.size(); swtch++) {
-    Pixels::setColor(swtch + 8, currentData.pin(SWITCHES2_MAP[swtch]) ? WHITE : BLACK);
+
+  if (currentMode != Mode::PANIC) {
+    leds();
   }
-  Pixels::setColor(14, currentData.switch3() > 0
-                            ? RED
-                            : (currentData.switch3() < 0
-                                  ? GREEN
-                                  : BLACK));
-  Pixels::setColor(16, currentData.plug(0) ? BLUE : BLACK);
-  Pixels::setColor(17, currentData.plug(1) ? RED : BLACK);
-  Pixels::setColor(18, currentData.plug(2) ? YELLOW : BLACK);
 
-  octaves();
-
-  Motor::setSpeed(currentData.adcValue(POTI_MAP[3]));
+  if (currentMode != lastMode) {
+    states[lastMode]->exit();
+    lastMode = currentMode;
+    states[currentMode]->enter();
+  }
+  states[currentMode]->update();
 
   Pixels::show();
 }
