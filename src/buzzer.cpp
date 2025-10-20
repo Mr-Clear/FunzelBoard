@@ -39,6 +39,10 @@ void Buzzer::init() {
 }
 
 void Buzzer::tone(uint8_t buzzer, float hz) {
+  if (hz <= 0.0f) {
+    off(buzzer);
+    return;
+  }
   if (buzzer >= BUZZER_PINS.size())
     return;
   const uint32_t freq = static_cast<uint32_t>(std::round(hz));

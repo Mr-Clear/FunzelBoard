@@ -8,6 +8,8 @@
 #include <cmath>
 #include <iterator>
 
+#include <Arduino.h>
+
 namespace {
   constexpr std::array<float, 5> tones{261.63f, 293.66f, 329.63f, 392.00f, 440.00f};
   // Patterns to detect octave up/down sequences
@@ -41,24 +43,34 @@ void OctavesState::update() {
     }
   }
 
+  const float pitch = currentData.adcValue(POTI_R) + 0.5f;
+
+  const int pixelShift = static_cast<int>((pitch - 1.0f) * 8.0f);
+
+  auto pi = [pixelShift] (int i) { return PIXELS_RING_OFFSET  + (PIXELS_RING_COUNT  + i + pixelShift) % PIXELS_RING_COUNT; };
+
+  for (const int i : {0, 1, 14, 15}) {
+    Pixels::setColor(pi(i), BLACK);
+  }
+
   for (int i = 0; i < 12; i++) {
-    Pixels::setColor(PIXELS_OCTAVE_OFFSET + i, RED);
+    Pixels::setColor(pi(i + 2), RED);
   }
 
   for (int i = 0; i < 5; i++) {
-    Pixels::setColor(PIXELS_OCTAVE_OFFSET + octave - 1 + i, GREEN);
+    Pixels::setColor(pi(octave - 1 + i + 2), GREEN);
   }
 
   if (currentData.buttonPressedOrder().empty()) {
     Buzzer::off(0);
     Buzzer::off(1);
   } else {
-    Buzzer::tone(0, tones[currentData.buttonPressedOrder().back()] * octaveMultiplier);
-    Pixels::setColor(PIXELS_OCTAVE_OFFSET + octave - 1 + currentData.buttonPressedOrder().back(), WHITE);
+    Buzzer::tone(0, tones[currentData.buttonPressedOrder().back()] * octaveMultiplier * pitch);
+    Pixels::setColor(pi(octave - 1 + currentData.buttonPressedOrder().back() + 2), WHITE);
     if (currentData.buttonPressedOrder().size() > 1) {
       const auto secondLast = *std::next(currentData.buttonPressedOrder().rbegin());
-      Buzzer::tone(1, tones[secondLast] * octaveMultiplier);
-      Pixels::setColor(PIXELS_OCTAVE_OFFSET + octave - 1 + secondLast, WHITE);
+      Buzzer::tone(1, tones[secondLast] * octaveMultiplier * pitch);
+      Pixels::setColor(pi(octave - 1 + secondLast + 2), WHITE);
     } else {
       Buzzer::off(1);
     }
@@ -68,7 +80,7 @@ void OctavesState::update() {
 void OctavesState::exit() {
   Buzzer::off(0);
   Buzzer::off(1);
-  for (int i = 0; i < PIXELS_RUNG_COUNT; i++) {
-    Pixels::setColor(PIXELS_OCTAVE_OFFSET + i, BLACK);
+  for (int i = 0; i < PIXELS_RING_COUNT; i++) {
+    Pixels::setColor(PIXELS_RING_OFFSET + i, BLACK);
   }
 }

@@ -94,7 +94,7 @@ void loop() {
     }
   }
   currentData.update(std::get<1>(adcResults), mcp.readGPIOAB());
-  const float brightness = std::clamp(currentData.adcValue(POTI_CONFIG_BRIGHTNESS) * currentData.adcValue(POTI_BRIGHTNESS), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
+  const float brightness = std::clamp(currentData.adcValue(POTI_CONFIG_BRIGHTNESS), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
 
   if (serialOutput) {
     Serial.print(loopCount);
