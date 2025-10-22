@@ -5,8 +5,10 @@
 #include "data.h"
 #include "i2c.h"
 #include "logic/logic.h"
+#include "logic/musicPlayer.h"
 #include "motor.h"
 #include "pixels.h"
+#include "tools.h"
 
 #include <ADS1115.h>
 #include <Adafruit_MCP23X17.h>
@@ -19,6 +21,7 @@ std::vector<String> setupErrors;
 Adafruit_MCP23X17 mcp;
 
 void handleSerial();
+std::string readSerial(std::string_view endPattern, std::string_view prompt, bool echo);
 
 constexpr float MAX_BRIGHTNESS = 1.0f;
 constexpr float MIN_BRIGHTNESS = 1.f / 255.f;
@@ -276,9 +279,80 @@ void handleSerial() {
       case 'Z':
         Buzzer::off(1);
         break;
+      case 'E': // Echo
+      {
+        const std::string s = readSerial("\n", "> ", true);
+        Serial.print("Received: ");
+        Serial.println(s.c_str());
+        break;
+      }
+      case 'S':
+      {
+        const std::string song = readSerial("\n\n", "Play Song:\n", true);
+        std::size_t lastIndex = 0;
+        std::size_t i = 0;
+        const auto lines = splitString(song, '\n');
+
+        const auto now = Player::now();
+        std::vector<Player> players;
+        for (int i = 0; i < lines.size(); ++i) {
+          if (lines[i].size() > 0) {
+            players.emplace_back(std::string{lines[i]}, i, now);
+          }
+        }
+        bool anyPlaying = true;
+        while (anyPlaying) {
+          anyPlaying = false;
+          for (auto& player : players) {
+            if (!player.isFinished()) {
+              player.loop();
+              anyPlaying = true;
+            }
+          }
+        }
+
+        break;
+      }
       default:
         Serial.println("Unknown command: '" + String((char)cmd) + "' (" + String((int)cmd) + ")");
         break;
     }
   }
+}
+
+constexpr size_t READ_SERIAL_BUFFER_SIZE = 1024 * 10;
+char readSerialBuffer[READ_SERIAL_BUFFER_SIZE];
+std::string readSerial(std::string_view endPattern, std::string_view prompt, bool echo) {
+  if (prompt.length() > 0) {
+    Serial.print(prompt.data());
+  }
+  std::string buffer;
+  size_t index = 0;
+  while (true) {
+    while (Serial.available()) {
+      char c = (char)Serial.read();
+      if (echo) {
+        Serial.print(c);
+      }
+      if (index >= READ_SERIAL_BUFFER_SIZE - 1) {
+        Serial.println("Read buffer overflow");
+        return std::string{readSerialBuffer, index};
+      }
+      readSerialBuffer[index] = c;
+      if (index >= endPattern.length() - 1) {
+        bool foundEnd = true;
+        for (size_t i = 0; i < endPattern.length(); i++) {
+          if (readSerialBuffer[index - i] != endPattern[endPattern.length() - 1 - i]) {
+            foundEnd = false;
+            break;
+          }
+        }
+        if (foundEnd) {
+          return std::string{readSerialBuffer, index + 1 - endPattern.length()};
+        }
+      }
+      index++;
+    }
+  }
+
 }
