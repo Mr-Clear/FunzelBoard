@@ -6,14 +6,14 @@
 constexpr uint8_t BLINK_LED_PIN = 5;
 constexpr int NUM_PIXELS = 100;
 constexpr uint8_t PIXELS_PIN = 10;
-constexpr std::array<uint8_t, 2> BUZZER_PINS = {4, 3};
-constexpr std::array<uint8_t, 2> BUZZER_TIMERS = {0, 1};
-constexpr std::array<uint8_t, 2> BUZZER_CHANNELS = {0, 1};
+constexpr std::array<uint8_t, 3> BUZZER_PINS = {4, 3, 2};
+constexpr std::array<uint8_t, 3> BUZZER_TIMERS = {0, 1, 2};
+constexpr std::array<uint8_t, 3> BUZZER_CHANNELS = {0, 1, 2};
 constexpr int PIXELS_RING_OFFSET = 64;
 constexpr int PIXELS_RING_COUNT = 16;
-constexpr uint8_t MOTOR_PIN  = 2;
-constexpr uint8_t MOTOR_TIMER = 2;
-constexpr uint8_t MOTOR_CHANNEL = 2;
+constexpr uint8_t MOTOR_PIN  = 1;
+constexpr uint8_t MOTOR_TIMER = 3;
+constexpr uint8_t MOTOR_CHANNEL = 3;
 
 constexpr std::array<uint8_t, 8> POTI_MAP = {4, 7, 6, 5, 1, 2, 3, 0};
 constexpr uint8_t POTI_CONFIG_BRIGHTNESS = POTI_MAP[2];

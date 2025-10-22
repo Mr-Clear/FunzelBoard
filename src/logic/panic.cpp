@@ -2,6 +2,7 @@
 
 #include "buzzer.h"
 #include "color.h"
+#include "config.h"
 #include "data.h"
 #include "motor.h"
 #include "pixels.h"
@@ -30,8 +31,10 @@ void PanicState::update() {
   }
 
   Motor::setSpeed(m ? 1 : 0);
-  Buzzer::tone(0, b ? 1000 : 0);
-  Buzzer::tone(1, b ? 0 : 1500);
+  for (int i = 0; i < BUZZER_PINS.size(); i++) {
+    float f = 1 + i / 10.f;
+    Buzzer::tone(i, b ? 1000 * f : 1500 * f);
+  }
 }
 
 void PanicState::exit() {

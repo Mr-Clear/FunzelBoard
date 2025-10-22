@@ -14,12 +14,12 @@ namespace {
 }  // namespace
 
 void Buzzer::init() {
-  for (int i = 0; i < 2; ++i) {
+  for (int i = 0; i < BUZZER_TIMERS.size(); ++i) {
     ledc_timer_config_t timer_cfg = {
       .speed_mode       = LEDC_LOW_SPEED_MODE,
       .duty_resolution  = static_cast<ledc_timer_bit_t>(BUZZER_RES_BITS),
       .timer_num        = static_cast<ledc_timer_t>(BUZZER_TIMERS[i]),
-      .freq_hz          = 1000 + i * 1000,
+      .freq_hz          = static_cast<uint32_t>(1000 + i * 1000),
       .clk_cfg          = LEDC_AUTO_CLK
     };
     ledc_timer_config(&timer_cfg);

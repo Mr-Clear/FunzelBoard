@@ -61,18 +61,13 @@ void OctavesState::update() {
     Pixels::setColor(pi(octave - 1 + i + 2), GREEN);
   }
 
-  if (currentData.buttonPressedOrder().empty()) {
-    Buzzer::off(0);
-    Buzzer::off(1);
-  } else {
-    Buzzer::tone(0, tones[currentData.buttonPressedOrder().back()] * octaveMultiplier * pitch);
-    Pixels::setColor(pi(octave - 1 + currentData.buttonPressedOrder().back() + 2), WHITE);
-    if (currentData.buttonPressedOrder().size() > 1) {
-      const auto secondLast = *std::next(currentData.buttonPressedOrder().rbegin());
-      Buzzer::tone(1, tones[secondLast] * octaveMultiplier * pitch);
-      Pixels::setColor(pi(octave - 1 + secondLast + 2), WHITE);
+  for (int i = 0; i < BUZZER_PINS.size(); i++) {
+    if (i >= currentData.buttonPressedOrder().size()) {
+      Buzzer::off(i);
     } else {
-      Buzzer::off(1);
+      const auto btn = *std::next(currentData.buttonPressedOrder().rbegin(), i);
+      Buzzer::tone(i, tones[btn] * octaveMultiplier * pitch);
+      Pixels::setColor(pi(octave - 1 + btn + 2), WHITE);
     }
   }
 }

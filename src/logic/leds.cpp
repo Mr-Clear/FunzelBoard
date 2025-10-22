@@ -29,19 +29,6 @@ void leds() {
   for(int i = 24; i <= 26; i++) {
     Pixels::setColor(i, c);
   }
-  Serial.print(c.r);
-  Serial.print(",");
-  Serial.print(c.g);
-  Serial.print(",");
-  Serial.print(c.b);
-  Serial.print(" ");
-  Serial.print(WHITE.r);
-  Serial.print(",");
-  Serial.print(WHITE.g);
-  Serial.print(",");
-  Serial.print(WHITE.b);
-  Serial.println();
-
 
   Pixels::setColor(16, currentData.plug(0) ? BLUE : BLACK);
   Pixels::setColor(17, currentData.plug(1) ? GREEN : BLACK);
