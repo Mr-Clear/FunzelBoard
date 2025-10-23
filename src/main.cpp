@@ -295,13 +295,19 @@ void handleSerial() {
 
         const auto now = Player::now();
         std::vector<Player> players;
-        for (int i = 0; i < lines.size(); ++i) {
+        for (int i = 0; i < lines.size() && i < BUZZER_PINS.size(); ++i) {
           if (lines[i].size() > 0) {
             players.emplace_back(std::string{lines[i]}, i, now);
           }
+          Serial.print("D: ");
+          Serial.println(Player::calculateLengthUs(lines[i]));
         }
         bool anyPlaying = true;
         while (anyPlaying) {
+          if (Serial.read() == 'q') {
+            Serial.println("Stopping playback.");
+            break;
+          }
           anyPlaying = false;
           for (auto& player : players) {
             if (!player.isFinished()) {
@@ -320,7 +326,7 @@ void handleSerial() {
   }
 }
 
-constexpr size_t READ_SERIAL_BUFFER_SIZE = 1024 * 10;
+constexpr size_t READ_SERIAL_BUFFER_SIZE = 1024 * 100;
 char readSerialBuffer[READ_SERIAL_BUFFER_SIZE];
 std::string readSerial(std::string_view endPattern, std::string_view prompt, bool echo) {
   if (prompt.length() > 0) {
