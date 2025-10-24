@@ -16,6 +16,7 @@ class SongWidget(QWidget):
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setMinimumSize(800, 400)
+        self.setMouseTracking(True)
         self.notes = []  # Each note: (start_tick, duration, pitch)
         self.playhead_tick = 0
         self.is_playing = False
@@ -32,6 +33,9 @@ class SongWidget(QWidget):
         self._drag_start = QPointF()
         self._shift_start = QPointF()
         self.tracks: list[Track] = []
+
+        self.track_regions: list[QRectF] = []
+        self.mouse_track_region_index: int | None = None
 
 
     def add_tracks(self, tracks):
@@ -60,10 +64,20 @@ class SongWidget(QWidget):
             self.setCursor(Config.DRAG_MOUSE_POINTER)
 
     def mouseMoveEvent(self, event):
+        zoomed_pos = event.position() - self.shift
         if self._dragging:
             delta = event.position() - self._drag_start
             self.shift = self._shift_start + delta
             self.update()
+        else:
+            track_index = None
+            for i, region in enumerate(self.track_regions):
+                if region.contains(zoomed_pos):
+                    track_index = i
+                    break
+            if track_index != self.mouse_track_region_index:
+                self.mouse_track_region_index = track_index
+                self.update()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Config.DRAG_MOUSE_BUTTON and self._dragging:
@@ -76,9 +90,13 @@ class SongWidget(QWidget):
         p = QPainter(self)
         p.fillRect(self.rect(), Config.BACKGROUND_COLOR)
         p.save()
+        self.track_regions.clear()
         y = self.pitch_height * 2 * self.zoom_y
         for i, track in enumerate(self.tracks):
-            y += self._draw_track(p, i, y) + self.pitch_height * 4 * self.zoom_y
+            track_height = self._draw_track(p, i, y)
+            track_end_y = y + track_height
+            self.track_regions.append(QRectF(0, y, self.time_to_x(track.duration), track_height))
+            y = track_end_y + self.pitch_height * 4 * self.zoom_y
         p.restore()
 
     def time_to_x(self, tick: int) -> float:
@@ -86,17 +104,30 @@ class SongWidget(QWidget):
 
     def _draw_track(self, p: QPainter, track_index: int, y_offset: float) -> float:
         track = self.tracks[track_index]
-        height = (track.max_pitch - track.min_pitch) * self.pitch_height * self.zoom_y + self.pitch_height
+        height = (track.max_pitch - track.min_pitch) * self.pitch_height * self.zoom_y + self.pitch_height * self.zoom_y
 
         p.save()
         p.translate(self.shift)
-        for pitch in range(track.min_pitch - 1, track.max_pitch + 1):
-            if (pitch - track.min_pitch) % 2 == 1:
-                p.setPen(QPen(Config.GRID_COLOR_LIGHT, 1))
-            else:
+        if self.mouse_track_region_index == track_index:
+            p.fillRect(QRectF(0, y_offset, self.time_to_x(track.duration), height), Config.HOVER_TRACK_HIGHLIGHT_COLOR)
+            p.setPen(QPen(Config.HOVER_TRACK_BORDER_COLOR, Config.HOVER_TRACK_BORDER_WIDTH))
+            p.drawRect(QRectF(0, y_offset, self.time_to_x(track.duration), height))
+
+        if self.pitch_height * self.zoom_y >= 3:
+            for pitch in range(track.min_pitch - 1, track.max_pitch + 1):
+                if (pitch + 1) % 12 == 0:
+                    p.setPen(QPen(Config.GRID_COLOR_MAIN, 2))
+                elif (pitch - track.min_pitch) % 2 == 1:
+                    p.setPen(QPen(Config.GRID_COLOR_LIGHT, 1))
+                else:
+                    p.setPen(QPen(Config.GRID_COLOR_DARK, 1))
+                y = y_offset + (track.pitch_range - pitch + track.min_pitch) * (self.pitch_height * self.zoom_y)
+                p.drawLine(QPointF(0, y), QPointF(self.time_to_x(track.duration), y))
+        else:
+            for pitch in range((((track.min_pitch - 1) // 12) + 1) * 12 - 1, track.max_pitch + 1, 12):
                 p.setPen(QPen(Config.GRID_COLOR_DARK, 1))
-            y = y_offset + (track.pitch_range - pitch + track.min_pitch) * (self.pitch_height * self.zoom_y)
-            p.drawLine(QPointF(0, y), QPointF(self.time_to_x(track.duration), y))
+                y = y_offset + (track.pitch_range - pitch + track.min_pitch) * (self.pitch_height * self.zoom_y)
+                p.drawLine(QPointF(0, y), QPointF(self.time_to_x(track.duration), y))
 
         for note in track.notes:
             x = self.time_to_x(note.start_tick)
