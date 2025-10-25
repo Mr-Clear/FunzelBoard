@@ -5,8 +5,8 @@ class Buzzer(enum.Enum):
     NONE = 0
     BUZZER_1 = 1
     BUZZER_2 = 2
-    BUZZER_3 = 4
-    ANY = 7
+    BUZZER_3 = 3
+    ANY = 4
 
 @dataclass
 class Note:

@@ -1,8 +1,8 @@
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtCore import Qt, QTimer
-from PySide6.QtWidgets import QMainWindow, QDockWidget, QSizePolicy
+from PySide6.QtWidgets import QMainWindow, QDockWidget, QSizePolicy, QLabel
 
-from song_widget import SongWidget
+from song_widget import SongWidget, KeysStatus
 from control_panel import ControlPanel
 from tracks_list_widget import TracksListWidget
 from notes_list_widget import NotesListWidget
@@ -44,16 +44,42 @@ class MainWindow(QMainWindow):
         self.splitDockWidget(track_dock, notes_dock, Qt.Orientation.Vertical)
         self.resizeDocks([track_dock, notes_dock], [300, 400], Qt.Orientation.Vertical)
 
-        self.resize(1200, 700)
+        # Status bar
+        self.statusBar().showMessage("Ready")
+        self.status_keys_label = QLabel("!!")
+        self.statusBar().addPermanentWidget(self.status_keys_label)
 
         self.song_widget.hover_note_changed.connect(self.notes_list_widget.set_hover_note)
         self.song_widget.track_added.connect(self.track_list_widget.add_track)
         self.song_widget.track_removed.connect(self.track_list_widget.remove_track)
         self.song_widget.hover_track_changed.connect(self.track_list_widget.set_hover_track)
         self.song_widget.note_selection_changed.connect(self.notes_list_widget.set_selected_notes)
+        self.song_widget.key_status_update.connect(self.update_status_keys)
+        self.notes_list_widget.note_changed.connect(self.song_widget.update)
+
+        self.resize(1200, 700)
+        self.showMaximized()
 
         QTimer.singleShot(0, self.control_panel.open_file)
 
     def closeEvent(self, event: QCloseEvent) -> None:
         self.control_panel.stop()
         return super().closeEvent(event)
+
+    def update_status_keys(self, status: int):
+        if status == KeysStatus.NONE:
+            self.status_keys_label.setText("??")
+        elif status == KeysStatus.ADD:
+            self.status_keys_label.setText("Add")
+        elif status == KeysStatus.REMOVE:
+            self.status_keys_label.setText("Remove")
+        elif status == KeysStatus.SPAN:
+            self.status_keys_label.setText("Span")
+        elif status == KeysStatus.TOGGLE:
+            self.status_keys_label.setText("Toggle")
+        elif status == KeysStatus.SCALE_X:
+            self.status_keys_label.setText("Scale X")
+        elif status == KeysStatus.SCALE_Y:
+            self.status_keys_label.setText("Scale Y")
+        else:
+            self.status_keys_label.setText("")
