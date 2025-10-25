@@ -5,10 +5,18 @@ from song import Track
 class TrackWidget(QWidget):
     def __init__(self, track: Track, parent=None):
         super().__init__(parent)
-        layout = QHBoxLayout(self)
         self.track = track
-        self.label = QLabel(track.name, self)
-        layout.addWidget(self.label)
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        title_widget = QWidget(self)
+        title_layout = QHBoxLayout(title_widget)
+        title_layout.setContentsMargins(0, 0, 0, 0)
+        self.index_label = QLabel(f'{track.index}:', self)
+        title_layout.addWidget(self.index_label)
+        self.name_label = QLabel(track.name, self)
+        title_layout.addWidget(self.name_label)
+        title_layout.addStretch()
+        layout.addWidget(title_widget)
 
 class TracksListWidget(QWidget):
     def __init__(self, parent=None):
@@ -21,7 +29,12 @@ class TracksListWidget(QWidget):
         self.vbox_layout = QVBoxLayout(self.container)
         self.container.setLayout(self.vbox_layout)
 
-        self.scroll_area.setWidget(self.container)
+        stretch_container = QWidget(self)
+        stretch_layout = QVBoxLayout(stretch_container)
+        stretch_layout.addWidget(self.container)
+        stretch_layout.addStretch()
+
+        self.scroll_area.setWidget(stretch_container)
         self.main_layout.addWidget(self.scroll_area)
         self.setLayout(self.main_layout)
 

@@ -6,13 +6,12 @@ from song import Note, Track, Song
 class MidiLoader:
     @staticmethod
     def load_midi_file(fname: str) -> Song:
-        f = True
         tracks = []
         file = MidiFile(fname, clip=True)
         file_name = file.filename if file.filename else "Unnamed"
         tempo_map = MidiLoader.get_tempo_map(file)
         ticks_per_beat = file.ticks_per_beat
-        for midi_track in file.tracks:
+        for index, midi_track in enumerate(file.tracks):
             abs_time = 0
             last_time = 0
             tempo_index = 0
@@ -30,9 +29,6 @@ class MidiLoader:
                     off = msg.velocity == 0 or msg.type == 'note_off'
                     t = abs_time - last_time
                     if not off:
-                        if f:
-                            print(msg)
-                            f = False
                         on_notes[msg.note] = (abs_time, msg.velocity)
                         if msg.note < min_pitch:
                             min_pitch = msg.note
@@ -54,7 +50,7 @@ class MidiLoader:
                     tempo_index += 1
                 tempo = tempo_map[tempo_index][1]
             if notes:
-                tracks.append(Track(name=midi_track.name, notes=notes,
+                tracks.append(Track(index=index, name=midi_track.name, notes=notes,
                                     duration=abs_time, ticks_per_beat=ticks_per_beat,
                                     min_pitch=min_pitch, max_pitch=max_pitch,
                                     min_velocity=min_velocity, max_velocity=max_velocity))

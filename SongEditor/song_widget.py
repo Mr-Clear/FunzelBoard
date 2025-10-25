@@ -19,6 +19,8 @@ class SongWidget(QWidget):
     track_added = Signal(Track)
     track_removed = Signal(Track)
 
+    note_selection_changed = Signal(list)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -43,6 +45,8 @@ class SongWidget(QWidget):
         self.song: Song = Song(name="Untitled", tracks=[])
         self.hover_track: Track | None = None
         self.hover_note: Note | None = None
+        self.pressed_note: Note | None = None
+        self.selected_notes: list[Note] = []
 
     def set_song(self, song: Song):
         for track in self.song.tracks:
@@ -67,6 +71,10 @@ class SongWidget(QWidget):
         self.update()
 
     def mousePressEvent(self, event):
+        if event.button() == Config.SELECT_MOUSE_BUTTON:
+            self.pressed_note = self.hover_note
+        else:
+            self.pressed_note = None
         if event.button() == Config.DRAG_MOUSE_BUTTON:
             self._dragging = True
             self._drag_start = event.position()
@@ -83,9 +91,37 @@ class SongWidget(QWidget):
         self.update()
 
     def mouseReleaseEvent(self, event):
-        if event.button() == Config.DRAG_MOUSE_BUTTON and self._dragging:
+        if event.button() == Config.SELECT_MOUSE_BUTTON and self.pressed_note == self.hover_note:
+            last_selected = set(self.selected_notes)
+            if event.modifiers() & Config.SELECT_NOTE_ADD_MODIFIER:
+                if self.hover_note and self.hover_note not in self.selected_notes:
+                    self.selected_notes.append(self.hover_note)
+            elif event.modifiers() & Config.SELECT_NOTE_REMOVE_MODIFIER:
+                if self.hover_note and self.hover_note in self.selected_notes:
+                    self.selected_notes.remove(self.hover_note)
+            elif event.modifiers() & Config.SELECT_NOTE_SPAN_MODIFIER:
+                if self.hover_note and self.selected_notes:
+                    first_note = self.selected_notes[0]
+                    track = None
+                    for t in self.song.tracks:
+                        if first_note in t.notes:
+                            track = t
+                            break
+                    if track and self.hover_note in track.notes:
+                        first_index = track.notes.index(first_note)
+                        hover_index = track.notes.index(self.hover_note)
+                        start_index = min(first_index, hover_index)
+                        end_index = max(first_index, hover_index)
+                        self.selected_notes = track.notes[start_index:end_index + 1]
+            else:
+                self.selected_notes = [self.hover_note] if self.hover_note else []
+            if set(self.selected_notes) != last_selected:
+                self.note_selection_changed.emit(self.selected_notes)
+                self.update()
+        elif event.button() == Config.DRAG_MOUSE_BUTTON and self._dragging:
             self._dragging = False
             self.setCursor(Config.NORMAL_MOUSE_POINTER)
+        self.pressed_note = None
 
     def paintEvent(self, event):
         self.shift = QPointF(min(self.shift.x(), self.min_shift_x), min(self.shift.y(), 0))
@@ -153,9 +189,16 @@ class SongWidget(QWidget):
             if w > 0 and h > 0:
                 note_rect = QRectF(x, y, w, h)
                 if self.mouse_position and hovered and note_rect.contains(self.mouse_position - self.shift):
-                    c = Config.NOTE_HOVER_FILL_BASE_COLOR
-                    p.setPen(QPen(Config.NOTE_HOVER_BORDER_COLOR, 1))
+                    if note in self.selected_notes:
+                        c = Config.NOTE_HOVER_SELECTED_FILL_BASE_COLOR
+                        p.setPen(QPen(Config.NOTE_HOVER_SELECTED_BORDER_COLOR, 1))
+                    else:
+                        c = Config.NOTE_HOVER_FILL_BASE_COLOR
+                        p.setPen(QPen(Config.NOTE_HOVER_BORDER_COLOR, 1))
                     self.hover_note = note
+                elif note in self.selected_notes:
+                    c = Config.NOTE_SELECTED_FILL_BASE_COLOR
+                    p.setPen(QPen(Config.NOTE_SELECTED_BORDER_COLOR, 1))
                 else:
                     c = Config.NOTE_FILL_BASE_COLOR
                     p.setPen(QPen(Config.NOTE_BORDER_COLOR, 1))

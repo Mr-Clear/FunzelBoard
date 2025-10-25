@@ -9,20 +9,16 @@ class NoteWidget(QWidget):
         layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         self.start_spinner = QDoubleSpinBox(self)
-        self.start_spinner.setRange(0, 1_000_000)
-        self.start_spinner.setDecimals(3)
         self.pitch_combobox = QComboBox(self)
         self.pitch_combobox.addItems([str(p) for p in range(128)])
         self.duration_spinner = QDoubleSpinBox(self)
-        self.duration_spinner.setRange(0, 1_000_000)
-        self.duration_spinner.setDecimals(3)
         self.buzzer_selector = QComboBox(self)
         self.buzzer_selector.addItems(['1', '2', '3', 'None', 'Any'])
 
-        # show thousands separators and use system locale
         for sb in (self.start_spinner, self.duration_spinner):
             sb.setGroupSeparatorShown(True)
-            sb.setLocale(QLocale.system())
+            sb.setDecimals(3)
+            sb.setRange(0, 1_000_000)
 
         layout.addWidget(self.start_spinner)
         layout.addWidget(self.pitch_combobox)
@@ -56,8 +52,6 @@ class NotesListWidget(QWidget):
         self.vbox_layout.addWidget(self.hover_label)
 
         self.hover = NoteWidget(None, self)
-        self.hover_layout = QVBoxLayout(self.hover)
-        self.hover.setLayout(self.hover_layout)
         self.vbox_layout.addWidget(self.hover)
 
         self.selected_label = QLabel("Selected:", self)
@@ -66,13 +60,26 @@ class NotesListWidget(QWidget):
         self.selected_container = QWidget(self)
         self.selected_layout = QVBoxLayout(self.selected_container)
         self.selected_container.setLayout(self.selected_layout)
-        self.vbox_layout.addWidget(self.selected_container)
 
-        self.vbox_layout.addStretch()
+        stretch_container = QWidget(self)
+        stretch_layout = QVBoxLayout(stretch_container)
+        stretch_layout.addWidget(self.selected_container)
+        stretch_layout.addStretch()
+
+        self.selected_scroll = QScrollArea(self)
+        self.selected_scroll.setWidgetResizable(True)
+        self.selected_scroll.setWidget(stretch_container)
+        self.vbox_layout.addWidget(self.selected_scroll)
 
     def set_hover_note(self, note: Note | None):
         self.hover.set_note(note)
 
-    def add_note(self, note):
-        note_widget = NoteWidget(note, self)
-        self.vbox_layout.addWidget(note_widget)
+    def set_selected_notes(self, notes: list[Note]):
+        for i in reversed(range(self.selected_layout.count())):
+            item = self.selected_layout.itemAt(i)
+            widget = item.widget()
+            if widget:
+                widget.setParent(None)
+        for note in sorted(notes, key=lambda n: (n.start_tick, n.pitch)):
+            note_widget = NoteWidget(note, self)
+            self.selected_layout.addWidget(note_widget)

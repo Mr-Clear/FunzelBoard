@@ -19,9 +19,16 @@ class Note:
     def frequency(self) -> float:
         return 440.0 * (2 ** ((self.pitch - 69) / 12.0))
 
+    def __hash__(self):
+        return id(self)
+
+    def __eq__(self, other):
+        return self is other
+
 
 @dataclass
 class Track:
+    index: int
     name: str
     notes: list[Note]
     duration: int
@@ -37,6 +44,12 @@ class Track:
     @property
     def velocity_range(self) -> int:
         return self.max_velocity - self.min_velocity
+
+    def __hash__(self):
+        return id(self)
+
+    def __eq__(self, other):
+        return self is other
 
 @dataclass
 class Song:
