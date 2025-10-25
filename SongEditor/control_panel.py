@@ -3,8 +3,9 @@ from PySide6.QtWidgets import QWidget, QHBoxLayout, QPushButton, QLabel, QFileDi
 from song_widget import SongWidget
 from midi_loader import MidiLoader
 from song_player import Player
+from config import Config
 
-class PlayControlPanel(QWidget):
+class ControlPanel(QWidget):
     def __init__(self, canvas: SongWidget, parent=None):
         super().__init__(parent)
         self.canvas = canvas
@@ -23,8 +24,9 @@ class PlayControlPanel(QWidget):
         self.player: Player | None = None
 
     def open_file(self):
-        fname, _ = QFileDialog.getOpenFileName(self, "Open MIDI File", "", "MIDI Files (*.mid *.midi)")
+        fname, _ = QFileDialog.getOpenFileName(self, "Open MIDI File", Config.last_opened_directory, "MIDI Files (*.mid *.midi)")
         if fname:
+            Config.last_opened_directory = fname.rsplit('/', 1)[0]
             self.add_file(fname)
 
     def add_file(self, fname: str):

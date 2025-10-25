@@ -3,7 +3,7 @@ from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow, QDockWidget, QSizePolicy
 
 from song_widget import SongWidget
-from play_control_panel import PlayControlPanel
+from control_panel import ControlPanel
 from tracks_list_widget import TracksListWidget
 from notes_list_widget import NotesListWidget
 
@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.song_widget)
 
         # Bottom controls dock
-        self.control_panel = PlayControlPanel(self.song_widget, self)
+        self.control_panel = ControlPanel(self.song_widget, self)
         bottom_dock = QDockWidget("Playback Controls", self)
         bottom_dock.setWidget(self.control_panel)
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, bottom_dock)
@@ -50,6 +50,8 @@ class MainWindow(QMainWindow):
         self.song_widget.track_added.connect(self.track_list_widget.add_track)
         self.song_widget.track_removed.connect(self.track_list_widget.remove_track)
         self.song_widget.hover_track_changed.connect(self.track_list_widget.set_hover_track)
+
+        self.control_panel.open_file()
 
     def closeEvent(self, event: QCloseEvent) -> None:
         self.control_panel.stop()
