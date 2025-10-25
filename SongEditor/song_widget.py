@@ -1,10 +1,11 @@
 
-from PySide6.QtCore import Qt, QPointF, QTimer, QRectF
+from typing import Optional
+from PySide6.QtCore import Qt, QPointF, QTimer, QRectF, Signal
 from PySide6.QtGui import QPainter, QPen, QColor, QFont
 from PySide6.QtWidgets import QWidget, QSizePolicy
 
 from config import Config
-from midi_loader import Track
+from song import Note, Song, Track
 
 def create_font(family: str, point_size: float) -> QFont:
     font = QFont(family)
@@ -12,11 +13,18 @@ def create_font(family: str, point_size: float) -> QFont:
     return font
 
 class SongWidget(QWidget):
+    hover_note_changed = Signal(object)
+    hover_track_changed = Signal(object)
+
+    track_added = Signal(Track)
+    track_removed = Signal(Track)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.setMinimumSize(800, 400)
         self.setMouseTracking(True)
+        self.mouse_position: QPointF | None = None
         self.notes = []  # Each note: (start_tick, duration, pitch)
         self.playhead_tick = 0
         self.is_playing = False
@@ -32,14 +40,16 @@ class SongWidget(QWidget):
         self._dragging = False
         self._drag_start = QPointF()
         self._shift_start = QPointF()
-        self.tracks: list[Track] = []
+        self.song: Song = Song(name="Untitled", tracks=[])
+        self.hover_track: Track | None = None
+        self.hover_note: Note | None = None
 
-        self.track_regions: list[QRectF] = []
-        self.mouse_track_region_index: int | None = None
-
-
-    def add_tracks(self, tracks):
-        self.tracks.extend(tracks)
+    def set_song(self, song: Song):
+        for track in self.song.tracks:
+            self.track_removed.emit(track)
+        self.song = song
+        for track in self.song.tracks:
+            self.track_added.emit(track)
         self.playhead_tick = 0
         self.update()
 
@@ -64,20 +74,13 @@ class SongWidget(QWidget):
             self.setCursor(Config.DRAG_MOUSE_POINTER)
 
     def mouseMoveEvent(self, event):
+        self.mouse_position = event.position()
         zoomed_pos = event.position() - self.shift
         if self._dragging:
             delta = event.position() - self._drag_start
             self.shift = self._shift_start + delta
             self.update()
-        else:
-            track_index = None
-            for i, region in enumerate(self.track_regions):
-                if region.contains(zoomed_pos):
-                    track_index = i
-                    break
-            if track_index != self.mouse_track_region_index:
-                self.mouse_track_region_index = track_index
-                self.update()
+        self.update()
 
     def mouseReleaseEvent(self, event):
         if event.button() == Config.DRAG_MOUSE_BUTTON and self._dragging:
@@ -87,31 +90,44 @@ class SongWidget(QWidget):
     def paintEvent(self, event):
         self.shift = QPointF(min(self.shift.x(), self.min_shift_x), min(self.shift.y(), 0))
 
+        last_hover_track = self.hover_track
+        last_hover_note = self.hover_note
+        self.hover_track = None
+        self.hover_note = None
+
         p = QPainter(self)
         p.fillRect(self.rect(), Config.BACKGROUND_COLOR)
         p.save()
-        self.track_regions.clear()
         y = self.pitch_height * 2 * self.zoom_y
-        for i, track in enumerate(self.tracks):
+        for i, track in enumerate(self.song.tracks):
             track_height = self._draw_track(p, i, y)
             track_end_y = y + track_height
-            self.track_regions.append(QRectF(0, y, self.time_to_x(track.duration), track_height))
             y = track_end_y + self.pitch_height * 4 * self.zoom_y
         p.restore()
+
+        if last_hover_track != self.hover_track:
+            self.hover_track_changed.emit(self.hover_track)
+        if last_hover_note != self.hover_note:
+            self.hover_note_changed.emit(self.hover_note)
 
     def time_to_x(self, tick: int) -> float:
         return float(tick) / 1000000. * self.second_width * self.zoom_x
 
     def _draw_track(self, p: QPainter, track_index: int, y_offset: float) -> float:
-        track = self.tracks[track_index]
+        track = self.song.tracks[track_index]
         height = (track.max_pitch - track.min_pitch) * self.pitch_height * self.zoom_y + self.pitch_height * self.zoom_y
+        track_rect = QRectF(0, y_offset, self.time_to_x(track.duration), height)
+        hovered = self.mouse_position is not None and track_rect.contains(self.mouse_position - self.shift)
 
         p.save()
         p.translate(self.shift)
-        if self.mouse_track_region_index == track_index:
-            p.fillRect(QRectF(0, y_offset, self.time_to_x(track.duration), height), Config.HOVER_TRACK_HIGHLIGHT_COLOR)
+        hover_pitch: int | None = None
+        if hovered:
+            self.hover_track = track
+            p.fillRect(track_rect, Config.HOVER_TRACK_HIGHLIGHT_COLOR)
             p.setPen(QPen(Config.HOVER_TRACK_BORDER_COLOR, Config.HOVER_TRACK_BORDER_WIDTH))
-            p.drawRect(QRectF(0, y_offset, self.time_to_x(track.duration), height))
+            p.drawRect(track_rect)
+            hover_pitch = int((y_offset + height - (self.mapFromGlobal(self.cursor().pos()).y() - self.shift.y())) // (self.pitch_height * self.zoom_y)) + track.min_pitch
 
         if self.pitch_height * self.zoom_y >= 3:
             for pitch in range(track.min_pitch - 1, track.max_pitch + 1):
@@ -134,11 +150,19 @@ class SongWidget(QWidget):
             y = y_offset + (track.pitch_range - note.pitch + track.min_pitch) * (self.pitch_height * self.zoom_y)
             w = self.time_to_x(note.duration)
             h = self.pitch_height * self.zoom_y
-            c = Config.NOTE_FILL_BASE_COLOR
-            c.setAlpha((note.velocity - track.min_velocity) * 255 // track.velocity_range)
-            p.fillRect(QRectF(x, y, w, h), c)
-            p.setPen(QPen(Config.NOTE_BORDER_COLOR, 1))
-            p.drawRect(QRectF(x, y, w, h))
+            if w > 0 and h > 0:
+                note_rect = QRectF(x, y, w, h)
+                if self.mouse_position and hovered and note_rect.contains(self.mouse_position - self.shift):
+                    c = Config.NOTE_HOVER_FILL_BASE_COLOR
+                    p.setPen(QPen(Config.NOTE_HOVER_BORDER_COLOR, 1))
+                    self.hover_note = note
+                else:
+                    c = Config.NOTE_FILL_BASE_COLOR
+                    p.setPen(QPen(Config.NOTE_BORDER_COLOR, 1))
+                if track.velocity_range > 0:
+                    c.setAlpha((note.velocity - track.min_velocity) * 255 // track.velocity_range)
+                p.fillRect(note_rect, c)
+                p.drawRect(note_rect)
         p.restore()
 
         if self.zoom_y > 0.2:
@@ -150,6 +174,10 @@ class SongWidget(QWidget):
             p.rotate(-90)
             p.setFont(create_font("Sans", self.pitch_height * self.zoom_y * 2))
             fm = p.fontMetrics()
+            if hovered:
+                p.setPen(QPen(Config.TRACK_TEXT_COLOR_HOVER))
+            else:
+                p.setPen(QPen(Config.TRACK_TEXT_COLOR))
             p.drawText(QPointF(-y_offset - (height + fm.horizontalAdvance(f'{track.name}')) / 2, fm.ascent() * 0.8), f'{track.name}')
             title_height = fm.height() * 0.6
             p.restore()
@@ -162,6 +190,10 @@ class SongWidget(QWidget):
                 pitch_width = p.fontMetrics().horizontalAdvance(pitch_text)
                 note_text = SongWidget.pitch_to_note_name(pitch)
                 pitch_text = f'{pitch_text} {note_text}'
+                if hover_pitch == pitch:
+                    p.setPen(QPen(Config.TRACK_TEXT_COLOR_HOVER))
+                else:
+                    p.setPen(QPen(Config.TRACK_TEXT_COLOR))
                 p.drawText(QPointF(title_height + max_pitch_width - pitch_width, y + self.pitch_height * self.zoom_y * 0.9), pitch_text)
                 self.min_shift_x = title_height + p.fontMetrics().horizontalAdvance('000 C#4')
             p.restore()

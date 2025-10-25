@@ -1,36 +1,11 @@
 from dataclasses import dataclass
 from mido import MidiFile
 
-@dataclass
-class Note:
-    start_tick: int
-    duration: int
-    pitch: int
-    velocity: int
-
-
-@dataclass
-class Track:
-    file_name: str
-    name: str
-    notes: list[Note]
-    duration: int
-    ticks_per_beat: float
-    min_pitch: int
-    max_pitch: int
-    min_velocity: int
-    max_velocity: int
-
-    @property
-    def pitch_range(self) -> int:
-        return self.max_pitch - self.min_pitch
-    @property
-    def velocity_range(self) -> int:
-        return self.max_velocity - self.min_velocity
+from song import Note, Track, Song
 
 class MidiLoader:
     @staticmethod
-    def load_midi_file(fname: str) -> list[Track]:
+    def load_midi_file(fname: str) -> Song:
         f = True
         tracks = []
         file = MidiFile(fname, clip=True)
@@ -79,12 +54,11 @@ class MidiLoader:
                     tempo_index += 1
                 tempo = tempo_map[tempo_index][1]
             if notes:
-                tracks.append(Track(file_name=file_name, name=midi_track.name, notes=notes,
+                tracks.append(Track(name=midi_track.name, notes=notes,
                                     duration=abs_time, ticks_per_beat=ticks_per_beat,
                                     min_pitch=min_pitch, max_pitch=max_pitch,
                                     min_velocity=min_velocity, max_velocity=max_velocity))
-                print(f'Loaded track {midi_track.name} with {len(notes)} notes, pitch range: {min_pitch}-{max_pitch}')
-        return tracks
+        return Song(name=file_name, tracks=tracks)
 
     @staticmethod
     def get_tempo_map(file: MidiFile) -> list[tuple[int, int]]:
