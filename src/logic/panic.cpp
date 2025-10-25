@@ -42,4 +42,5 @@ void PanicState::exit() {
   Pixels::clear();
   Buzzer::off(0);
   Buzzer::off(1);
+  Buzzer::off(2);
 }

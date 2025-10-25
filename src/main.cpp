@@ -326,7 +326,7 @@ void handleSerial() {
   }
 }
 
-constexpr size_t READ_SERIAL_BUFFER_SIZE = 1024 * 100;
+constexpr size_t READ_SERIAL_BUFFER_SIZE = 1024 * 200;
 char readSerialBuffer[READ_SERIAL_BUFFER_SIZE];
 std::string readSerial(std::string_view endPattern, std::string_view prompt, bool echo) {
   if (prompt.length() > 0) {
