@@ -127,7 +127,7 @@ class TrackWidget(QWidget):
         self.notes_buzzer_2_label.setText(str(buzzers[Buzzer.BUZZER_2]))
         self.notes_buzzer_3_label.setText(str(buzzers[Buzzer.BUZZER_3]))
         self.notes_error_label.setText(str(self.track.error_notes_count))
-        self.duration_label.setText(f'{self.track.duration / 1000000:.2f} s')
+        self.duration_label.setText(f'{self.track.duration_us / 1000000:.2f} s')
         self.pitch_range_label.setText(f'{self.track.min_pitch}-{self.track.max_pitch}')
         self.velocity_range_label.setText(f'{self.track.min_velocity}-{self.track.max_velocity}')
 

@@ -13,8 +13,8 @@ class Buzzer(enum.Enum):
 
 @dataclass
 class Note:
-    start_tick: int
-    duration: int
+    start_us: int
+    duration_us: int
     pitch: int
     velocity: int
     buzzer: Buzzer
@@ -38,6 +38,10 @@ class Note:
     def frequency(self) -> float:
         return 440.0 * (2 ** ((self.pitch - 69) / 12.0))
 
+    @property
+    def end_us(self) -> int:
+        return self.start_us + self.duration_us
+
     def __hash__(self):
         return id(self)
 
@@ -46,15 +50,15 @@ class Note:
 
     def __setattr__(self, name: str, value) -> None:
         super().__setattr__(name, value)
-        if name in {'start_tick', 'duration', 'pitch', 'velocity', 'buzzer'}:
+        if name in {'start_us', 'duration_us', 'pitch', 'velocity', 'buzzer'}:
             if hasattr(self, 'track'):
                 self.track.invalidate_cache()
             self._notify_change_listeners()
 
     def to_dict(self) -> dict:
         return {
-            'start_tick': self.start_tick,
-            'duration': self.duration,
+            'start_us': self.start_us,
+            'duration_us': self.duration_us,
             'pitch': self.pitch,
             'velocity': self.velocity,
             'buzzer': self.buzzer.name
@@ -67,22 +71,24 @@ class Track:
     notes: list[Note]
     song: Song | None = field(repr=False)
 
-    _duration: int | None = field(default=None, init=False, repr=False)
+    _duration_us: int | None = field(default=None, init=False, repr=False)
     _min_pitch: int | None = field(default=None, init=False, repr=False)
     _max_pitch: int | None = field(default=None, init=False, repr=False)
     _min_velocity: int | None = field(default=None, init=False, repr=False)
     _max_velocity: int | None = field(default=None, init=False, repr=False)
     _buzzers_usage: dict[Buzzer, int] | None = field(init=False, repr=False)
+    _error_notes: set[Note] | None = field(default=None, init=False, repr=False)
 
     _change_listeners: set[Callable[[], None]] = field(default_factory=set, init=False, repr=False)
 
     def invalidate_cache(self):
-        self._duration = None
+        self._duration_us = None
         self._min_pitch = None
         self._max_pitch = None
         self._min_velocity = None
         self._max_velocity = None
         self._buzzers_usage = None
+        self._error_notes = None
         if self.song:
             self.song.invalidate_cache()
         self._notify_change_listeners()
@@ -99,13 +105,13 @@ class Track:
                 listener()
 
     @property
-    def duration(self) -> int:
-        if self._duration is None:
+    def duration_us(self) -> int:
+        if self._duration_us is None:
             if not self.notes:
-                self._duration = 0
+                self._duration_us = 0
             else:
-                self._duration = max(note.start_tick + note.duration for note in self.notes)
-        return self._duration
+                self._duration_us = max(note.start_us + note.duration_us for note in self.notes)
+        return self._duration_us
 
     @property
     def min_pitch(self) -> int:
@@ -165,8 +171,18 @@ class Track:
         return self._buzzers_usage
 
     @property
+    def error_notes(self) -> set[Note]:
+        if self._error_notes:
+            return self._error_notes
+        if self.song:
+            self._error_notes = {note for note in self.song.error_notes if note.track is self}
+        else:
+            self._error_notes = set()
+        return self._error_notes
+
+    @property
     def error_notes_count(self) -> int:
-        return 0
+        return len(self.error_notes)
 
     def __hash__(self):
         return id(self)
@@ -185,22 +201,22 @@ class Song:
     name: str
     tracks: list[Track]
 
-    _duration: int | None = field(default=None, init=False, repr=False)
+    _duration_us: int | None = field(default=None, init=False, repr=False)
     _pitch_range: tuple[int, int] | None = field(default=None, init=False, repr=False)
     _velocity_range: tuple[int, int] | None = field(default=None, init=False, repr=False)
     _notes_count: int | None = field(default=None, init=False, repr=False)
     _buzzer_usage: dict[Buzzer, int] | None = field(default=None, init=False, repr=False)
-    _error_notes_count: int | None = field(default=None, init=False, repr=False)
+    _error_notes: set[Note] | None = field(default=None, init=False, repr=False)
 
     _change_listeners: set[Callable[[], None]] = field(default_factory=set, init=False, repr=False)
 
     def invalidate_cache(self):
-        self._duration = None
+        self._duration_us = None
         self._pitch_range = None
         self._velocity_range = None
         self._notes_count = None
         self._buzzer_usage = None
-        self._error_notes_count = None
+        self._error_notes = None
         self._notify_change_listeners()
 
     def add_change_listener(self, listener: Callable[[], None]):
@@ -215,13 +231,13 @@ class Song:
                 listener()
 
     @property
-    def duration(self) -> int:
-        if self._duration is None:
+    def duration_us(self) -> int:
+        if self._duration_us is None:
             if not self.tracks:
-                self._duration = 0
+                self._duration_us = 0
             else:
-                self._duration = max(track.duration for track in self.tracks)
-        return self._duration
+                self._duration_us = max(track.duration_us for track in self.tracks)
+        return self._duration_us
 
     @property
     def pitch_range(self) -> tuple[int, int]:
@@ -262,10 +278,10 @@ class Song:
         return self._buzzer_usage
 
     @property
-    def error_notes_count(self) -> int:
-        if self._error_notes_count is None:
-            self._error_notes_count = sum(track.error_notes_count for track in self.tracks)
-        return self._error_notes_count
+    def error_notes(self) -> set[Note]:
+        if self._error_notes is None:
+            self._error_notes = self._calculate_error_notes()
+        return self._error_notes
 
     def to_dict(self) -> dict:
         return {
@@ -295,8 +311,8 @@ class Song:
             notes = []
             for note_data in track_data['notes']:
                 note = Note(
-                    start_tick=note_data['start_tick'],
-                    duration=note_data['duration'],
+                    start_us=note_data['start_us'],
+                    duration_us=note_data['duration_us'],
                     pitch=note_data['pitch'],
                     velocity=note_data['velocity'],
                     buzzer=Buzzer[note_data['buzzer']],
@@ -310,6 +326,27 @@ class Song:
         song.invalidate_cache()
 
         return song
+
+    def _calculate_error_notes(self) -> set[Note]:
+        error_notes = set()
+        for buzzer in {Buzzer.BUZZER_1, Buzzer.BUZZER_2, Buzzer.BUZZER_3}:
+            buzzer_notes = []
+            for track in self.tracks:
+                for note in track.notes:
+                    if note.buzzer == buzzer:
+                        buzzer_notes.append(note)
+            buzzer_notes.sort(key=lambda n: n.start_us)
+            active_notes: set[Note] = set()
+            for note in buzzer_notes:
+                active_notes_copy = active_notes.copy()
+                for active_note in active_notes_copy:
+                    if note.start_us < active_note.end_us:
+                        error_notes.add(note)
+                        error_notes.add(active_note)
+                    else:
+                        active_notes.remove(active_note)
+                active_notes.add(note)
+        return error_notes
 
 class SongEncoder(json.JSONEncoder):
     def default(self, o):

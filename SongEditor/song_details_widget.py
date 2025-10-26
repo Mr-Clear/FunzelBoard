@@ -126,7 +126,7 @@ class SongDetailsWidget(QWidget):
 
     def update_labels(self):
         if self.song:
-            self.duration_label.setText(f'{self.song.duration / 1000000:.2f} s')
+            self.duration_label.setText(f'{self.song.duration_us / 1000000:.2f} s')
             min_pitch, max_pitch = self.song.pitch_range
             self.pitch_range_label.setText(f'{min_pitch}-{max_pitch}')
             min_velocity, max_velocity = self.song.velocity_range

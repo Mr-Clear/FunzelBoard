@@ -33,7 +33,7 @@ class MidiLoader:
                         if msg.note in on_notes:
                             start_tick, velocity = on_notes.pop(msg.note)
                             duration = abs_time - start_tick
-                            note = Note(start_tick=start_tick, duration=duration, pitch=msg.note, velocity=velocity, buzzer=Buzzer.NONE, track=track)
+                            note = Note(start_us=start_tick, duration_us=duration, pitch=msg.note, velocity=velocity, buzzer=Buzzer.NONE, track=track)
                             notes.append(note)
 
                 last_time = abs_time

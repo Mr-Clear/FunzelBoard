@@ -37,9 +37,9 @@ class NotesTableModel(QAbstractTableModel):
         column = index.column()
 
         if column == 0:  # Start
-            return note.start_tick / 1000.0
+            return note.start_us / 1000.0
         elif column == 1:  # Duration
-            return note.duration / 1000.0
+            return note.duration_us / 1000.0
         elif column == 2:  # Pitch
             return note.pitch
         elif column == 3:  # Buzzer
@@ -55,9 +55,9 @@ class NotesTableModel(QAbstractTableModel):
 
         try:
             if column == 0:  # Start
-                note.start_tick = int(float(value) * 1000)
+                note.start_us = int(float(value) * 1000)
             elif column == 1:  # Duration
-                note.duration = int(float(value) * 1000)
+                note.duration_us = int(float(value) * 1000)
             elif column == 2:  # Pitch
                 note.pitch = int(value)
             elif column == 3:  # Buzzer
@@ -143,7 +143,7 @@ class NotesListWidget(QWidget):
                 pass  # Note not in list
 
     def set_selected_notes(self, notes: list[Note]):
-        self.selected_notes = sorted(notes, key=lambda n: (n.start_tick, n.duration, n.pitch, n.buzzer.value))
+        self.selected_notes = sorted(notes, key=lambda n: (n.start_us, n.duration_us, n.pitch, n.buzzer.value))
         self.selected_notes_model.set_node_list(self.selected_notes)
         if notes:
             for btn, _, b in self.buzzer_buttons:

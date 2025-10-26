@@ -27,8 +27,8 @@ class Player:
         self.current_tick = 0
         for track in song.tracks:
             for note in track.notes:
-                self.song.append(self._NoteOnEvent(tick=note.start_tick, note=note))
-        self.duration = song.duration
+                self.song.append(self._NoteOnEvent(tick=note.start_us, note=note))
+        self.duration = song.duration_us
         self.queue = multiprocessing.Queue()
 
     def start(self):
@@ -64,7 +64,7 @@ class Player:
                     pass
 
     def play_note(self, note: Note):
-        duration_us = note.duration
+        duration_us = note.duration_us
         frequency = note.frequency
         volume = note.velocity / 127
         sample_rate = 44100

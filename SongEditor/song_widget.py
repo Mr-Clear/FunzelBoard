@@ -229,7 +229,7 @@ class SongWidget(QWidget):
     def _draw_track(self, p: QPainter, track_index: int, y_offset: float) -> float:
         track = self._song.tracks[track_index]
         height = (track.max_pitch - track.min_pitch) * self._pitch_height * self._zoom_y + self._pitch_height * self._zoom_y
-        track_rect = QRectF(0, y_offset, self.time_to_x(track.duration), height)
+        track_rect = QRectF(0, y_offset, self.time_to_x(track.duration_us), height)
         hovered = self._mouse_position is not None and track_rect.contains(self._mouse_position - self._shift)
 
         p.save()
@@ -252,25 +252,26 @@ class SongWidget(QWidget):
                 else:
                     p.setPen(QPen(Config.GRID_COLOR_DARK, 1))
                 y = y_offset + (track.pitch_range - pitch + track.min_pitch) * (self._pitch_height * self._zoom_y)
-                p.drawLine(QPointF(0, y), QPointF(self.time_to_x(track.duration), y))
+                p.drawLine(QPointF(0, y), QPointF(self.time_to_x(track.duration_us), y))
         else:
             for pitch in range((((track.min_pitch - 1) // 12) + 1) * 12 - 1, track.max_pitch + 1, 12):
                 p.setPen(QPen(Config.GRID_COLOR_DARK, 1))
                 y = y_offset + (track.pitch_range - pitch + track.min_pitch) * (self._pitch_height * self._zoom_y)
-                p.drawLine(QPointF(0, y), QPointF(self.time_to_x(track.duration), y))
+                p.drawLine(QPointF(0, y), QPointF(self.time_to_x(track.duration_us), y))
 
         for note in track.notes:
-            x = self.time_to_x(note.start_tick)
+            x = self.time_to_x(note.start_us)
             y = y_offset + (track.pitch_range - note.pitch + track.min_pitch) * (self._pitch_height * self._zoom_y)
-            w = self.time_to_x(note.duration)
+            w = self.time_to_x(note.duration_us)
             h = self._pitch_height * self._zoom_y
             if w > 0 and h > 0:
                 note_rect = QRectF(x, y, w, h)
                 shifted_selection_frame = self._selection_frame.translated(-self._shift) if self._selection_frame else None
                 note_hovered = hovered and self._mouse_position and note_rect.contains(self._mouse_position - self._shift)
-                if note.buzzer in (Buzzer.BUZZER_1, Buzzer.BUZZER_2, Buzzer.BUZZER_3):
-                    buzzer_index = note.buzzer.value - 1
-                    fill_color = Config.NOTE_BUZZER_FILL_COLORS[buzzer_index]
+                if note in self.song.error_notes:
+                    fill_color = Config.NOTE_ERROR_FILL_COLOR
+                elif note.buzzer in (Buzzer.BUZZER_1, Buzzer.BUZZER_2, Buzzer.BUZZER_3):
+                    fill_color = Config.NOTE_BUZZER_FILL_COLORS[note.buzzer.value - 1]
                 elif note in self._error_notes:
                     fill_color = Config.NOTE_ERROR_FILL_COLOR
                 else:
