@@ -55,6 +55,7 @@ class MainWindow(QMainWindow):
         self.song_widget.note_selection_changed.connect(self.notes_list_widget.set_selected_notes)
         self.song_widget.key_status_update.connect(self.update_status_keys)
         self.notes_list_widget.note_changed.connect(self.song_widget.update)
+        self.track_list_widget.track_changed.connect(self.song_widget.update)
 
         self.resize(1200, 700)
         self.showMaximized()

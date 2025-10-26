@@ -159,8 +159,12 @@ class SongWidget(QWidget):
 
     def leaveEvent(self, event: QEvent) -> None:
         self.mouse_position = None
-        self.hover_track = None
-        self.hover_note = None
+        if self.hover_track:
+            self.hover_track = None
+            self.hover_track_changed.emit(self.hover_track)
+        if self.hover_note:
+            self.hover_note = None
+            self.hover_note_changed.emit(self.hover_note)
         self.update()
         return super().leaveEvent(event)
 

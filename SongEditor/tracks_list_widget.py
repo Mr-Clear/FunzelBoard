@@ -1,8 +1,17 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScrollArea
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, \
+                              QLineEdit
+from PySide6.QtCore import Signal
 
 from song import Track
 
 class TrackWidget(QWidget):
+    track_changed = Signal(Track)
+
+    def _on_name_changed(self):
+        self.track.name = self.name_label.text()
+        self.track_changed.emit(self.track)
+
+
     def __init__(self, track: Track, parent=None):
         super().__init__(parent)
         self.track = track
@@ -13,12 +22,16 @@ class TrackWidget(QWidget):
         title_layout.setContentsMargins(0, 0, 0, 0)
         self.index_label = QLabel(f'{track.index}:', self)
         title_layout.addWidget(self.index_label)
-        self.name_label = QLabel(track.name, self)
+        self.name_label = QLineEdit(track.name, self)
         title_layout.addWidget(self.name_label)
+        self.name_label.editingFinished.connect(self._on_name_changed)
+
         title_layout.addStretch()
         layout.addWidget(title_widget)
 
 class TracksListWidget(QWidget):
+    track_changed = Signal(Track)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.main_layout = QVBoxLayout(self)
@@ -41,6 +54,7 @@ class TracksListWidget(QWidget):
     def add_track(self, track: Track):
         track_widget = TrackWidget(track, self)
         self.vbox_layout.addWidget(track_widget)
+        track_widget.track_changed.connect(self.track_changed.emit)
 
     def remove_track(self, track: Track):
         for i in range(self.vbox_layout.count()):
