@@ -15,7 +15,6 @@ class MainWindow(QMainWindow):
 
         self.song_widget = SongWidget(self)
         self.song_widget.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
-        self.song_widget.setMinimumHeight(200)
         self.setCentralWidget(self.song_widget)
 
         # Bottom controls dock
@@ -53,8 +52,7 @@ class MainWindow(QMainWindow):
                                | QDockWidget.DockWidgetFeature.DockWidgetClosable)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, notes_dock)
 
-        self.splitDockWidget(track_dock, notes_dock, Qt.Orientation.Vertical)
-        self.resizeDocks([track_dock, notes_dock], [300, 400], Qt.Orientation.Vertical)
+        track_dock.setMinimumWidth(320)
 
         # Status bar
         self.status_keys_label = QLabel("")

@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScroll
 from PySide6.QtCore import Signal, QEvent
 
 from song import Track, Buzzer
+from PySide6.QtCore import Qt
 
 class TrackWidget(QWidget):
     track_changed = Signal(Track)
@@ -139,14 +140,18 @@ class TracksListWidget(QWidget):
         super().__init__(parent)
         self.main_layout = QVBoxLayout(self)
         self.scroll_area = QScrollArea(self)
+        self.scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        self.scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.scroll_area.setWidgetResizable(True)
 
         self.container = QWidget(self)
-        self.vbox_layout = QVBoxLayout(self.container)
-        self.container.setLayout(self.vbox_layout)
+        self.container_layout = QVBoxLayout(self.container)
+        self.container_layout.setContentsMargins(0, 0, 0, 0)
+        self.container.setLayout(self.container_layout)
 
         stretch_container = QWidget(self)
         stretch_layout = QVBoxLayout(stretch_container)
+        stretch_layout.setContentsMargins(0, 0, 0, 0)
         stretch_layout.addWidget(self.container)
         stretch_layout.addStretch()
 
@@ -156,7 +161,7 @@ class TracksListWidget(QWidget):
 
     def add_track(self, track: Track):
         track_widget = TrackWidget(track, self)
-        self.vbox_layout.addWidget(track_widget)
+        self.container_layout.addWidget(track_widget)
         track_widget.track_changed.connect(self.track_changed.emit)
         track_widget.move_up_requested.connect(self._track_moved_up)
         track_widget.move_down_requested.connect(self._track_moved_down)
@@ -165,8 +170,8 @@ class TracksListWidget(QWidget):
         self._update_list()
 
     def remove_track(self, track: Track):
-        for i in range(self.vbox_layout.count()):
-            item = self.vbox_layout.itemAt(i)
+        for i in range(self.container_layout.count()):
+            item = self.container_layout.itemAt(i)
             widget = item.widget()
             if isinstance(widget, TrackWidget) and widget.track == track:
                 widget.setParent(None)
@@ -174,8 +179,8 @@ class TracksListWidget(QWidget):
                 break
 
     def set_hover_track(self, track: Track | None):
-        for i in range(self.vbox_layout.count()):
-            item = self.vbox_layout.itemAt(i)
+        for i in range(self.container_layout.count()):
+            item = self.container_layout.itemAt(i)
             widget = item.widget()
             if isinstance(widget, TrackWidget):
                 if track and widget.track == track:
@@ -186,74 +191,74 @@ class TracksListWidget(QWidget):
 
     def _track_moved_up(self, track: Track):
         self.move_up_requested.emit(track)
-        for i in range(self.vbox_layout.count()):
-            item = self.vbox_layout.itemAt(i)
+        for i in range(self.container_layout.count()):
+            item = self.container_layout.itemAt(i)
             widget = item.widget()
             if isinstance(widget, TrackWidget) and widget.track == track:
                 if i == 0:
                     return
-                prev_widget = self.vbox_layout.itemAt(i - 1).widget()
+                prev_widget = self.container_layout.itemAt(i - 1).widget()
                 if not isinstance(prev_widget, TrackWidget):
                     return
 
                 # remove and re-insert swapped
-                self.vbox_layout.removeWidget(prev_widget)
-                self.vbox_layout.removeWidget(widget)
-                self.vbox_layout.insertWidget(i - 1, widget)
-                self.vbox_layout.insertWidget(i, prev_widget)
+                self.container_layout.removeWidget(prev_widget)
+                self.container_layout.removeWidget(widget)
+                self.container_layout.insertWidget(i - 1, widget)
+                self.container_layout.insertWidget(i, prev_widget)
 
                 self._update_list()
 
     def _track_moved_down(self, track: Track):
         self.move_down_requested.emit(track)
-        for i in range(self.vbox_layout.count()):
-            item = self.vbox_layout.itemAt(i)
+        for i in range(self.container_layout.count()):
+            item = self.container_layout.itemAt(i)
             widget = item.widget()
             if isinstance(widget, TrackWidget) and widget.track == track:
-                if i == self.vbox_layout.count() - 1:
+                if i == self.container_layout.count() - 1:
                     return
-                next_widget = self.vbox_layout.itemAt(i + 1).widget()
+                next_widget = self.container_layout.itemAt(i + 1).widget()
                 if not isinstance(next_widget, TrackWidget):
                     return
 
                 # remove and re-insert swapped
-                self.vbox_layout.removeWidget(widget)
-                self.vbox_layout.removeWidget(next_widget)
-                self.vbox_layout.insertWidget(i, next_widget)
-                self.vbox_layout.insertWidget(i + 1, widget)
+                self.container_layout.removeWidget(widget)
+                self.container_layout.removeWidget(next_widget)
+                self.container_layout.insertWidget(i, next_widget)
+                self.container_layout.insertWidget(i + 1, widget)
 
                 self._update_list()
                 return
 
     def _update_list(self):
-        total = self.vbox_layout.count()
+        total = self.container_layout.count()
         for idx in range(total):
-            it = self.vbox_layout.itemAt(idx)
+            it = self.container_layout.itemAt(idx)
             w = it.widget()
             if isinstance(w, TrackWidget):
                 w.index_label.setText(f'{idx + 1}:')
                 w.up_button.setEnabled(idx != 0)
                 w.down_button.setEnabled(idx != total - 1)
 
-        total = self.vbox_layout.count()
+        total = self.container_layout.count()
         for idx in range(total):
-            it = self.vbox_layout.itemAt(idx)
+            it = self.container_layout.itemAt(idx)
             w = it.widget()
             if isinstance(w, TrackWidget):
                 w.up_button.setEnabled(idx != 0)
                 w.down_button.setEnabled(idx != total - 1)
 
-        total = self.vbox_layout.count()
+        total = self.container_layout.count()
         for idx in range(total):
-            it = self.vbox_layout.itemAt(idx)
+            it = self.container_layout.itemAt(idx)
             w = it.widget()
             if isinstance(w, TrackWidget):
                 w.up_button.setEnabled(idx != 0)
                 w.down_button.setEnabled(idx != total - 1)
 
     def on_track_updated(self):
-        for i in range(self.vbox_layout.count()):
-            item = self.vbox_layout.itemAt(i)
+        for i in range(self.container_layout.count()):
+            item = self.container_layout.itemAt(i)
             widget = item.widget()
             if isinstance(widget, TrackWidget):
                 widget.update_track()

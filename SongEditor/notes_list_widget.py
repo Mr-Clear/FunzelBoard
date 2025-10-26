@@ -1,91 +1,83 @@
-from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QComboBox, \
-                              QDoubleSpinBox, QLabel, QScrollArea, QToolButton
+from typing import Any
+from PySide6.QtCore import Signal, QItemSelectionModel, QEvent
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QComboBox, QTableView, \
+                              QDoubleSpinBox, QLabel, QScrollArea, QToolButton, QStyledItemDelegate
 from song import Buzzer, Note
+from PySide6.QtCore import QAbstractTableModel, Qt, QModelIndex, QPersistentModelIndex
 
-class NoteWidget(QWidget):
-    note_changed = Signal(Note)
-    hover_changed = Signal(object)
 
-    def __init__(self, note: Note | None, parent=None):
+
+class NotesTableModel(QAbstractTableModel):
+    def __init__(self, notes: list[Note], parent=None):
         super().__init__(parent)
-        self.note = note
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        self.start_spinner = QDoubleSpinBox(self)
-        self.pitch_combobox = QComboBox(self)
-        self.pitch_combobox.addItems([str(p) for p in range(128, 0, -1)])
-        self.duration_spinner = QDoubleSpinBox(self)
-        self.buzzer_selector = QComboBox(self)
-        self.buzzer_selector.addItems(['None', '1', '2', '3', 'Any'])
+        self.notes = notes
+        self.buzzer_icons = {
+            Buzzer.NONE: '∅',
+            Buzzer.BUZZER_1: '➊',
+            Buzzer.BUZZER_2: '➋',
+            Buzzer.BUZZER_3: '➌'
+        }
 
-        for sb in (self.start_spinner, self.duration_spinner):
-            sb.setGroupSeparatorShown(True)
-            sb.setDecimals(3)
-            sb.setRange(0, 1_000_000)
+    def rowCount(self, parent: QModelIndex | QPersistentModelIndex = QModelIndex()) -> int:
+        return len(self.notes)
 
-        layout.addWidget(self.start_spinner)
-        layout.addWidget(self.pitch_combobox)
-        layout.addWidget(self.duration_spinner)
-        layout.addWidget(self.buzzer_selector)
+    def columnCount(self, parent: QModelIndex | QPersistentModelIndex = QModelIndex()) -> int:
+        return 4  # Columns: Start, Duration, Pitch, Buzzer
 
-        self.start_spinner.valueChanged.connect(self._set_note_start)
-        self.pitch_combobox.currentTextChanged.connect(self._set_note_pitch)
-        self.duration_spinner.valueChanged.connect(self._set_note_duration)
-        self.buzzer_selector.currentTextChanged.connect(self._set_note_buzzer)
+    def set_node_list(self, notes: list[Note]):
+        self.beginResetModel()
+        self.notes = notes
+        self.endResetModel()
 
-        self.set_note(note)
+    def data(self, index: QModelIndex | QPersistentModelIndex, /, role: int = Qt.ItemDataRole.DisplayRole) -> Any:
+        if not index.isValid() or role != Qt.ItemDataRole.DisplayRole:
+            return None
 
-    def enterEvent(self, event):
-        if self.note:
-            self.hover_changed.emit(self.note)
-        super().enterEvent(event)
+        note = self.notes[index.row()]
+        column = index.column()
 
-    def leaveEvent(self, event):
-        self.hover_changed.emit(None)
-        super().leaveEvent(event)
+        if column == 0:  # Start
+            return note.start_tick / 1000.0
+        elif column == 1:  # Duration
+            return note.duration / 1000.0
+        elif column == 2:  # Pitch
+            return note.pitch
+        elif column == 3:  # Buzzer
+            return self.buzzer_icons[note.buzzer]
+        return None
 
-    def set_note(self, note: Note | None):
-        self.note = note
-        if note:
-            self.setEnabled(True)
-            self.start_spinner.setValue(note.start_tick / 1000.0)
-            self.pitch_combobox.setCurrentText(str(note.pitch))
-            self.duration_spinner.setValue(note.duration / 1000.0)
-            self.buzzer_selector.setCurrentIndex(note.buzzer.value)
-        else:
-            self.setEnabled(False)
-            self.start_spinner.setValue(0)
-            self.pitch_combobox.setCurrentText("1")
-            self.duration_spinner.setValue(0)
-            self.buzzer_selector.setCurrentIndex(0)
+    def setData(self, index: QModelIndex | QPersistentModelIndex, value, role: int = Qt.ItemDataRole.DisplayRole) -> bool:
+        if not index.isValid() or role != Qt.ItemDataRole.EditRole:
+            return False
 
-    def _set_note_start(self, start: float):
-        if self.note:
-            self.note.start_tick = int(start * 1000)
-            self.note_changed.emit(self.note)
+        note = self.notes[index.row()]
+        column = index.column()
 
-    def _set_note_pitch(self, pitch_str: str):
-        if self.note:
-            self.note.pitch = int(pitch_str)
-            self.note_changed.emit(self.note)
+        try:
+            if column == 0:  # Start
+                note.start_tick = int(float(value) * 1000)
+            elif column == 1:  # Duration
+                note.duration = int(float(value) * 1000)
+            elif column == 2:  # Pitch
+                note.pitch = int(value)
+            elif column == 3:  # Buzzer
+                note.buzzer = Buzzer(int(value))
+            self.dataChanged.emit(index, index, [Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole])
+            return True
+        except (ValueError, KeyError):
+            return False
 
-    def _set_note_duration(self, duration: float):
-        if self.note:
-            self.note.duration = int(duration * 1000)
-            self.note_changed.emit(self.note)
+    def flags(self, index: QModelIndex | QPersistentModelIndex) -> Qt.ItemFlag:
+        if not index.isValid():
+            return Qt.ItemFlag.NoItemFlags
+        return Qt.ItemFlag.ItemIsSelectable | Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsEditable
 
-    def _set_note_buzzer(self, buzzer_str: str):
-        if self.note:
-            buzzer_map = {
-                '1': Buzzer.BUZZER_1,
-                '2': Buzzer.BUZZER_2,
-                '3': Buzzer.BUZZER_3,
-                'None': Buzzer.NONE,
-                'Any': Buzzer.ANY
-            }
-            self.note.buzzer = buzzer_map.get(buzzer_str, Buzzer.ANY)
-            self.note_changed.emit(self.note)
+    def headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.ItemDataRole.DisplayRole) -> Any:
+        if role != Qt.ItemDataRole.DisplayRole:
+            return None
+        if orientation == Qt.Orientation.Horizontal:
+            return ["Start", "Dur.", "♩", "🔈"][section]
+        return None
 
 
 class NotesListWidget(QWidget):
@@ -97,11 +89,12 @@ class NotesListWidget(QWidget):
         self.vbox_layout = QVBoxLayout(self)
         self.setLayout(self.vbox_layout)
 
-        self.hover_label = QLabel("Hover:", self)
-        self.vbox_layout.addWidget(self.hover_label)
-
-        self.hover = NoteWidget(None, self)
-        self.vbox_layout.addWidget(self.hover)
+        self.hovered_note = QTableView(self)
+        self.hovered_note_model = NotesTableModel([], self)
+        self.hovered_note.setModel(self.hovered_note_model)
+        self.hovered_note.setMaximumHeight(64)
+        self._setup_table_view(self.hovered_note)
+        self.vbox_layout.addWidget(self.hovered_note)
 
         selected_title_widget = QWidget(self)
         selected_title_layout = QHBoxLayout(selected_title_widget)
@@ -124,55 +117,44 @@ class NotesListWidget(QWidget):
 
         self.vbox_layout.addWidget(selected_title_widget)
 
-        self.selected_container = QWidget(self)
-        self.selected_layout = QVBoxLayout(self.selected_container)
-        self.selected_layout.setContentsMargins(0, 0, 0, 0)
-        self.selected_container.setLayout(self.selected_layout)
-
-        stretch_container = QWidget(self)
-        stretch_layout = QVBoxLayout(stretch_container)
-        stretch_layout.setContentsMargins(0, 0, 0, 0)
-        stretch_layout.addWidget(self.selected_container)
-        stretch_layout.addStretch()
-
-        self.selected_scroll = QScrollArea(self)
-        self.selected_scroll.setWidgetResizable(True)
-        self.selected_scroll.setWidget(stretch_container)
-        self.vbox_layout.addWidget(self.selected_scroll)
+        self.selected_notes_view = QTableView(self)
+        self.selected_notes_model = NotesTableModel([], self)
+        self.selected_notes_view.setModel(self.selected_notes_model)
+        self._setup_table_view(self.selected_notes_view)
+        self.vbox_layout.addWidget(self.selected_notes_view)
+        self.selected_notes_view.viewport().installEventFilter(self)
+        self.selected_notes_view.setMouseTracking(True)
 
         self.selected_notes: list[Note] = []
-
-        self.hover.note_changed.connect(self.note_changed)
-        self.hover.hover_changed.connect(self.hover_changed)
+        self.set_selected_notes([])
 
     def set_hover_note(self, note: Note | None):
-        self.hover.set_note(note)
-
-        for i in range(self.selected_layout.count()):
-            item = self.selected_layout.itemAt(i)
-            widget = item.widget()
-            if isinstance(widget, NoteWidget):
-                if note and widget.note == note:
-                    widget.setStyleSheet("background-color: lightgray;")
-                    self.selected_scroll.ensureWidgetVisible(widget)
-                else:
-                    widget.setStyleSheet("")
+        self.hovered_note_model.set_node_list([note] if note else [])
+        if note:
+            try:
+                row = self.selected_notes.index(note)
+                index = self.selected_notes_model.index(row, 0)
+                self.selected_notes_view.selectionModel().select(
+                    index,
+                    QItemSelectionModel.SelectionFlag.ClearAndSelect | QItemSelectionModel.SelectionFlag.Rows
+                )
+                self.selected_notes_view.scrollTo(index)
+            except ValueError:
+                pass  # Note not in list
 
     def set_selected_notes(self, notes: list[Note]):
-        self.selected_notes = notes
-        for i in reversed(range(self.selected_layout.count())):
-            item = self.selected_layout.itemAt(i)
-            widget = item.widget()
-            if widget:
-                widget.setParent(None)
-        buzzers = set()
-        for note in sorted(notes, key=lambda n: (n.start_tick, n.pitch)):
-            buzzers.add(note.buzzer)
-            note_widget = NoteWidget(note, self)
-            self.selected_layout.addWidget(note_widget)
-            note_widget.note_changed.connect(self.note_changed)
-            note_widget.hover_changed.connect(self.hover_changed)
+        self.selected_notes = sorted(notes, key=lambda n: (n.start_tick, n.duration, n.pitch, n.buzzer.value))
+        self.selected_notes_model.set_node_list(self.selected_notes)
+        if notes:
+            for btn, _, b in self.buzzer_buttons:
+                btn.setEnabled(True)
+        else:
+            for btn, _, b in self.buzzer_buttons:
+                btn.setEnabled(False)
 
+        buzzers = set()
+        for note in notes:
+            buzzers.add(note.buzzer)
         for btn, _, b in self.buzzer_buttons:
             btn.setChecked(b in buzzers)
 
@@ -182,3 +164,120 @@ class NotesListWidget(QWidget):
             self.note_changed.emit(note)
         for btn, _, b in self.buzzer_buttons:
             btn.setChecked(b == buzzer)
+
+    def _setup_table_view(self, table_view: QTableView):
+        header = table_view.horizontalHeader()
+        header.setStretchLastSection(False)
+        header.setMinimumSectionSize(20)
+        table_view.verticalHeader().setVisible(False)
+        # Columns: 0=Start, 1=Dur., 2=♩, 3=🔈
+        table_view.setColumnWidth(0, 70)
+        table_view.setColumnWidth(1, 70)
+        table_view.setColumnWidth(2, 38)
+        table_view.setColumnWidth(3, 26)
+
+        table_view.setItemDelegateForColumn(0, TimeDelegate(table_view))
+        table_view.setItemDelegateForColumn(1, TimeDelegate(table_view))
+        table_view.setItemDelegateForColumn(2, PitchDelegate(table_view))
+        table_view.setItemDelegateForColumn(3, BuzzerDelegate(self.hovered_note_model.buzzer_icons, table_view))
+
+    def eventFilter(self, obj, event):
+        # Track mouse movements over the selected_notes_view viewport
+        if obj == self.selected_notes_view.viewport():
+            if event.type() == QEvent.Type.MouseMove:
+                pos = event.position().toPoint()
+                index = self.selected_notes_view.indexAt(pos)
+                if index.isValid():
+                    row = index.row()
+                    if 0 <= row < len(self.selected_notes):
+                        note = self.selected_notes[row]
+                        self.hover_changed.emit(note)
+                else:
+                    self.hover_changed.emit(None)
+            elif event.type() == QEvent.Type.Leave:
+                self.hover_changed.emit(None)
+        return super().eventFilter(obj, event)
+
+
+class TimeDelegate(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = QDoubleSpinBox(parent)
+        editor.setDecimals(3)
+        editor.setMinimum(0.0)
+        editor.setMaximum(10_000_000.0)
+        return editor
+
+    def setEditorData(self, editor: QWidget, index):
+        if not isinstance(editor, QDoubleSpinBox):
+            return
+        value = index.data(Qt.ItemDataRole.DisplayRole)
+        if value is not None:
+            editor.setValue(float(value))
+
+    def setModelData(self, editor: QWidget, model, index):
+        if not isinstance(editor, QDoubleSpinBox):
+            return
+        value = editor.value()
+        model.setData(index, value, Qt.ItemDataRole.EditRole)
+
+    def updateEditorGeometry(self, editor, option, index):
+        rect = option.rect
+        rect.setWidth(120)
+        editor.setGeometry(rect)
+
+
+class PitchDelegate(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = QComboBox(parent)
+        editor.addItems([str(p) for p in range(127, -1, -1)])  # MIDI pitches 0-127
+        return editor
+
+    def setEditorData(self, editor: QWidget, index):
+        if not isinstance(editor, QComboBox):
+            return
+        value = index.data(Qt.ItemDataRole.DisplayRole)
+        if value is not None:
+            editor.setCurrentText(str(value))
+
+    def setModelData(self, editor: QWidget, model, index):
+        if not isinstance(editor, QComboBox):
+            return
+        value = editor.currentText()
+        model.setData(index, int(value), Qt.ItemDataRole.EditRole)
+
+    def updateEditorGeometry(self, editor, option, index):
+        rect = option.rect
+        rect.setWidth(60)
+        editor.setGeometry(rect)
+
+
+class BuzzerDelegate(QStyledItemDelegate):
+    def __init__(self, buzzer_icons: dict, parent=None):
+        super().__init__(parent)
+        self.buzzer_icons = buzzer_icons
+        self.reverse_icons = {v: k for k, v in buzzer_icons.items()}
+
+    def createEditor(self, parent, option, index):
+        editor = QComboBox(parent)
+        editor.addItems(list(self.buzzer_icons.values()))
+        return editor
+
+    def setEditorData(self, editor: QWidget, index):
+        if not isinstance(editor, QComboBox):
+            return
+        value = index.data(Qt.ItemDataRole.DisplayRole)
+        if value is not None:
+            editor.setCurrentText(value)
+
+    def setModelData(self, editor: QWidget, model, index):
+        if not isinstance(editor, QComboBox):
+            return
+        icon = editor.currentText()
+        buzzer = self.reverse_icons.get(icon)
+        if buzzer:
+            model.setData(index, buzzer.value, Qt.ItemDataRole.EditRole)
+
+    def updateEditorGeometry(self, editor, option, index):
+        rect = option.rect
+        rect.setWidth(40)
+        editor.setGeometry(rect)
