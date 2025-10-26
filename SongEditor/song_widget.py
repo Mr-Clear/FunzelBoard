@@ -395,6 +395,18 @@ class SongWidget(QWidget):
             self.keys_status = status
             self.key_status_update.emit(status)
 
+    def move_track_up(self, track: Track):
+        index = self.song.tracks.index(track)
+        if index > 0:
+            self.song.tracks[index], self.song.tracks[index - 1] = self.song.tracks[index - 1], self.song.tracks[index]
+            self.update()
+
+    def move_track_down(self, track: Track):
+        index = self.song.tracks.index(track)
+        if index < len(self.song.tracks) - 1:
+            self.song.tracks[index], self.song.tracks[index + 1] = self.song.tracks[index + 1], self.song.tracks[index]
+            self.update()
+
     @staticmethod
     def pitch_to_note_name(pitch: int) -> str:
         names = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']

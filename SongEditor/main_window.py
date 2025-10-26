@@ -56,6 +56,8 @@ class MainWindow(QMainWindow):
         self.song_widget.key_status_update.connect(self.update_status_keys)
         self.notes_list_widget.note_changed.connect(self.song_widget.update)
         self.track_list_widget.track_changed.connect(self.song_widget.update)
+        self.track_list_widget.move_up_requested.connect(self.song_widget.move_track_up)
+        self.track_list_widget.move_down_requested.connect(self.song_widget.move_track_down)
 
         self.resize(1200, 700)
         self.showMaximized()
