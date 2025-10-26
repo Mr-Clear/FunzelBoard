@@ -1,5 +1,6 @@
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QComboBox, QDoubleSpinBox, QLabel, QScrollArea
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QComboBox, \
+                              QDoubleSpinBox, QLabel, QScrollArea, QToolButton
 from song import Buzzer, Note
 
 class NoteWidget(QWidget):
@@ -102,8 +103,26 @@ class NotesListWidget(QWidget):
         self.hover = NoteWidget(None, self)
         self.vbox_layout.addWidget(self.hover)
 
+        selected_title_widget = QWidget(self)
+        selected_title_layout = QHBoxLayout(selected_title_widget)
+        selected_title_layout.setContentsMargins(0, 0, 0, 0)
         self.selected_label = QLabel("Selected:", self)
-        self.vbox_layout.addWidget(self.selected_label)
+        selected_title_layout.addWidget(self.selected_label)
+
+        self.buzzer_buttons: list[tuple[QToolButton, str, Buzzer]] = [ # pyright: ignore[reportAttributeAccessIssue]
+            (None, '∅', Buzzer.NONE),
+            (None, '➊', Buzzer.BUZZER_1),
+            (None, '➋', Buzzer.BUZZER_2),
+            (None, '➌', Buzzer.BUZZER_3)]
+        for i in range(len(self.buzzer_buttons)):
+            btn = QToolButton(self)
+            btn.setText(self.buzzer_buttons[i][1])
+            btn.setCheckable(True)
+            self.buzzer_buttons[i] = (btn, self.buzzer_buttons[i][1], self.buzzer_buttons[i][2])
+            selected_title_layout.addWidget(btn)
+            btn.clicked.connect(lambda checked, b=self.buzzer_buttons[i][2]: self._set_selected_buzzer(b))
+
+        self.vbox_layout.addWidget(selected_title_widget)
 
         self.selected_container = QWidget(self)
         self.selected_layout = QVBoxLayout(self.selected_container)
@@ -120,6 +139,8 @@ class NotesListWidget(QWidget):
         self.selected_scroll.setWidgetResizable(True)
         self.selected_scroll.setWidget(stretch_container)
         self.vbox_layout.addWidget(self.selected_scroll)
+
+        self.selected_notes: list[Note] = []
 
         self.hover.note_changed.connect(self.note_changed)
         self.hover.hover_changed.connect(self.hover_changed)
@@ -138,12 +159,25 @@ class NotesListWidget(QWidget):
                     widget.setStyleSheet("")
 
     def set_selected_notes(self, notes: list[Note]):
+        self.selected_notes = notes
         for i in reversed(range(self.selected_layout.count())):
             item = self.selected_layout.itemAt(i)
             widget = item.widget()
             if widget:
                 widget.setParent(None)
+        buzzers = set()
         for note in sorted(notes, key=lambda n: (n.start_tick, n.pitch)):
+            buzzers.add(note.buzzer)
             note_widget = NoteWidget(note, self)
             self.selected_layout.addWidget(note_widget)
             note_widget.note_changed.connect(self.note_changed)
+
+        for btn, _, b in self.buzzer_buttons:
+            btn.setChecked(b in buzzers)
+
+    def _set_selected_buzzer(self, buzzer: Buzzer):
+        for note in self.selected_notes:
+            note.buzzer = buzzer
+            self.note_changed.emit(note)
+        for btn, _, b in self.buzzer_buttons:
+            btn.setChecked(b == buzzer)
