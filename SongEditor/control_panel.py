@@ -35,7 +35,7 @@ class ControlPanel(QWidget):
         self.status.setText(f"Loaded: {fname}")
 
     def play(self):
-        self.player = Player(self.canvas.song)
+        self.player = Player(self.canvas._song)
         self.player.start()
 
     def stop(self):

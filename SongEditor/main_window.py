@@ -55,10 +55,12 @@ class MainWindow(QMainWindow):
         self.song_widget.note_selection_changed.connect(self.notes_list_widget.set_selected_notes)
         self.song_widget.key_status_update.connect(self.update_status_keys)
         self.notes_list_widget.note_changed.connect(self.song_widget.update)
+        self.notes_list_widget.hover_changed.connect(self.song_widget.set_highlighted_note)
         self.track_list_widget.track_changed.connect(self.song_widget.update)
         self.track_list_widget.move_up_requested.connect(self.song_widget.move_track_up)
         self.track_list_widget.move_down_requested.connect(self.song_widget.move_track_down)
         self.track_list_widget.select_track_requested.connect(self.song_widget.select_track)
+        self.track_list_widget.hover_changed.connect(self.song_widget.set_highlighted_track)
 
         self.resize(1200, 700)
         self.showMaximized()

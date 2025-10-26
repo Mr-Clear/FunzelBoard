@@ -1,6 +1,7 @@
+from PySide6.QtGui import QEnterEvent
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, \
                               QLineEdit, QToolButton
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, QEvent
 
 from song import Track
 
@@ -9,6 +10,7 @@ class TrackWidget(QWidget):
     move_up_requested = Signal(Track)
     move_down_requested = Signal(Track)
     select_track_requested = Signal(Track)
+    hover_changed = Signal(object)
 
     def _on_name_changed(self):
         self.track.name = self.name_text.text()
@@ -50,11 +52,21 @@ class TrackWidget(QWidget):
 
         layout.addWidget(title_widget)
 
+    def enterEvent(self, event: QEnterEvent) -> None:
+        self.hover_changed.emit(self.track)
+        return super().enterEvent(event)
+
+    def leaveEvent(self, event: QEvent) -> None:
+        self.hover_changed.emit(None)
+        return super().leaveEvent(event)
+
+
 class TracksListWidget(QWidget):
     track_changed = Signal(Track)
     move_up_requested = Signal(Track)
     move_down_requested = Signal(Track)
     select_track_requested = Signal(Track)
+    hover_changed = Signal(object)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -82,6 +94,7 @@ class TracksListWidget(QWidget):
         track_widget.move_up_requested.connect(self._track_moved_up)
         track_widget.move_down_requested.connect(self._track_moved_down)
         track_widget.select_track_requested.connect(self.select_track_requested.emit)
+        track_widget.hover_changed.connect(self.hover_changed.emit)
         self._update_list()
 
     def remove_track(self, track: Track):

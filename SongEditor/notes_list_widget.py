@@ -171,6 +171,7 @@ class NotesListWidget(QWidget):
             note_widget = NoteWidget(note, self)
             self.selected_layout.addWidget(note_widget)
             note_widget.note_changed.connect(self.note_changed)
+            note_widget.hover_changed.connect(self.hover_changed)
 
         for btn, _, b in self.buzzer_buttons:
             btn.setChecked(b in buzzers)
