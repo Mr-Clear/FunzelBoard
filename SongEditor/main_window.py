@@ -45,8 +45,7 @@ class MainWindow(QMainWindow):
         self.resizeDocks([track_dock, notes_dock], [300, 400], Qt.Orientation.Vertical)
 
         # Status bar
-        self.statusBar().showMessage("Ready")
-        self.status_keys_label = QLabel("!!")
+        self.status_keys_label = QLabel("")
         self.statusBar().addPermanentWidget(self.status_keys_label)
 
         self.song_widget.hover_note_changed.connect(self.notes_list_widget.set_hover_note)
@@ -68,7 +67,7 @@ class MainWindow(QMainWindow):
 
     def update_status_keys(self, status: int):
         if status == KeysStatus.NONE:
-            self.status_keys_label.setText("??")
+            self.status_keys_label.setText("")
         elif status == KeysStatus.ADD:
             self.status_keys_label.setText("Add")
         elif status == KeysStatus.REMOVE:

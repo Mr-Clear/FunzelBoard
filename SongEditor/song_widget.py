@@ -5,7 +5,7 @@ from PySide6.QtGui import QKeyEvent, QPainter, QPen, QColor, QFont
 from PySide6.QtWidgets import QWidget, QSizePolicy
 
 from config import Config
-from song import Note, Song, Track
+from song import Note, Song, Track, Buzzer
 
 class KeysStatus(Enum):
     NONE = 1
@@ -59,6 +59,7 @@ class SongWidget(QWidget):
         self.hover_note: Note | None = None
         self.pressed_note: Note | None = None
         self.selected_notes: list[Note] = []
+        self.error_notes: set[Note] = set()
         self.selection_frame_start: QPointF | None = None
         self.selection_frame: QRectF | None = None
         self.keyboard_modifiers: set[Qt.KeyboardModifier] = set()
@@ -261,27 +262,36 @@ class SongWidget(QWidget):
             if w > 0 and h > 0:
                 note_rect = QRectF(x, y, w, h)
                 shifted_selection_frame = self.selection_frame.translated(-self.shift) if self.selection_frame else None
+                if note.buzzer in (Buzzer.BUZZER_1, Buzzer.BUZZER_2, Buzzer.BUZZER_3):
+                    buzzer_index = note.buzzer.value - 1
+                    fill_color = Config.NOTE_BUZZER_FILL_COLORS[buzzer_index]
+                elif note in self.error_notes:
+                    fill_color = Config.NOTE_ERROR_FILL_COLOR
+                else:
+                    fill_color = Config.NOTE_FILL_COLOR
+
                 if shifted_selection_frame and shifted_selection_frame.intersects(note_rect):
-                    c = Config.SELECTION_FRAME_NOTE_FILL_BASE_COLOR
-                    p.setPen(QPen(Config.SELECTION_FRAME_NOTE_BORDER_COLOR, 1))
+                    frame_color = Config.SELECTION_FRAME_NOTE_BORDER_COLOR
+                    frame_width = 2
                     self.selection_frame_notes.append(note)
                 elif self.mouse_position and hovered and note_rect.contains(self.mouse_position - self.shift):
                     if note in self.selected_notes:
-                        c = Config.NOTE_HOVER_SELECTED_FILL_BASE_COLOR
-                        p.setPen(QPen(Config.NOTE_HOVER_SELECTED_BORDER_COLOR, 1))
+                        frame_color = Config.NOTE_HOVER_SELECTED_BORDER_COLOR
+                        frame_width = 2
                     else:
-                        c = Config.NOTE_HOVER_FILL_BASE_COLOR
-                        p.setPen(QPen(Config.NOTE_HOVER_BORDER_COLOR, 1))
+                        frame_color = Config.NOTE_HOVER_BORDER_COLOR
+                        frame_width = 1
                     self.hover_note = note
                 elif note in self.selected_notes:
-                    c = Config.NOTE_SELECTED_FILL_BASE_COLOR
-                    p.setPen(QPen(Config.NOTE_SELECTED_BORDER_COLOR, 1))
+                    frame_color = Config.NOTE_SELECTED_BORDER_COLOR
+                    frame_width = 2
                 else:
-                    c = Config.NOTE_FILL_BASE_COLOR
-                    p.setPen(QPen(Config.NOTE_BORDER_COLOR, 1))
+                    frame_color = Config.NOTE_BORDER_COLOR
+                    frame_width = 1
                 if track.velocity_range > 0:
-                    c.setAlpha((note.velocity - track.min_velocity) * 255 // track.velocity_range)
-                p.fillRect(note_rect, c)
+                    fill_color.setAlpha((note.velocity - track.min_velocity) * 255 // track.velocity_range)
+                p.fillRect(note_rect, fill_color)
+                p.setPen(QPen(frame_color, frame_width))
                 p.drawRect(note_rect)
         p.restore()
 

@@ -14,7 +14,7 @@ class Note:
     duration: int
     pitch: int
     velocity: int
-    buzzer: Buzzer = Buzzer.ANY
+    buzzer: Buzzer = Buzzer.NONE
     @property
     def frequency(self) -> float:
         return 440.0 * (2 ** ((self.pitch - 69) / 12.0))
