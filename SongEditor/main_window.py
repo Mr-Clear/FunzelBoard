@@ -58,6 +58,7 @@ class MainWindow(QMainWindow):
         self.track_list_widget.track_changed.connect(self.song_widget.update)
         self.track_list_widget.move_up_requested.connect(self.song_widget.move_track_up)
         self.track_list_widget.move_down_requested.connect(self.song_widget.move_track_down)
+        self.track_list_widget.select_track_requested.connect(self.song_widget.select_track)
 
         self.resize(1200, 700)
         self.showMaximized()

@@ -8,6 +8,7 @@ class TrackWidget(QWidget):
     track_changed = Signal(Track)
     move_up_requested = Signal(Track)
     move_down_requested = Signal(Track)
+    select_track_requested = Signal(Track)
 
     def _on_name_changed(self):
         self.track.name = self.name_text.text()
@@ -29,6 +30,14 @@ class TrackWidget(QWidget):
         title_layout.addWidget(self.name_text)
 
         title_layout.addStretch()
+
+        select_all_button = QToolButton(self)
+        select_all_button.setText('☑')
+        title_layout.addWidget(select_all_button)
+        select_all_button.clicked.connect(lambda: self.select_track_requested.emit(self.track))
+
+        title_layout.addSpacing(4)
+
         self.up_button = QToolButton(self)
         self.up_button.setText('⬆')
         self.up_button.clicked.connect(lambda: self.move_up_requested.emit(self.track))
@@ -45,6 +54,7 @@ class TracksListWidget(QWidget):
     track_changed = Signal(Track)
     move_up_requested = Signal(Track)
     move_down_requested = Signal(Track)
+    select_track_requested = Signal(Track)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -71,6 +81,7 @@ class TracksListWidget(QWidget):
         track_widget.track_changed.connect(self.track_changed.emit)
         track_widget.move_up_requested.connect(self._track_moved_up)
         track_widget.move_down_requested.connect(self._track_moved_down)
+        track_widget.select_track_requested.connect(self.select_track_requested.emit)
         self._update_list()
 
     def remove_track(self, track: Track):

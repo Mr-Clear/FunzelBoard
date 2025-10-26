@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import Iterable
 
 from PySide6.QtCore import Qt, QEvent, QPointF, QTimer, QRectF, Signal, QLineF
 from PySide6.QtGui import QKeyEvent, QPainter, QPen, QColor, QFont
@@ -405,6 +406,12 @@ class SongWidget(QWidget):
         index = self.song.tracks.index(track)
         if index < len(self.song.tracks) - 1:
             self.song.tracks[index], self.song.tracks[index + 1] = self.song.tracks[index + 1], self.song.tracks[index]
+            self.update()
+
+    def select_track(self, track: Track):
+        if self.selected_notes != track.notes:
+            self.selected_notes = track.notes
+            self.note_selection_changed.emit(self.selected_notes)
             self.update()
 
     @staticmethod
