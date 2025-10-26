@@ -3,7 +3,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScroll
                               QLineEdit, QToolButton
 from PySide6.QtCore import Signal, QEvent
 
-from song import Track
+from song import Track, Buzzer
 
 class TrackWidget(QWidget):
     track_changed = Signal(Track)
@@ -50,7 +50,62 @@ class TrackWidget(QWidget):
         self.down_button.clicked.connect(lambda: self.move_down_requested.emit(self.track))
         title_layout.addWidget(self.down_button)
 
+        status_widget = QWidget(self)
+        status_layout = QHBoxLayout(status_widget)
+        status_layout.setContentsMargins(0, 0, 0, 0)
+
+        status_layout.addWidget(QLabel('⏱', self))
+        self.duration_label = QLabel(self)
+        status_layout.addWidget(self.duration_label)
+        status_layout.addStretch()
+
+        status_layout.addWidget(QLabel('♩', self))
+        self.pitch_range_label = QLabel(self)
+        status_layout.addWidget(self.pitch_range_label)
+        status_layout.addStretch()
+
+        status_layout.addWidget(QLabel('🔊', self))
+        self.velocity_range_label = QLabel(self)
+        status_layout.addWidget(self.velocity_range_label)
+
+        notes_widget = QWidget(self)
+        notes_layout = QHBoxLayout(notes_widget)
+        notes_layout.setContentsMargins(0, 0, 0, 0)
+
+        notes_layout.addWidget(QLabel('∑', self))
+        self.notes_count_label = QLabel(self)
+        notes_layout.addWidget(self.notes_count_label)
+        notes_layout.addStretch()
+
+        notes_layout.addWidget(QLabel('∅', self))
+        self.notes_buzzer_none_label = QLabel(self)
+        notes_layout.addWidget(self.notes_buzzer_none_label)
+        notes_layout.addStretch()
+
+        notes_layout.addWidget(QLabel('➊', self))
+        self.notes_buzzer_1_label = QLabel(self)
+        notes_layout.addWidget(self.notes_buzzer_1_label)
+        notes_layout.addStretch()
+
+        notes_layout.addWidget(QLabel('➋', self))
+        self.notes_buzzer_2_label = QLabel(self)
+        notes_layout.addWidget(self.notes_buzzer_2_label)
+        notes_layout.addStretch()
+
+        notes_layout.addWidget(QLabel('➌', self))
+        self.notes_buzzer_3_label = QLabel(self)
+        notes_layout.addWidget(self.notes_buzzer_3_label)
+        notes_layout.addStretch()
+
+        notes_layout.addWidget(QLabel('⚠️', self))
+        self.notes_error_label = QLabel('?', self)
+        notes_layout.addWidget(self.notes_error_label)
+
         layout.addWidget(title_widget)
+        layout.addWidget(status_widget)
+        layout.addWidget(notes_widget)
+
+        self.update_track()
 
     def enterEvent(self, event: QEnterEvent) -> None:
         self.hover_changed.emit(self.track)
@@ -59,6 +114,18 @@ class TrackWidget(QWidget):
     def leaveEvent(self, event: QEvent) -> None:
         self.hover_changed.emit(None)
         return super().leaveEvent(event)
+
+    def update_track(self):
+        self.notes_count_label.setText(str(self.track.notes_count))
+        buzzers = self.track.buzzers_usage
+        self.notes_buzzer_none_label.setText(str(buzzers[Buzzer.NONE]))
+        self.notes_buzzer_1_label.setText(str(buzzers[Buzzer.BUZZER_1]))
+        self.notes_buzzer_2_label.setText(str(buzzers[Buzzer.BUZZER_2]))
+        self.notes_buzzer_3_label.setText(str(buzzers[Buzzer.BUZZER_3]))
+        self.notes_error_label.setText(str(self.track.error_notes_count))
+        self.duration_label.setText(f'{self.track.duration / 1000000:.2f} s')
+        self.pitch_range_label.setText(f'{self.track.min_pitch}-{self.track.max_pitch}')
+        self.velocity_range_label.setText(f'{self.track.min_velocity}-{self.track.max_velocity}')
 
 
 class TracksListWidget(QWidget):
@@ -183,3 +250,10 @@ class TracksListWidget(QWidget):
             if isinstance(w, TrackWidget):
                 w.up_button.setEnabled(idx != 0)
                 w.down_button.setEnabled(idx != total - 1)
+
+    def on_track_updated(self):
+        for i in range(self.vbox_layout.count()):
+            item = self.vbox_layout.itemAt(i)
+            widget = item.widget()
+            if isinstance(widget, TrackWidget):
+                widget.update_track()

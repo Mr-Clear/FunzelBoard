@@ -33,6 +33,8 @@ class SongWidget(QWidget):
 
     note_selection_changed = Signal(list)
 
+    song_changed = Signal(object)
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -73,6 +75,11 @@ class SongWidget(QWidget):
         for track in self._song.tracks:
             self.track_added.emit(track)
         self.update()
+        self.song_changed.emit(song)
+
+    @property
+    def song(self) -> Song:
+        return self._song
 
     def advance_playhead(self):
         self.update()

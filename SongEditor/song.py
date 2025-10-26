@@ -41,9 +41,25 @@ class Track:
     @property
     def pitch_range(self) -> int:
         return self.max_pitch - self.min_pitch
+
     @property
     def velocity_range(self) -> int:
         return self.max_velocity - self.min_velocity
+
+    @property
+    def notes_count(self) -> int:
+        return len(self.notes)
+
+    @property
+    def buzzers_usage(self) -> dict[Buzzer, int]:
+        usage = {buzzer: 0 for buzzer in Buzzer}
+        for note in self.notes:
+            usage[note.buzzer] += 1
+        return usage
+
+    @property
+    def error_notes_count(self) -> int:
+        return 0
 
     def __hash__(self):
         return id(self)
@@ -55,8 +71,42 @@ class Track:
 class Song:
     name: str
     tracks: list[Track]
+
     @property
     def duration(self) -> int:
         if not self.tracks:
             return 0
         return max(track.duration for track in self.tracks)
+
+    @property
+    def pitch_range(self) -> tuple[int, int]:
+        if not self.tracks:
+            return (0, 0)
+        min_pitch = min(track.min_pitch for track in self.tracks)
+        max_pitch = max(track.max_pitch for track in self.tracks)
+        return (min_pitch, max_pitch)
+
+    @property
+    def velocity_range(self) -> tuple[int, int]:
+        if not self.tracks:
+            return (0, 0)
+        min_velocity = min(track.min_velocity for track in self.tracks)
+        max_velocity = max(track.max_velocity for track in self.tracks)
+        return (min_velocity, max_velocity)
+
+    @property
+    def notes_count(self) -> int:
+        return sum(len(track.notes) for track in self.tracks)
+
+    @property
+    def buzzer_usage(self) -> dict[Buzzer, int]:
+        usage = {buzzer: 0 for buzzer in Buzzer}
+        for track in self.tracks:
+            track_usage = track.buzzers_usage
+            for buzzer, count in track_usage.items():
+                usage[buzzer] += count
+        return usage
+
+    @property
+    def error_notes_count(self) -> int:
+        return sum(track.error_notes_count for track in self.tracks)

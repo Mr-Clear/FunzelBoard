@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from mido import MidiFile
 
 from song import Note, Track, Song
+import os
 
 class MidiLoader:
     @staticmethod
@@ -9,6 +10,7 @@ class MidiLoader:
         tracks = []
         file = MidiFile(fname, clip=True)
         file_name = file.filename if file.filename else "Unnamed"
+        file_name = os.path.basename(file_name)
         tempo_map = MidiLoader.get_tempo_map(file)
         ticks_per_beat = file.ticks_per_beat
         for index, midi_track in enumerate(file.tracks):

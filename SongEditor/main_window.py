@@ -2,6 +2,7 @@ from PySide6.QtGui import QCloseEvent
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QMainWindow, QDockWidget, QSizePolicy, QLabel
 
+from song_details_widget import SongDetailsWidget
 from song_widget import SongWidget, KeysStatus
 from control_panel import ControlPanel
 from tracks_list_widget import TracksListWidget
@@ -22,6 +23,17 @@ class MainWindow(QMainWindow):
         bottom_dock = QDockWidget("Playback Controls", self)
         bottom_dock.setWidget(self.control_panel)
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, bottom_dock)
+
+        # Left Song Details Dock
+        self.song_details_widget = SongDetailsWidget(self.song_widget.song, self)
+        self.song_details_widget.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        song_dock = QDockWidget("Song Details", self)
+        song_dock.setWidget(self.song_details_widget)
+        song_dock.setFeatures(QDockWidget.DockWidgetFeature.DockWidgetMovable
+                               | QDockWidget.DockWidgetFeature.DockWidgetFloatable
+                               | QDockWidget.DockWidgetFeature.DockWidgetClosable)
+        song_dock.setSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+        self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, song_dock)
 
         # Left Tracks Dock
         self.track_list_widget = TracksListWidget(self)
@@ -55,6 +67,8 @@ class MainWindow(QMainWindow):
         self.song_widget.note_selection_changed.connect(self.notes_list_widget.set_selected_notes)
         self.song_widget.key_status_update.connect(self.update_status_keys)
         self.notes_list_widget.note_changed.connect(self.song_widget.update)
+        self.notes_list_widget.note_changed.connect(self.track_list_widget.on_track_updated)
+        self.notes_list_widget.note_changed.connect(self.song_details_widget.update_labels)
         self.notes_list_widget.hover_changed.connect(self.song_widget.set_highlighted_note)
         self.track_list_widget.track_changed.connect(self.song_widget.update)
         self.track_list_widget.move_up_requested.connect(self.song_widget.move_track_up)
