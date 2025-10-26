@@ -1,4 +1,4 @@
-from PySide6.QtGui import QEnterEvent
+from PySide6.QtGui import QCloseEvent, QEnterEvent
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, \
                               QLineEdit, QToolButton
 from PySide6.QtCore import Signal, QEvent
@@ -21,7 +21,8 @@ class TrackWidget(QWidget):
         super().__init__(parent)
         self.track = track
         layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(0, 4, 0, 4)
+        layout.setSpacing(0)
         title_widget = QWidget(self)
         title_layout = QHBoxLayout(title_widget)
         title_layout.setContentsMargins(0, 0, 0, 0)
@@ -108,6 +109,8 @@ class TrackWidget(QWidget):
 
         self.update_track()
 
+        track.add_change_listener(self.update_track)
+
     def enterEvent(self, event: QEnterEvent) -> None:
         self.hover_changed.emit(self.track)
         return super().enterEvent(event)
@@ -128,6 +131,10 @@ class TrackWidget(QWidget):
         self.pitch_range_label.setText(f'{self.track.min_pitch}-{self.track.max_pitch}')
         self.velocity_range_label.setText(f'{self.track.min_velocity}-{self.track.max_velocity}')
 
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        self.track.remove_change_listener(self.update_track)
+        return super().closeEvent(event)
 
 class TracksListWidget(QWidget):
     track_changed = Signal(Track)

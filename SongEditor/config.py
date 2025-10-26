@@ -14,7 +14,7 @@ class ConfigClass:
     NOTE_SELECTED_BORDER_COLOR = QColor(0xFFFF44)
     NOTE_HOVER_SELECTED_BORDER_COLOR = QColor(0xFFAA00)
     NOTE_FILL_COLOR = QColor(0x888888)
-    NOTE_BUZZER_FILL_COLORS = [QColor(0x00AA00), QColor(0x0000AA), QColor(0x00CCCC)]
+    NOTE_BUZZER_FILL_COLORS = [QColor(0x00FF00), QColor(0x0000FF), QColor(0x00FFFF)]
     NOTE_ERROR_FILL_COLOR = QColor(0xFF4444)
     HOVER_TRACK_HIGHLIGHT_COLOR = QColor.fromRgba(0x05FFFFFF)
     HOVER_TRACK_BORDER_COLOR = QColor.fromRgba(0x33FFFFFF)
@@ -43,7 +43,10 @@ class ConfigClass:
     MAX_ZOOM_X = 10.0
     MAX_ZOOM_Y = 2.0
 
-    last_opened_directory = ""
+    INDICATE_VELOCITY = False
+
+    last_opened_directory = ''
+    last_song = ''
 
     @staticmethod
     def _serialize_value(value):

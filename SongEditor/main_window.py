@@ -1,16 +1,24 @@
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtCore import Qt, QTimer
-from PySide6.QtWidgets import QMainWindow, QDockWidget, QSizePolicy, QLabel
+from PySide6.QtWidgets import QMainWindow, QDockWidget, QSizePolicy, QLabel, QFileDialog
+import json
 
+from dataclasses import asdict
+
+from config import Config
 from song_details_widget import SongDetailsWidget
 from song_widget import SongWidget, KeysStatus
 from control_panel import ControlPanel
 from tracks_list_widget import TracksListWidget
 from notes_list_widget import NotesListWidget
+from song import Song
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+
+        self.file_name: str | None = None
+
         self.setWindowTitle("Funzl Bredl Song Editor")
 
         self.song_widget = SongWidget(self)
@@ -59,25 +67,26 @@ class MainWindow(QMainWindow):
         self.statusBar().addPermanentWidget(self.status_keys_label)
 
         self.song_widget.hover_note_changed.connect(self.notes_list_widget.set_hover_note)
-        self.song_widget.track_added.connect(self.track_list_widget.add_track)
         self.song_widget.track_removed.connect(self.track_list_widget.remove_track)
         self.song_widget.hover_track_changed.connect(self.track_list_widget.set_hover_track)
         self.song_widget.note_selection_changed.connect(self.notes_list_widget.set_selected_notes)
         self.song_widget.key_status_update.connect(self.update_status_keys)
-        self.notes_list_widget.note_changed.connect(self.song_widget.update)
-        self.notes_list_widget.note_changed.connect(self.track_list_widget.on_track_updated)
-        self.notes_list_widget.note_changed.connect(self.song_details_widget.update_labels)
         self.notes_list_widget.hover_changed.connect(self.song_widget.set_highlighted_note)
-        self.track_list_widget.track_changed.connect(self.song_widget.update)
         self.track_list_widget.move_up_requested.connect(self.song_widget.move_track_up)
         self.track_list_widget.move_down_requested.connect(self.song_widget.move_track_down)
         self.track_list_widget.select_track_requested.connect(self.song_widget.select_track)
         self.track_list_widget.hover_changed.connect(self.song_widget.set_highlighted_track)
+        self.song_details_widget.save_requested.connect(self.save_file_clicked)
+        self.song_details_widget.save_as_requested.connect(self.save_as_clicked)
+        self.song_details_widget.load_requested.connect(self.open_file_clicked)
 
         self.resize(1200, 700)
         self.showMaximized()
 
-        QTimer.singleShot(0, self.control_panel.open_file)
+        if Config.last_song:
+            self.open_file(Config.last_song)
+        else:
+            QTimer.singleShot(0, self.control_panel.open_file)
 
     def closeEvent(self, event: QCloseEvent) -> None:
         self.control_panel.stop()
@@ -100,3 +109,39 @@ class MainWindow(QMainWindow):
             self.status_keys_label.setText("Scale Y")
         else:
             self.status_keys_label.setText("")
+
+    def save_file_clicked(self):
+        if not self.file_name:
+            self.save_as_clicked()
+        else:
+            self.save_file(self.file_name)
+
+    def save_file(self, file_name: str):
+        with open(file_name, 'w') as f:
+            f.write(self.song_widget.song.to_json())
+        self.statusBar().showMessage(f"Saved song to {file_name}", 5000)
+        print(f"Saved song to {file_name}")
+
+    def save_as_clicked(self):
+        file_name, _ = QFileDialog.getSaveFileName(self, "Save Song As", Config.last_opened_directory, "Funzl Board Song Files (*.fbsong);;All Files (*)")
+        if file_name:
+            self.file_name = file_name
+            self.save_file(self.file_name)
+
+    def open_file_clicked(self):
+        file_name, _ = QFileDialog.getOpenFileName(self, "Open Song", Config.last_opened_directory, "Funzl Board Song Files (*.fbsong);;All Files (*)")
+        if file_name:
+            self.open_file(file_name)
+
+    def open_file(self, file_name: str):
+        with open(file_name, 'r') as f:
+            data = f.read()
+        song = Song.from_json(data)
+        self.song_widget.set_song(song)
+        self.song_details_widget.set_song(song)
+        for track in song.tracks:
+            self.track_list_widget.add_track(track)
+        self.notes_list_widget.set_hover_note(None)
+        self.notes_list_widget.set_selected_notes([])
+        self.file_name = file_name
+        Config.last_song = file_name

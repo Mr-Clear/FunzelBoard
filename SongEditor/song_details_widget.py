@@ -1,4 +1,4 @@
-from PySide6.QtGui import QEnterEvent
+from PySide6.QtGui import QCloseEvent, QEnterEvent
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QScrollArea, \
                               QLineEdit, QToolButton
 from PySide6.QtCore import Signal, QEvent, QTimer
@@ -7,6 +7,11 @@ from song import Song, Buzzer
 
 class SongDetailsWidget(QWidget):
     song_name_changed = Signal(str)
+    save_requested = Signal()
+    save_as_requested = Signal()
+    load_requested = Signal()
+    undo_requested = Signal()
+    redo_requested = Signal()
 
     def __init__(self, song: Song | None, parent=None):
         super().__init__(parent)
@@ -15,6 +20,39 @@ class SongDetailsWidget(QWidget):
         self.name_text = QLineEdit()
         layout.addWidget(self.name_text)
         self.name_text.textChanged.connect(self._on_name_changed)
+
+        buttons_widget = QWidget(self)
+        buttons_layout = QHBoxLayout(buttons_widget)
+        buttons_layout.setContentsMargins(0, 0, 0, 0)
+
+        save_button = QToolButton(self)
+        save_button.setText("💾")
+        buttons_layout.addWidget(save_button)
+        save_button.clicked.connect(lambda: self.save_requested.emit())
+
+        save_as_button = QToolButton(self)
+        save_as_button.setText("💾✏️")
+        buttons_layout.addWidget(save_as_button)
+        save_as_button.clicked.connect(lambda: self.save_as_requested.emit())
+
+        load_button = QToolButton(self)
+        load_button.setText("📂")
+        buttons_layout.addWidget(load_button)
+        load_button.clicked.connect(lambda: self.load_requested.emit())
+
+        buttons_layout.addStretch()
+
+        undo_button = QToolButton(self)
+        undo_button.setText("↩️")
+        buttons_layout.addWidget(undo_button)
+        undo_button.clicked.connect(lambda: self.undo_requested.emit())
+
+        redo_button = QToolButton(self)
+        redo_button.setText("↪️")
+        buttons_layout.addWidget(redo_button)
+        redo_button.clicked.connect(lambda: self.redo_requested.emit())
+
+        layout.addWidget(buttons_widget)
 
         status_widget = QWidget(self)
         status_layout = QHBoxLayout(status_widget)
@@ -73,9 +111,13 @@ class SongDetailsWidget(QWidget):
         self.set_song(song)
 
     def set_song(self, song: Song | None):
+        if self.song:
+            self.song.remove_change_listener(self.update_labels)
         self.song = song
         self.name_text.setText(song.name if song else "No Song")
         self.update_labels()
+        if song:
+            song.add_change_listener(self.update_labels)
 
     def _on_name_changed(self, text: str):
         if self.song and self.song.name != text:
@@ -111,3 +153,8 @@ class SongDetailsWidget(QWidget):
             self.notes_error_label.setText("0")
 
         QTimer.singleShot(0, lambda: self.setMaximumHeight(self.sizeHint().height()))
+
+    def closeEvent(self, event: QCloseEvent) -> None:
+        if self.song:
+            self.song.remove_change_listener(self.update_labels)
+        return super().closeEvent(event)

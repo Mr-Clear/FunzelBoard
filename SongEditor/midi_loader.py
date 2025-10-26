@@ -1,7 +1,6 @@
-from dataclasses import dataclass
 from mido import MidiFile
 
-from song import Note, Track, Song
+from song import Buzzer, Note, Track, Song
 import os
 
 class MidiLoader:
@@ -13,17 +12,15 @@ class MidiLoader:
         file_name = os.path.basename(file_name)
         tempo_map = MidiLoader.get_tempo_map(file)
         ticks_per_beat = file.ticks_per_beat
-        for index, midi_track in enumerate(file.tracks):
+        song = Song(name=file_name, tracks=[])
+        for midi_track in file.tracks:
             abs_time = 0
             last_time = 0
             tempo_index = 0
             tempo = tempo_map[tempo_index][1]
             on_notes = {}
             notes = []
-            min_pitch = 127
-            max_pitch = 0
-            min_velocity = 127
-            max_velocity = 0
+            track = Track(name=midi_track.name, notes=[], song=song)
             for msg in midi_track:
                 time = msg.time * tempo // ticks_per_beat  # convert to µs
                 abs_time += time
@@ -32,19 +29,11 @@ class MidiLoader:
                     t = abs_time - last_time
                     if not off:
                         on_notes[msg.note] = (abs_time, msg.velocity)
-                        if msg.note < min_pitch:
-                            min_pitch = msg.note
-                        if msg.note > max_pitch:
-                            max_pitch = msg.note
-                        if msg.velocity < min_velocity:
-                            min_velocity = msg.velocity
-                        if msg.velocity > max_velocity:
-                            max_velocity = msg.velocity
                     else:
                         if msg.note in on_notes:
                             start_tick, velocity = on_notes.pop(msg.note)
                             duration = abs_time - start_tick
-                            note = Note(start_tick=start_tick, duration=duration, pitch=msg.note, velocity=velocity)
+                            note = Note(start_tick=start_tick, duration=duration, pitch=msg.note, velocity=velocity, buzzer=Buzzer.NONE, track=track)
                             notes.append(note)
 
                 last_time = abs_time
@@ -52,11 +41,10 @@ class MidiLoader:
                     tempo_index += 1
                 tempo = tempo_map[tempo_index][1]
             if notes:
-                tracks.append(Track(index=index, name=midi_track.name, notes=notes,
-                                    duration=abs_time, ticks_per_beat=ticks_per_beat,
-                                    min_pitch=min_pitch, max_pitch=max_pitch,
-                                    min_velocity=min_velocity, max_velocity=max_velocity))
-        return Song(name=file_name, tracks=tracks)
+                track.notes = notes
+                tracks.append(track)
+        song.tracks = tracks
+        return song
 
     @staticmethod
     def get_tempo_map(file: MidiFile) -> list[tuple[int, int]]:

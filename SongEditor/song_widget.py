@@ -69,12 +69,15 @@ class SongWidget(QWidget):
         self._keys_status: KeysStatus = KeysStatus.NONE
 
     def set_song(self, song: Song):
+        if self._song:
+            self._song.remove_change_listener(self.update)
         for track in self._song.tracks:
             self.track_removed.emit(track)
         self._song = song
         for track in self._song.tracks:
             self.track_added.emit(track)
         self.update()
+        self._song.add_change_listener(self.update)
         self.song_changed.emit(song)
 
     @property
@@ -292,7 +295,7 @@ class SongWidget(QWidget):
                 else:
                     frame_color = Config.NOTE_BORDER_COLOR
                     frame_width = 1
-                if track.velocity_range > 0:
+                if Config.INDICATE_VELOCITY and track.velocity_range > 0:
                     fill_color.setAlpha((note.velocity - track.min_velocity) * 255 // track.velocity_range)
                 p.fillRect(note_rect, fill_color)
                 p.setPen(QPen(frame_color, frame_width))
