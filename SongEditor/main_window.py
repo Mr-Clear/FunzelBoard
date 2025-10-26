@@ -26,7 +26,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.song_widget)
 
         # Bottom controls dock
-        self.control_panel = ControlPanel(self.song_widget, self)
+        self.control_panel = ControlPanel(self.song_widget, self.statusBar(), self)
         bottom_dock = QDockWidget("Playback Controls", self)
         bottom_dock.setWidget(self.control_panel)
         self.addDockWidget(Qt.DockWidgetArea.BottomDockWidgetArea, bottom_dock)
@@ -70,6 +70,7 @@ class MainWindow(QMainWindow):
         self.song_widget.track_removed.connect(self.track_list_widget.remove_track)
         self.song_widget.hover_track_changed.connect(self.track_list_widget.set_hover_track)
         self.song_widget.note_selection_changed.connect(self.notes_list_widget.set_selected_notes)
+        self.song_widget.note_selection_changed.connect(self.control_panel.selected_notes_changed)
         self.song_widget.key_status_update.connect(self.update_status_keys)
         self.notes_list_widget.hover_changed.connect(self.song_widget.set_highlighted_note)
         self.track_list_widget.move_up_requested.connect(self.song_widget.move_track_up)

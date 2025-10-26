@@ -304,7 +304,7 @@ void handleSerial() {
         }
         bool anyPlaying = true;
         while (anyPlaying) {
-          if (Serial.read() == 'q') {
+          if (Serial.available()) {
             Serial.println("Stopping playback.");
             break;
           }
