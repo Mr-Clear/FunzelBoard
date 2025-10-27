@@ -9,7 +9,6 @@ class Buzzer(enum.Enum):
     BUZZER_1 = 1
     BUZZER_2 = 2
     BUZZER_3 = 3
-    ANY = 4
 
 @dataclass
 class Note:
@@ -163,6 +162,8 @@ class Track:
 
     @property
     def buzzers_usage(self) -> dict[Buzzer, int]:
+        if not hasattr(self, '_buzzers_usage'):
+            return { buzzer: 0 for buzzer in Buzzer }
         if self._buzzers_usage is None:
             usage = {buzzer: 0 for buzzer in Buzzer}
             for note in self.notes:
@@ -283,6 +284,13 @@ class Song:
             self._error_notes = self._calculate_error_notes()
         return self._error_notes
 
+    @property
+    def all_notes(self) -> list[Note]:
+        notes = []
+        for track in self.tracks:
+            notes.extend(track.notes)
+        return sorted(notes, key=lambda n: (n.start_us, n.duration_us, n.pitch))
+
     def to_dict(self) -> dict:
         return {
             'name': self.name,
@@ -347,6 +355,23 @@ class Song:
                         active_notes.remove(active_note)
                 active_notes.add(note)
         return error_notes
+
+    def fix_overlaps(self):
+        for buzzer in {Buzzer.BUZZER_1, Buzzer.BUZZER_2, Buzzer.BUZZER_3}:
+            buzzer_notes = []
+            for track in self.tracks:
+                for note in track.notes:
+                    if note.buzzer == buzzer:
+                        buzzer_notes.append(note)
+            buzzer_notes.sort(key=lambda n: n.start_us)
+            active_notes: list[Note] = []
+            for note in buzzer_notes:
+                active_notes_copy = active_notes.copy()
+                for active_note in active_notes_copy:
+                    if note.start_us < active_note.end_us:
+                        active_note.duration_us = note.start_us - active_note.start_us
+                active_notes.append(note)
+        self.invalidate_cache()
 
 class SongEncoder(json.JSONEncoder):
     def default(self, o):

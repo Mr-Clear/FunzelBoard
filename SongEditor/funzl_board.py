@@ -46,7 +46,7 @@ class FunzlBoard:
     def send_notes(notes: Iterable[Note], start: int = -1, progress_callback: Callable[[str], None] | None = None) -> str:
         if start == -1:
             start = min(note.start_us for note in notes)
-        to_send = 'S'
+        to_send = '\nS'
         for buzzer in [Buzzer.BUZZER_1, Buzzer.BUZZER_2, Buzzer.BUZZER_3]:
             buzzer_notes = [note for note in notes if note.buzzer == buzzer]
             if buzzer_notes:
@@ -55,3 +55,12 @@ class FunzlBoard:
         print(to_send)
         FunzlBoard.send(to_send, progress_callback)
         return 'Notes sent.'
+
+    @staticmethod
+    def send_song(song: Song, progress_callback: Callable[[str], None] | None = None) -> str:
+        return FunzlBoard.send_notes(song.all_notes, progress_callback=progress_callback)
+
+    @staticmethod
+    def send_stop() -> str:
+        result = FunzlBoard.send('\n')
+        return result
