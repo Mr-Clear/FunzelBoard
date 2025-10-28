@@ -23,18 +23,21 @@ class ControlPanel(QWidget):
         self.stop_btn = QPushButton("Send Stop")
         self.open_btn = QPushButton("Import MIDI")
         self.fix_overlaps_btn = QPushButton("Fix Overlaps")
+        self.auto_buzzer_btn = QPushButton("Auto Buzzer Assign")
 
         layout.addWidget(self.send_song_btn)
         layout.addWidget(self.send_selected_btn)
         layout.addWidget(self.stop_btn)
         layout.addWidget(self.open_btn)
         layout.addWidget(self.fix_overlaps_btn)
+        layout.addWidget(self.auto_buzzer_btn)
 
         self.send_song_btn.clicked.connect(self.send_song)
         self.send_selected_btn.clicked.connect(self.send_selected)
         self.stop_btn.clicked.connect(self.stop)
         self.open_btn.clicked.connect(self.open_file)
         self.fix_overlaps_btn.clicked.connect(self.fix_overlaps)
+        self.auto_buzzer_btn.clicked.connect(self.auto_assign_buzzers)
         self.player: Player | None = None
 
         self.on_song_changed(song)
@@ -109,3 +112,8 @@ class ControlPanel(QWidget):
         if not self.canvas._song:
             return
         self.canvas._song.fix_overlaps()
+
+    def auto_assign_buzzers(self):
+        if not self.canvas._song:
+            return
+        self.canvas._song.auto_assign_buzzers()

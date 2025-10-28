@@ -5,7 +5,7 @@
 #include "data.h"
 #include "i2c.h"
 #include "logic/logic.h"
-#include "logic/musicPlayer.h"
+#include "music/musicPlayer.h"
 #include "motor.h"
 #include "pixels.h"
 #include "tools.h"
@@ -22,6 +22,7 @@ Adafruit_MCP23X17 mcp;
 
 void handleSerial();
 std::string readSerial(std::string_view endPattern, std::string_view prompt, bool echo);
+Song readSongFromSerial();
 
 constexpr float MAX_BRIGHTNESS = 1.0f;
 constexpr float MIN_BRIGHTNESS = 1.f / 255.f;
@@ -39,6 +40,7 @@ bool blink = false;
 int delayMs = 0;
 
 void setup() {
+  Serial.setRxBufferSize(1024 * 4);
   Serial.begin(115200);
   Serial.setTxTimeoutMs(0);
   Serial.println("Hello, world!");
@@ -288,19 +290,14 @@ void handleSerial() {
       }
       case 'S':
       {
-        const std::string song = readSerial("\n\n", "Play Song:\n", true);
-        std::size_t lastIndex = 0;
-        std::size_t i = 0;
-        const auto lines = splitString(song, '\n');
+        const Song song = readSongFromSerial();
 
         const auto now = Player::now();
         std::vector<Player> players;
-        for (int i = 0; i < lines.size() && i < BUZZER_PINS.size(); ++i) {
-          if (lines[i].size() > 0) {
-            players.emplace_back(std::string{lines[i]}, i, now);
+        for (int i = 0; i < song.tracks.size() && i < BUZZER_PINS.size(); ++i) {
+          if (song.tracks[i].notes != nullptr) {
+            players.emplace_back(song.tracks[i], i, now);
           }
-          Serial.print("D: ");
-          Serial.println(Player::calculateLengthUs(lines[i]));
         }
         bool anyPlaying = true;
         while (anyPlaying) {
@@ -317,8 +314,16 @@ void handleSerial() {
           }
         }
 
+        for (int i = 0; i < song.tracks.size(); ++i) {
+          delete[] song.tracks[i].notes;
+        }
+
         break;
       }
+      case '\n':
+      case '\r':
+        // Ignore
+        break;
       default:
         Serial.println("Unknown command: '" + String((char)cmd) + "' (" + String((int)cmd) + ")");
         break;
@@ -360,5 +365,40 @@ std::string readSerial(std::string_view endPattern, std::string_view prompt, boo
       index++;
     }
   }
+}
 
+template<typename T>
+size_t readBinaryFromSerial() {
+  T value = 0;
+  uint8_t buffer[sizeof(T)];
+  while (Serial.available() < sizeof(T)); // Busy wait
+  Serial.readBytes(reinterpret_cast<char*>(buffer), sizeof(T));
+  memcpy(&value, buffer, sizeof(T));
+
+  return value;
+}
+
+Song readSongFromSerial() {
+  std::array<Track, 3> tracks;
+  for (size_t i = 0; i < tracks.size(); i++) {
+    Track track;
+    track.length =  readBinaryFromSerial<size_t>();
+    Note* notes;
+    if (track.length == 0) {
+      notes = nullptr;
+      continue;
+    }
+    Serial.println("Reading track " + String(i) + " with " + String(track.length) + " notes.");
+    notes = new Note[track.length];
+    for (size_t j = 0; j < track.length; j++) {
+      notes[j].startUs = readBinaryFromSerial<uint32_t>();
+      notes[j].endUs = readBinaryFromSerial<uint32_t>();
+      notes[j].pitch = readBinaryFromSerial<uint8_t>();
+    }
+    track.notes = notes;
+    tracks[i] = track;
+  }
+  char loop = readBinaryFromSerial<char>();
+  Serial.println("Reading loop flag: " + String(loop));
+  return Song{tracks, loop != 0};
 }

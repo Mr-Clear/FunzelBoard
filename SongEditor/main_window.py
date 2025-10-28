@@ -1,3 +1,4 @@
+import re
 from PySide6.QtGui import QCloseEvent
 from PySide6.QtCore import Qt, QTimer
 from PySide6.QtWidgets import QMainWindow, QDockWidget, QSizePolicy, QLabel, QFileDialog
@@ -5,6 +6,7 @@ import json
 
 from dataclasses import asdict
 
+from funzl_board import FunzlBoard
 from config import Config
 from song_details_widget import SongDetailsWidget
 from song_widget import SongWidget, KeysStatus
@@ -82,6 +84,7 @@ class MainWindow(QMainWindow):
         self.song_details_widget.save_requested.connect(self.save_file_clicked)
         self.song_details_widget.save_as_requested.connect(self.save_as_clicked)
         self.song_details_widget.load_requested.connect(self.open_file_clicked)
+        self.song_details_widget.export_requested.connect(self.export_clicked)
 
         self.resize(1200, 700)
         self.showMaximized()
@@ -148,3 +151,23 @@ class MainWindow(QMainWindow):
         self.notes_list_widget.set_selected_notes([])
         self.file_name = file_name
         Config.last_song = file_name
+
+    def export_clicked(self):
+        if not self.song_widget.song:
+            self.statusBar().showMessage("No song to export.", 2000)
+            return
+
+        file_name = namespace = ''.join(p.capitalize() for p in [p for p in re.split(r'[^0-9A-Za-z]+', self.song_widget.song.name) if p]) or 'Song'
+        file_name = file_name[0].lower() + file_name[1:] + '.h'
+        file_name = f'/home/thomas/Develop/ESP32/FunzlBrett/src/music/songs/{file_name}'
+
+        file_name, _ = QFileDialog.getSaveFileName(self, "Export Song", file_name, "C++ Header Files (*.h);;All Files (*)")
+        if not file_name:
+            return
+
+        exported_code = FunzlBoard.export(self.song_widget.song)
+        with open(file_name, 'w') as f:
+            f.write(exported_code)
+
+        self.statusBar().showMessage(f"Exported song to {file_name}", 5000)
+        print(f"Exported song to {file_name}")

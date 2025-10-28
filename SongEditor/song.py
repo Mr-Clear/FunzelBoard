@@ -373,6 +373,33 @@ class Song:
                 active_notes.append(note)
         self.invalidate_cache()
 
+    def auto_assign_buzzers(self):
+        buzzer_end_times = {
+            Buzzer.BUZZER_1: 0,
+            Buzzer.BUZZER_2: 0,
+            Buzzer.BUZZER_3: 0
+        }
+
+        sorted_notes = sorted(self.all_notes, key=lambda n: n.start_us)
+
+        for note in sorted_notes:
+            earliest_buzzer = min(buzzer_end_times, key=lambda b: buzzer_end_times[b])
+            note.buzzer = earliest_buzzer
+            buzzer_end_times[earliest_buzzer] = note.end_us
+
+    def to_buzzer_tracks(self) -> dict[Buzzer, list[Note]]:
+        buzzer_tracks: dict[Buzzer, list[Note]] = {
+            Buzzer.BUZZER_1: [],
+            Buzzer.BUZZER_2: [],
+            Buzzer.BUZZER_3: []
+        }
+        for note in self.all_notes:
+            if note.buzzer in buzzer_tracks:
+                buzzer_tracks[note.buzzer].append(note)
+        for buzzer in buzzer_tracks:
+            buzzer_tracks[buzzer].sort(key=lambda n: n.start_us)
+        return buzzer_tracks
+
 class SongEncoder(json.JSONEncoder):
     def default(self, o):
         if isinstance(o, enum.Enum):

@@ -10,6 +10,7 @@ class SongDetailsWidget(QWidget):
     save_requested = Signal()
     save_as_requested = Signal()
     load_requested = Signal()
+    export_requested = Signal()
     undo_requested = Signal()
     redo_requested = Signal()
 
@@ -42,13 +43,22 @@ class SongDetailsWidget(QWidget):
 
         buttons_layout.addStretch()
 
+        export_button = QToolButton(self)
+        export_button.setText("📤")
+        buttons_layout.addWidget(export_button)
+        export_button.clicked.connect(lambda: self.export_requested.emit())
+
+        buttons_layout.addStretch()
+
         undo_button = QToolButton(self)
         undo_button.setText("↩️")
+        undo_button.setEnabled(False)
         buttons_layout.addWidget(undo_button)
         undo_button.clicked.connect(lambda: self.undo_requested.emit())
 
         redo_button = QToolButton(self)
         redo_button.setText("↪️")
+        redo_button.setEnabled(False)
         buttons_layout.addWidget(redo_button)
         redo_button.clicked.connect(lambda: self.redo_requested.emit())
 
