@@ -30,10 +30,20 @@ std::optional<String> ADC::init() {
 
 std::array<float, 8> ADC::readAll() {
   device->updateAll();
+  std::array<uint16_t, 8> raw;
+  for (size_t i = 0; i < 8; i++) {
+    raw[i] = device->channel(i)->value();
+  }
+
+  const auto min = raw[7];
+  const auto max = raw[6];
+
   std::array<float, 8> results;
   for (size_t i = 0; i < 8; i++) {
-    results[i] = static_cast<float>(device->channel(i)->value()) / 4095.0f;
+    results[i] = static_cast<float>(raw[i] - min) / static_cast<float>(max - min);
+    results[i] = std::clamp(results[i], 0.0f, 1.0f);
   }
+
   return results;
 }
 
