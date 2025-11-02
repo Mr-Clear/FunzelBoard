@@ -35,6 +35,7 @@ bool showPlugs = true;
 bool showAdcValues = false;
 bool showPinValues = false;
 bool showBrightness = false;
+bool showMcpConfig = false;
 bool scanI2C = false;
 bool blink = false;
 int delayMs = 0;
@@ -169,6 +170,14 @@ void loop() {
         }
       }
     }
+
+    if (showMcpConfig) {
+      Serial.print(" D:0x");
+      Serial.print(mcp.getPinDirectionMask(), HEX);
+      Serial.print(" P:0x");
+      Serial.print(mcp.getPinPullupMask(), HEX);
+    }
+
     Serial.println();
   }
 
@@ -203,6 +212,9 @@ void handleSerial() {
         break;
       case 'd':
         showPinValues = !showPinValues;
+        break;
+      case 'm':
+        showMcpConfig = !showMcpConfig;
         break;
       case 'h':
         showBrightness = !showBrightness;
