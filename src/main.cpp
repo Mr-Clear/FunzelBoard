@@ -10,7 +10,6 @@
 #include "pixels.h"
 #include "tools.h"
 
-#include <ADS1115.h>
 #include <Adafruit_MCP23X17.h>
 
 #include <Arduino.h>
@@ -50,8 +49,11 @@ void setup() {
   digitalWrite(BLINK_LED_PIN, HIGH);
 
   I2C::init();
-  const auto errors = ADC::init();
-  setupErrors.insert(setupErrors.end(), errors.begin(), errors.end());
+
+  const auto adcError = ADC::init();
+  if (adcError) {
+    setupErrors.push_back(*adcError);
+  }
   if (mcp.begin_I2C(0x20)) {
     for (uint8_t pin = 0; pin < 16; pin++) {
       mcp.pinMode(pin, INPUT_PULLUP);
@@ -94,12 +96,8 @@ void loop() {
 
   handleSerial();
   const auto adcResults = ADC::readAll();
-  if (!std::get<0>(adcResults).empty()) {
-    for (const auto& err : std::get<0>(adcResults)) {
-      Serial.println("ADC Error: " + err);
-    }
-  }
-  currentData.update(std::get<1>(adcResults), mcp.readGPIOAB());
+
+  currentData.update(adcResults, mcp.readGPIOAB());
   const float brightness = std::clamp(currentData.adcValue(POTI_CONFIG_BRIGHTNESS), MIN_BRIGHTNESS, MAX_BRIGHTNESS);
 
   if (serialOutput) {
