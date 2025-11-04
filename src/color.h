@@ -37,6 +37,11 @@ struct Color {
     };
   }
 
+  constexpr Color operator+=(const Color& other) {
+    *this = *this + other;
+    return *this;
+  }
+
   constexpr Color operator-(const Color& other) const {
     return Color{
       static_cast<uint8_t>(std::max(static_cast<int>(r) - static_cast<int>(other.r), 0)),
