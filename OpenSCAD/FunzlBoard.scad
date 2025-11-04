@@ -26,6 +26,7 @@ Show_Back = true;
 Show_Components = true;
 Show_Text = true;
 Show_Buzzer_Holder = true;
+Show_Mainboard = true;
 
 Board_Size = [180, 155, 30];
 Edge_Size = 5;
@@ -45,6 +46,7 @@ SliderColors = ["#F00", "#0F0", "#00F"];
 SliderPositions = [1, 0, 1];
 Color_Button_Colors = ["#F00", "#FF0", "#0F0", "#00F"];
 Text_Color = "#0AF";
+Mainboard_Color = "#0808";
 
 Buzzer_Thickness = 0.14;
 Buzzer_Diameter = 35;
@@ -228,6 +230,13 @@ module ComponentsFront(n = false) {
   // DIP Button
   translate([158, 65, Board_Size[2] - Wall_Thickness - 3])
     DipButton("#222", Metal_Color, n);
+
+  // Mainboard
+  if (Show_Mainboard)
+    color(Mainboard_Color)
+      translate([0, 0, Board_Size[2] - Wall_Thickness - Mainboard_Distance])
+        rotate([180, 0, 0])
+          import("../KiCad/FunzlBoard.stl", convexity=3);
 }
 
 module ComponentsTop(n = false) {
@@ -446,13 +455,13 @@ module Buzzer_Holder() {
     for (x = [-1, 0, 1])
       difference() {
         translate([x * 60, 0, -Battery_Mount_Thickness])
-          Pipe(Battery_Mount_Thickness, Buzzer_Diameter / 2 - Backlash, Buzzer_Center_Diameter / 2 + Backlash);
+          Pipe(Battery_Mount_Thickness - e, Buzzer_Diameter / 2 - Backlash, Buzzer_Center_Diameter / 2 + Backlash);
         translate([0, Buzzer_Soldering_Point_Offsets[1], 0])
           scale([Buzzer_Soldering_Point_Diameter, Buzzer_Soldering_Point_Diameter, Buzzer_Soldering_Point_Height])
             sphere(1);
       }
     for (x = [-1, 1], y = [-1, 1])
       translate([x * 30, y * (Battery_Mount_Hole_Diameter + Screw_Hole_Wall_Thickness * 2 * Fillet_Size + 3), -Battery_Mount_Thickness / 2])
-        cube([41, 6, Battery_Mount_Thickness], center=true);
+        cube([41, 6, Battery_Mount_Thickness - e], center=true);
   }
 }
