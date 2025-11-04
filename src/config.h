@@ -15,7 +15,9 @@ constexpr uint8_t MOTOR_PIN  = 1;
 constexpr uint8_t MOTOR_TIMER = 3;
 constexpr uint8_t MOTOR_CHANNEL = 3;
 
-constexpr std::array<uint8_t, 8> POTI_MAP = {7, 6, 5, 4, 3, 2, 1, 0};
+constexpr std::array<uint8_t, 8> POTI_MAP = {0, 1, 2, 3, 4, 5, 6, 7};
+constexpr uint8_t POTI_REF_LO = POTI_MAP[0];
+constexpr uint8_t POTI_REF_HI = POTI_MAP[1];
 constexpr uint8_t POTI_CONFIG_BRIGHTNESS = POTI_MAP[2];
 constexpr uint8_t POTI_MAIN = POTI_MAP[4];
 constexpr uint8_t POTI_R = POTI_MAP[5];

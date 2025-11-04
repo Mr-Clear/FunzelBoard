@@ -35,8 +35,8 @@ std::array<float, 8> ADC::readAll() {
     raw[i] = device->channel(i)->value();
   }
 
-  const auto min = raw[7];
-  const auto max = raw[6];
+  const auto min = raw[POTI_REF_LO];
+  const auto max = raw[POTI_REF_HI];
 
   std::array<float, 8> results;
   for (size_t i = 0; i < 8; i++) {
