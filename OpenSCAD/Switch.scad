@@ -92,7 +92,7 @@ module Switch(base_color, metal_color, position, case_thickness, negative=false)
     color(metal_color) {
       // Outer Nut
       translate([0, 0, Base_Size[2] + Thread_Length - Nut_Thickness])
-        nut("M6", Nut_Thickness, Douter = Nut_Size, nut_sides = 6, fn = $fn);
+        nut("M6", Nut_Thickness, Douter = Nut_Size, fn = $fn);
       // Outer Washer
       translate([0, 0, Base_Size[2] + Thread_Length - Nut_Thickness - Washer_Thickness]) {
         difference() {
@@ -114,7 +114,7 @@ module Switch(base_color, metal_color, position, case_thickness, negative=false)
         }
       // Inner Nut
       translate([0, 0, Base_Size[2] + Thread_Length - Nut_Thickness * 2 - Washer_Thickness * 2 - case_thickness])
-        nut("M6", Nut_Thickness, Douter = Nut_Size, nut_sides = 6, fn = $fn);
+        nut("M6", Nut_Thickness, Douter = Nut_Size, fn = $fn);
     }
   } else {
     // Washer Notch

@@ -6,6 +6,7 @@ use <ColorButton.scad>;
 use <DipButton.scad>;
 use <Fillet.scad>;
 use <Led.scad>;
+use <LedCap.scad>;
 use <Pipe.scad>;
 use <Poti.scad>;
 use <PowerSwitch.scad>;
@@ -21,7 +22,7 @@ use <UsbCSocket.scad>;
 fn_preview = 12;
 fn_render = 100;
 
-Show_Front = true;
+Show_Front = false;
 Show_Back = true;
 Show_Components = true;
 Show_Text = true;
@@ -35,7 +36,7 @@ Wall_Thickness = 2;
 Notch_Size = 1.0;
 Notch_Backlash = 0.2;
 
-Mainboard_Distance = 5;
+Mainboard_Distance = 4.5;
 Mainboard_Thickness = 1.6;
 
 Black = "#222";
@@ -84,41 +85,51 @@ e = 0.001;
 $fn = $preview ? fn_preview : fn_render;
 LedZ = Board_Size[2] - Wall_Thickness - 1;
 
-use <LedCap.scad>;
-if (Show_Front)
-  difference() {
-    Board_Front();
-    ComponentsFront(true);
-    ComponentsRight(true);
-    ComponentsTop(true);
-    ComponentsInner(true);
+FunzlBoard();
+
+module FunzlBoard() {
+  if (Show_Front)
+    difference() {
+      Board_Front();
+      ComponentsFront(true);
+      ComponentsRight(true);
+      ComponentsTop(true);
+      ComponentsInner(true);
+    }
+
+  if (Show_Back) {
+    Board_Back();
   }
 
-if (Show_Back) {
-  Board_Back();
-}
-
-if (Show_Components) {
-  ComponentsFront();
-  ComponentsRight();
-  ComponentsTop();
-  ComponentsInner();
-}
-
-if (Show_Text) {
-  color(Text_Color)
-    translate([20, 115, Board_Size[2]]) {
-      *translate([0, -2, 0])
-        cube([139, 30, 1]);
-      scale([1.35, 1.2, 1])
-        linear_extrude(height=4)
-          import("Funzlbredl.svg");
+  if (Show_Components) {
+    ComponentsFront();
+    ComponentsRight();
+    ComponentsTop();
+    ComponentsInner();
   }
-}
 
-if (Show_Buzzer_Holder)
-  translate([Board_Size[0] / 2, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness])
-    Buzzer_Holder();
+  if (Show_Text) {
+    color(Text_Color)
+      translate([20, 115, Board_Size[2]]) {
+        *translate([0, -2, 0])
+          cube([139, 30, 1]);
+        scale([1.35, 1.2, 1])
+          linear_extrude(height=4)
+            import("Funzlbredl.svg");
+    }
+  }
+
+  if (Show_Buzzer_Holder)
+    translate([Board_Size[0] / 2, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness])
+      Buzzer_Holder();
+
+  if (Show_Mainboard)
+    color(Mainboard_Color)
+      translate([0, Board_Size[1], Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness])
+        import("../KiCad/FunzlBoard.stl", convexity=3);
+    echo("Mainboard Distance: ", Mainboard_Distance);
+    echo("Mainboard Thickness: ", Mainboard_Thickness);
+}
 
 module ComponentsFront(n = false) {
   // LED Circle
@@ -230,13 +241,6 @@ module ComponentsFront(n = false) {
   // DIP Button
   translate([158, 65, Board_Size[2] - Wall_Thickness - 3])
     DipButton("#222", Metal_Color, n);
-
-  // Mainboard
-  if (Show_Mainboard)
-    color(Mainboard_Color)
-      translate([0, 0, Board_Size[2] - Wall_Thickness - Mainboard_Distance])
-        rotate([180, 0, 0])
-          import("../KiCad/FunzlBoard.stl", convexity=3);
 }
 
 module ComponentsTop(n = false) {
