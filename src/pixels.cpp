@@ -10,7 +10,14 @@ namespace {
 }
 
 bool Pixels::init() {
-  return pixels.begin();
+  if (pixels.begin()) {
+      clear();
+      setBrightness(1.0f);
+      setColor(0, Color{255, 0, 0});
+      show();
+      return true;
+  }
+  return false;
 }
 
 void Pixels::setBrightness(float brightness) {

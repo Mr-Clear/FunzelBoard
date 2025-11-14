@@ -3,14 +3,17 @@
 #include <array>
 #include <cstdint>
 
-constexpr uint8_t BLINK_LED_PIN = 5;
-constexpr int NUM_PIXELS = 100;
-constexpr uint8_t PIXELS_PIN = 10;
-constexpr std::array<uint8_t, 3> BUZZER_PINS = {4, 3, 2};
+
+constexpr int SDA_PIN = 8;
+constexpr int SCL_PIN = 9;
+constexpr uint8_t BLINK_LED_PIN = 4;
+constexpr uint8_t PIXELS_PIN = 3;
+constexpr std::array<uint8_t, 3> BUZZER_PINS = {0, 1, 2};
 constexpr std::array<uint8_t, 3> BUZZER_TIMERS = {0, 1, 2};
 constexpr std::array<uint8_t, 3> BUZZER_CHANNELS = {0, 1, 2};
 constexpr int PIXELS_RING_OFFSET = 64;
 constexpr int PIXELS_RING_COUNT = 16;
+constexpr int NUM_PIXELS = PIXELS_RING_OFFSET + PIXELS_RING_COUNT;
 constexpr uint8_t MOTOR_PIN  = 1;
 constexpr uint8_t MOTOR_TIMER = 3;
 constexpr uint8_t MOTOR_CHANNEL = 3;

@@ -40,6 +40,9 @@ bool blink = false;
 int delayMs = 0;
 
 void setup() {
+  if (!Pixels::init()) {
+    setupErrors.push_back("Failed to initialize NeoPixel");
+  }
   Serial.setRxBufferSize(1024 * 4);
   Serial.begin(115200);
   Serial.setTxTimeoutMs(0);
@@ -62,12 +65,10 @@ void setup() {
     setupErrors.push_back("Failed to initialize MCP23017");
   }
 
-  if (!Pixels::init()) {
-    setupErrors.push_back("Failed to initialize NeoPixel");
-  }
-
   Buzzer::init();
   Motor::init();
+  Pixels::setColor(0, Color{0, 255, 255});
+  Pixels::show();
 
   if (!setupErrors.empty()) {
     blink = true;
@@ -80,18 +81,22 @@ void setup() {
       Serial.println(err);
     }
   }
-
+  Pixels::setColor(0, Color{255, 255, 0});
+  Pixels::show();
   Logic::start();
+  Pixels::setColor(0, Color{255, 0, 255});
+  Pixels::show();
 }
 
-bool blinkOn = false;
-int loopCount = 0;
+int loopCount = 1;
 void loop() {
   loopCount++;
+  Pixels::setColor(0, Color{0,  static_cast<uint8_t>(loopCount), 0});
+  Pixels::show();
 
   if (blink) {
+    const bool blinkOn = millis() % 200 < 100;
     digitalWrite(BLINK_LED_PIN, blinkOn ? HIGH : LOW);
-    blinkOn = !blinkOn;
   }
 
   handleSerial();

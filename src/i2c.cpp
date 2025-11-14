@@ -1,10 +1,12 @@
 #include "i2c.h"
 
+#include "config.h"
+
 #include <Arduino.h>
 #include <Wire.h>
 
 void I2C::init() {
-  Wire.begin(SDA, SCL, SPEED);
+  Wire.begin(SDA_PIN, SCL_PIN, SPEED);
 }
 
 std::vector<char> I2C::scan() {
