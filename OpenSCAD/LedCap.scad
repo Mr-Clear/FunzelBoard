@@ -1,21 +1,27 @@
 $fn = 100;
 
 LED_Size = [5.4, 5.4, 1.5];
-Cap_Height = 8;
+Cap_Height = 9;
 Cap_Diameter = 6;
 Foot_Diameter = 8;
 Foot_Height = 2;
 
-Hollow_Height = 7.5;
+Hollow_Height = Cap_Height - 0.5;
 Hollow_Diameter = 4.5;
 
 Grid_Distance = 8.3;
 Grid = [3, 3];
 capa_size = [5, 2, 0.8];
 
+Sleeve_Height = 5;
+Sleeve_Outer = 3.9;
+Sleeve_Inner = 3.5;
+
 e = 0.001;
 
-difference() {
+led_cap();
+
+*difference() {
   union() {
     for (y = [1:Grid[1]])
       for (x = [1:Grid[0]])
@@ -38,7 +44,7 @@ difference() {
       translate([(x - 0.5) * Grid_Distance - capa_size[0] / 2, (y - 1) * Grid_Distance - capa_size[1] / 2, -e])
         cube(capa_size);
       translate([(x - 1) * Grid_Distance, (y - 1) * Grid_Distance, -e]) {
-        translate([-LED_Size[0] / 2, -LED_Size[1] / 2, ])
+        translate([-LED_Size[0] / 2, -LED_Size[1] / 2, 0])
           cube(LED_Size);
         cylinder(Hollow_Height - Hollow_Diameter / 2, d = Hollow_Diameter);
         translate([0, 0, Hollow_Height - Hollow_Diameter / 2])
@@ -55,29 +61,42 @@ module led_cap(led_size = LED_Size,
                hollow_height = Hollow_Height,
                hollow_diameter = Hollow_Diameter,
                negative = false,
-               backlash = 0.4) {
+               backlash = 0.4,
+               color = "#FFFA",
+               metal_color = "#999") {
   b = negative ? backlash : 0;
   bc = negative ? backlash * 10 : 0;
-  difference() {
-    union() {
-      translate([0, 0, -bc]) {
-        cylinder(cap_height - cap_diameter / 2 + bc, d = cap_diameter + b);
-        translate([0, 0, cap_height - cap_diameter / 2])
-          sphere(d = cap_diameter + b);
-        cylinder(foot_height + bc, d = foot_diameter + b);
+  color(color) {
+    difference() {
+      union() {
+        translate([0, 0, -bc]) {
+          cylinder(cap_height - cap_diameter / 2 + bc, d = cap_diameter + b);
+          translate([0, 0, cap_height - cap_diameter / 2])
+            sphere(d = cap_diameter + b);
+          cylinder(foot_height + bc, d = foot_diameter + b);
+        }
       }
-    }
-    if (!negative) {
-      translate([0, 0, -e]) {
-        translate([-led_size[0] / 2, -led_size[1] / 2, ])
-          cube(led_size);
-        cylinder(hollow_height - hollow_diameter / 2, d = hollow_diameter);
-        translate([0, 0, hollow_height - hollow_diameter / 2])
-          sphere(d = hollow_diameter);
+      if (!negative) {
+        translate([0, 0, -e]) {
+          translate([-led_size[0] / 2, -led_size[1] / 2, 0])
+            cube(led_size);
+          cylinder(hollow_height - hollow_diameter / 2, d = hollow_diameter);
+          translate([0, 0, hollow_height - hollow_diameter / 2])
+            sphere(d = hollow_diameter);
+        }
+        translate([0, 0, -Cap_Diameter / 2])
+          cylinder(Cap_Diameter / 2 + e, d = Cap_Diameter);
       }
-      translate([0, 0, -Cap_Diameter / 2])
-        cylinder(Cap_Diameter / 2 + e, d = Cap_Diameter);
     }
   }
+  if (!negative)
+    color(metal_color) {
+      translate([0, 0, LED_Size[2]])
+        difference() {
+          cylinder(Sleeve_Height, d = Sleeve_Outer);
+          translate([0, 0, -e/2])
+            cylinder(Sleeve_Height + e, d = Sleeve_Inner);
+        }
+    }
 }
 

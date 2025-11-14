@@ -22,7 +22,7 @@ use <UsbCSocket.scad>;
 fn_preview = 12;
 fn_render = 100;
 
-Show_Front = false;
+Show_Front = true;
 Show_Back = true;
 Show_Components = true;
 Show_Text = true;
@@ -41,7 +41,7 @@ Mainboard_Thickness = 1.6;
 
 Black = "#222";
 Metal_Color = "#999";
-LED_Color = "#FFF";
+LED_Color = "#FFFA";
 BananaJackColors = ["#22F", "#0F0", "#FF0"];
 SliderColors = ["#F00", "#0F0", "#00F"];
 SliderPositions = [1, 0, 1];
@@ -127,8 +127,6 @@ module FunzlBoard() {
     color(Mainboard_Color)
       translate([0, Board_Size[1], Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness])
         import("../KiCad/FunzlBoard.stl", convexity=3);
-    echo("Mainboard Distance: ", Mainboard_Distance);
-    echo("Mainboard Thickness: ", Mainboard_Thickness);
 }
 
 module ComponentsFront(n = false) {
@@ -144,7 +142,7 @@ module ComponentsFront(n = false) {
       for (y = [-1, 1])
         translate([i * 20, y * 14, LedZ])
           color(LED_Color)
-            led_cap(negative=n);
+            led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
     }
   }
 
@@ -156,7 +154,7 @@ module ComponentsFront(n = false) {
     for (x = [-1, 1])
       translate([x * 14, 0, LedZ])
         color(LED_Color)
-          led_cap(negative=n);
+          led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
   }
 
   // Sliders
@@ -166,7 +164,7 @@ module ComponentsFront(n = false) {
         Slider(SliderColors[i], Metal_Color, Black, Wall_Thickness, SliderPositions[i], n);
       translate([i * 12, 20, LedZ])
         color(LED_Color)
-          led_cap(negative=n);
+          led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
     }
 
   // Banana Jacks with LEDs
@@ -176,7 +174,7 @@ module ComponentsFront(n = false) {
         BananaJack(BananaJackColors[i], [0.5, 0.5, 0.5], Wall_Thickness, false);
       translate([i * 18, -14, LedZ])
         color(LED_Color)
-          led_cap(negative=n);
+          led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
     }
 
   // Color Buttons
@@ -197,7 +195,7 @@ module ComponentsFront(n = false) {
       rotate([0, 0, i * 45 - 157.5])
       translate([47, 0, LedZ])
         color(LED_Color)
-          led_cap(negative=n);
+          led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
     }
 
   // Small Button
@@ -205,7 +203,7 @@ module ComponentsFront(n = false) {
     SmallButton(Black);
   translate([50, 45, LedZ])
     color(LED_Color)
-      led_cap(negative=n);
+      led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
 
   // Potentiometer
   translate([83, 25, Board_Size[2]])
@@ -220,7 +218,7 @@ module ComponentsFront(n = false) {
       for (y = [-1, 1])
         translate([x * 10, y * 10, LedZ])
           color(LED_Color)
-            led_cap(negative=n);
+            led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
   }
 
   // Slider Switch
@@ -231,7 +229,7 @@ module ComponentsFront(n = false) {
       for (x = [-1, 1])
         translate([0, x * 14, LedZ])
           color(LED_Color)
-            led_cap(negative=n);
+            led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
     }
 
   // Battery Indicator
@@ -239,7 +237,7 @@ module ComponentsFront(n = false) {
       BatteryIndicator(Metal_Color, n);
 
   // DIP Button
-  translate([158, 65, Board_Size[2] - Wall_Thickness - 3])
+  translate([158, 65, Board_Size[2] - Wall_Thickness - 0.5])
     DipButton("#222", Metal_Color, n);
 }
 
@@ -284,7 +282,7 @@ module ComponentsInner(n = false) {
       Battery("#222", "#2D42", false);
 
   // Buzzer
-  for (i = [-1, 0, 1])
+  for (i = [-1 : 1])
     translate([Board_Size[0] / 2 + i * 60, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness - Buzzer_Thickness]) {
       color("#880")
         cylinder(h = Buzzer_Thickness, d = Buzzer_Diameter);
@@ -306,7 +304,7 @@ module LedCircle(num, radius, n) {
     rotate([0, 0, i * 360 / num])
       translate([radius, 0, 0])
         color(LED_Color)
-          led_cap(negative=n);
+          led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
 }
 
 module Board() {

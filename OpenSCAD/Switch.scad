@@ -33,7 +33,6 @@ e2 = 2 * e;
 use <threadlib/threadlib.scad>;
 
 Switch("#00A", "#888", 12, 1.5, Negative);
-ss = Switch_Size();
 translate([-ss[0] / 2, -ss[1] / 2, 0])
   *cube(ss);
 
@@ -58,7 +57,10 @@ module Switch(base_color, metal_color, position, case_thickness, negative=false)
         if (negative)
           cylinder(Thread_Length + Lever_Length, d = Thread_Diameter);
         else
-          bolt(Thread_Size, Thread_Length, fn=$fn);
+          if ($preview)
+            cylinder(h = Thread_Length, d = Thread_Diameter);
+          else
+            bolt(Thread_Size, Thread_Length, fn=$fn);
         if (!negative)
           translate([0, 0, Lever_Pivot - Base_Size[2]])
             cylinder(h = Thread_Length + e, d = Thread_Inner_Diameter);
@@ -91,8 +93,12 @@ module Switch(base_color, metal_color, position, case_thickness, negative=false)
   if (!negative) {
     color(metal_color) {
       // Outer Nut
-      translate([0, 0, Base_Size[2] + Thread_Length - Nut_Thickness])
-        nut("M6", Nut_Thickness, Douter = Nut_Size, fn = $fn);
+      translate([0, 0, Base_Size[2] + Thread_Length - Nut_Thickness]) {
+        if ($preview)
+          cylinder(Nut_Thickness, d = Nut_Size, $fn = 6);
+        else
+          nut("M6", Nut_Thickness, Douter = Nut_Size, fn = 6);
+      }
       // Outer Washer
       translate([0, 0, Base_Size[2] + Thread_Length - Nut_Thickness - Washer_Thickness]) {
         difference() {
@@ -114,7 +120,10 @@ module Switch(base_color, metal_color, position, case_thickness, negative=false)
         }
       // Inner Nut
       translate([0, 0, Base_Size[2] + Thread_Length - Nut_Thickness * 2 - Washer_Thickness * 2 - case_thickness])
-        nut("M6", Nut_Thickness, Douter = Nut_Size, fn = $fn);
+        if ($preview)
+          cylinder(Nut_Thickness, d = Nut_Size, $fn = 6);
+        else
+          nut("M6", Nut_Thickness, Douter = Nut_Size, fn = 6);
     }
   } else {
     // Washer Notch
@@ -126,3 +135,4 @@ module Switch(base_color, metal_color, position, case_thickness, negative=false)
 
 function Switch_Back_Length() = Base_Size[2] + Thread_Length - Nut_Thickness - Washer_Thickness;
 function Switch_Size() = [max(Base_Size[0], Washer_Outer_Diameter), max(Base_Size[1], Washer_Outer_Diameter), Lever_Pivot + Lever_Length];
+ss = Switch_Size();

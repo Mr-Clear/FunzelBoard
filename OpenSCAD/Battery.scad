@@ -24,8 +24,6 @@ e2 = 2 * e;
 
 inner_box = [Case_Size[0] - Case_Thickness_Ends * 2, Case_Size[1] - Case_Thickness_Sides * 2, Case_Size[2] - Case_Thickness_Bottom];
 
-use <threadlib/threadlib.scad>;
-
 Battery("#222", "#2D4", Negative);
 
 module Battery(case_color, battery_color, negative=false) {
