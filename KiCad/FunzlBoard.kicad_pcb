@@ -433,6 +433,312 @@
 	)
 	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
 		(layer "F.Cu")
+		(uuid "02849f34-a1d2-4f08-8e35-ec69e22cf367")
+		(at 38 66)
+		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
+		(tags "LED RGB NeoPixel PLCC-4 5050")
+		(property "Reference" "D3"
+			(at 0 -3.5 0)
+			(layer "F.SilkS")
+			(uuid "5247e003-cb26-432a-80f1-a4e527e6f175")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "WS2812B"
+			(at 0 4 0)
+			(layer "F.Fab")
+			(uuid "31403d17-35b8-48b2-bdea-60c1b7967fc8")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "4a8d7e79-4943-4923-b2e3-9a50241cecab")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7273473f-642d-4651-b74a-bd021c2a0c63")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*")
+		(path "/f6bc66d5-a971-4a26-95d9-d8cc7baf3481")
+		(sheetname "/")
+		(sheetfile "FunzlBoard.kicad_sch")
+		(attr smd)
+		(fp_line
+			(start -3.5 -2.75)
+			(end -3.5 2.75)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "24d3d9d9-582b-4fa3-8d2b-471a6183f630")
+		)
+		(fp_line
+			(start -3.5 -2.75)
+			(end 3.5 -2.75)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "21c88500-caf6-4982-a887-465dacec6b48")
+		)
+		(fp_line
+			(start -3.5 2.75)
+			(end 3.05 2.75)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "a183e8f6-b6d2-4d90-ac4e-0f2f235849e9")
+		)
+		(fp_line
+			(start -2.7 0.9)
+			(end -2.7 -0.9)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "25a81001-0b75-484e-b722-73a7b6852cf2")
+		)
+		(fp_line
+			(start 2.7 0.9)
+			(end 2.7 -0.9)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "3ad56572-bba1-43c8-94bf-e7817db53eff")
+		)
+		(fp_line
+			(start 3.05 2.75)
+			(end 3.5 2.3)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "c3bfb7da-c14c-41ef-a213-0e3864be1419")
+		)
+		(fp_line
+			(start 3.5 2.3)
+			(end 3.5 -2.75)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "423d6dad-7798-413f-be23-9c5a0fe52fb3")
+		)
+		(fp_line
+			(start -3.45 -2.75)
+			(end -3.45 2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "1e8bcb6a-7c00-4e1c-ae45-47240bb07730")
+		)
+		(fp_line
+			(start -3.45 2.75)
+			(end 3.45 2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "e0a2acb2-3e85-4865-af74-7f9b411addf3")
+		)
+		(fp_line
+			(start 3.45 -2.75)
+			(end -3.45 -2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "dc8b0061-bfba-4bf2-9b66-9580c583e9c2")
+		)
+		(fp_line
+			(start 3.45 2.75)
+			(end 3.45 -2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "3fb62ecd-7596-4c16-b7bb-ab8e3719e7b8")
+		)
+		(fp_line
+			(start -2.5 -2.5)
+			(end -2.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "bd9725fc-1069-441a-835c-eea724894334")
+		)
+		(fp_line
+			(start -2.5 2.5)
+			(end 2.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "00462c84-abad-4b4d-9c6c-3ae5af1d81cd")
+		)
+		(fp_line
+			(start 2.5 -2.5)
+			(end -2.5 -2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "10380e52-9681-4cb1-beea-34bdf96a6240")
+		)
+		(fp_line
+			(start 2.5 1.5)
+			(end 1.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "e8802904-8727-42aa-aa0f-2192754462e6")
+		)
+		(fp_line
+			(start 2.5 2.5)
+			(end 2.5 -2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "73c04893-3696-4509-b774-2d2806f4de22")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 0 -2)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "dd0e9f95-05d2-4638-b43f-9a717c39aec1")
+		)
+		(fp_text user "1"
+			(at -4 -1.6 0)
+			(unlocked yes)
+			(layer "F.SilkS")
+			(uuid "2e9fb7e6-b213-46d8-86d7-694792e736e6")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.15)
+				)
+			)
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "0b279f23-f6ed-4e35-a669-821fa0b7f5fc")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -2.45 -1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 3 "+5V")
+			(pinfunction "VDD")
+			(pintype "power_in")
+			(uuid "2f973115-fc75-4e76-8e9a-e2728f82c0e3")
+		)
+		(pad "2" smd roundrect
+			(at -2.45 1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 6 "Net-(D3-DOUT)")
+			(pinfunction "DOUT")
+			(pintype "output")
+			(uuid "8ffff43b-9bc6-486a-aaca-ab87a32074b6")
+		)
+		(pad "3" smd roundrect
+			(at 2.45 1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 2 "GND")
+			(pinfunction "VSS")
+			(pintype "power_in")
+			(uuid "6d1278f8-4546-412f-8246-5000b2d77bbe")
+		)
+		(pad "4" smd roundrect
+			(at 2.45 -1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 5 "Net-(D2-DOUT)")
+			(pinfunction "DIN")
+			(pintype "input")
+			(uuid "a402e417-533a-4f5d-a261-038df8a2484c")
+		)
+		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
+		(layer "F.Cu")
 		(uuid "02e7d39b-bd1b-4261-b22d-2578c5cd6e0c")
 		(at 262.67 60.41)
 		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
@@ -747,7 +1053,7 @@
 			(at 0 -4.7 0)
 			(layer "F.SilkS")
 			(hide yes)
-			(uuid "1ba13b40-4933-4399-9ed0-9c22a04df77b")
+			(uuid "5ac0d5d9-38a8-47e5-8acd-743719242508")
 			(effects
 				(font
 					(size 1 1)
@@ -759,7 +1065,7 @@
 			(at 0 4.7 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "7b06d27d-0b13-445d-8422-38c9338d5310")
+			(uuid "fd542aa8-704b-4d41-bea5-f40a0f6eac14")
 			(effects
 				(font
 					(size 1 1)
@@ -771,7 +1077,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "a1523578-079e-4ca2-be2a-0bb338d94135")
+			(uuid "b6d14fc7-0f89-4eda-8316-d191b8fb690a")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -783,7 +1089,7 @@
 			(at 0 0 0)
 			(layer "F.Fab")
 			(hide yes)
-			(uuid "1b640727-a755-43f2-9346-dca24f76991c")
+			(uuid "42d0c433-d153-4b07-97a4-44d6a25adc89")
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -6141,7 +6447,7 @@
 	(footprint "MountingHole:MountingHole_4.3mm_M4_DIN965"
 		(layer "F.Cu")
 		(uuid "6fffc952-32df-4553-9222-eabf2e0565eb")
-		(at 100 90)
+		(at 100 65)
 		(descr "Mounting Hole 4.3mm, M4, no annular, generated by kicad-footprint-generator mountinghole.py")
 		(tags "mountinghole M4 DIN965")
 		(property "Reference" "H5"
@@ -7465,6 +7771,312 @@
 	)
 	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
 		(layer "F.Cu")
+		(uuid "8dda4000-4c49-4112-9470-bfb998da6ba4")
+		(at 20 66)
+		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
+		(tags "LED RGB NeoPixel PLCC-4 5050")
+		(property "Reference" "D2"
+			(at 0 -3.5 0)
+			(layer "F.SilkS")
+			(uuid "e4ce5a5f-95c0-43b9-8d44-365e438ad7cd")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "WS2812B"
+			(at 0 4 0)
+			(layer "F.Fab")
+			(uuid "3cfb8682-4819-4266-bbc9-25bc6f552ff1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "9b2842b6-390b-448a-aa6f-f4ea533ebb71")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "7d8b10c7-830b-4766-a569-69d3806274e4")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*")
+		(path "/4c17fbaf-82ca-4005-8b3e-072bee61da5e")
+		(sheetname "/")
+		(sheetfile "FunzlBoard.kicad_sch")
+		(attr smd)
+		(fp_line
+			(start -3.5 -2.75)
+			(end -3.5 2.75)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "0a76dac3-8cca-407a-acce-99dde6f42d67")
+		)
+		(fp_line
+			(start -3.5 -2.75)
+			(end 3.5 -2.75)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "831f5dfc-06e7-4495-b1cd-5f4bf9179990")
+		)
+		(fp_line
+			(start -3.5 2.75)
+			(end 3.05 2.75)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "4c1f01b3-0067-4ba5-b69a-85eb561bca16")
+		)
+		(fp_line
+			(start -2.7 0.9)
+			(end -2.7 -0.9)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "34fc2d90-b739-4fa8-87e5-148ba8a4b787")
+		)
+		(fp_line
+			(start 2.7 0.9)
+			(end 2.7 -0.9)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "e1cfdde6-b91e-4d8d-b9bd-48fb353bd2ef")
+		)
+		(fp_line
+			(start 3.05 2.75)
+			(end 3.5 2.3)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "8f57d71f-1b53-4f32-a024-c49f7aa3f16a")
+		)
+		(fp_line
+			(start 3.5 2.3)
+			(end 3.5 -2.75)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "ce59b317-fbe0-4839-ad76-9e24497d6ab3")
+		)
+		(fp_line
+			(start -3.45 -2.75)
+			(end -3.45 2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "b749debe-25a8-4349-b88e-a1039f279fb7")
+		)
+		(fp_line
+			(start -3.45 2.75)
+			(end 3.45 2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "e55ae9f8-97ae-48cf-b59f-9b62b70ef43a")
+		)
+		(fp_line
+			(start 3.45 -2.75)
+			(end -3.45 -2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "afc0ad43-150a-44e7-a30b-35a5dde6b2a0")
+		)
+		(fp_line
+			(start 3.45 2.75)
+			(end 3.45 -2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "693e7449-f4f6-41d6-bd41-a2d5509c60cc")
+		)
+		(fp_line
+			(start -2.5 -2.5)
+			(end -2.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "71bdfc33-bf02-4421-87e7-da6f4df14693")
+		)
+		(fp_line
+			(start -2.5 2.5)
+			(end 2.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "20f507b1-bf21-4354-ad58-b6eb34b2fca9")
+		)
+		(fp_line
+			(start 2.5 -2.5)
+			(end -2.5 -2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "c8ac9b8c-44c6-4ed9-88dd-c0b1964d2fd2")
+		)
+		(fp_line
+			(start 2.5 1.5)
+			(end 1.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "25c2bf0e-6e77-4755-8f2e-50225b1ca75a")
+		)
+		(fp_line
+			(start 2.5 2.5)
+			(end 2.5 -2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "211ed486-abb0-46dc-9b03-331b8ce73b4c")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 0 -2)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "173979d5-d1af-47ce-9182-9ee008d29435")
+		)
+		(fp_text user "1"
+			(at -4 -1.6 0)
+			(unlocked yes)
+			(layer "F.SilkS")
+			(uuid "383b262e-f724-4829-9030-c143b1a75b7d")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.15)
+				)
+			)
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "478e5f31-a7ba-43d6-b6d2-85737d91c281")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -2.45 -1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 3 "+5V")
+			(pinfunction "VDD")
+			(pintype "power_in")
+			(uuid "9198d0f6-3aa3-411b-aac7-1caac161fc8d")
+		)
+		(pad "2" smd roundrect
+			(at -2.45 1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 5 "Net-(D2-DOUT)")
+			(pinfunction "DOUT")
+			(pintype "output")
+			(uuid "757aa509-871c-48f0-8c44-d40f8ad6ef12")
+		)
+		(pad "3" smd roundrect
+			(at 2.45 1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 2 "GND")
+			(pinfunction "VSS")
+			(pintype "power_in")
+			(uuid "5079615d-60d5-43d2-bf8b-b00640ea6e24")
+		)
+		(pad "4" smd roundrect
+			(at 2.45 -1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 4 "Net-(D1-DOUT)")
+			(pinfunction "DIN")
+			(pintype "input")
+			(uuid "16006de5-3f38-4556-b362-d7a4cc036ed6")
+		)
+		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
+		(layer "F.Cu")
 		(uuid "971fe210-6c2a-4d0c-b16b-277f94f65408")
 		(at 262.67 67.03)
 		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
@@ -8367,6 +8979,312 @@
 			(pinfunction "DIN")
 			(pintype "input")
 			(uuid "9ca3519a-861b-4c05-8755-f91dffb6741b")
+		)
+		(embedded_fonts no)
+		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
+			(offset
+				(xyz 0 0 0)
+			)
+			(scale
+				(xyz 1 1 1)
+			)
+			(rotate
+				(xyz 0 0 0)
+			)
+		)
+	)
+	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
+		(layer "F.Cu")
+		(uuid "ac3bfb4a-2b50-4604-82dc-0867b0d1e313")
+		(at 56 66)
+		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
+		(tags "LED RGB NeoPixel PLCC-4 5050")
+		(property "Reference" "D4"
+			(at 0 -3.5 0)
+			(layer "F.SilkS")
+			(uuid "7c77afb2-ee56-4e33-9eb2-9c8bcbfa1ba1")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Value" "WS2812B"
+			(at 0 4 0)
+			(layer "F.Fab")
+			(uuid "9c11ea5b-efa3-4bae-b44f-607f0bd7cb24")
+			(effects
+				(font
+					(size 1 1)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Datasheet" "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "b4b64a44-68a7-4983-a3d3-19c55cd1bbdb")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property "Description" "RGB LED with integrated controller"
+			(at 0 0 0)
+			(unlocked yes)
+			(layer "F.Fab")
+			(hide yes)
+			(uuid "ddcef443-6227-45b5-ac60-499d61fab571")
+			(effects
+				(font
+					(size 1.27 1.27)
+					(thickness 0.15)
+				)
+			)
+		)
+		(property ki_fp_filters "LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*")
+		(path "/06339716-1234-493f-8143-2b6a3ac00f98")
+		(sheetname "/")
+		(sheetfile "FunzlBoard.kicad_sch")
+		(attr smd)
+		(fp_line
+			(start -3.5 -2.75)
+			(end -3.5 2.75)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "54aa58bc-25dc-4a1b-b900-c714fe3a9cc0")
+		)
+		(fp_line
+			(start -3.5 -2.75)
+			(end 3.5 -2.75)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "bd7e78b3-1f30-4eb7-ad19-07703e6b0b75")
+		)
+		(fp_line
+			(start -3.5 2.75)
+			(end 3.05 2.75)
+			(stroke
+				(width 0.12)
+				(type solid)
+			)
+			(layer "F.SilkS")
+			(uuid "babb20d4-57f2-4bec-9bbd-417e7d8c9682")
+		)
+		(fp_line
+			(start -2.7 0.9)
+			(end -2.7 -0.9)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "040d0092-c929-495c-982f-193c3817d995")
+		)
+		(fp_line
+			(start 2.7 0.9)
+			(end 2.7 -0.9)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "ac655185-2f45-4067-8303-17aaaf6f93bd")
+		)
+		(fp_line
+			(start 3.05 2.75)
+			(end 3.5 2.3)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "6f43c17b-8220-4c96-b3e8-2f01d2cad65d")
+		)
+		(fp_line
+			(start 3.5 2.3)
+			(end 3.5 -2.75)
+			(stroke
+				(width 0.12)
+				(type default)
+			)
+			(layer "F.SilkS")
+			(uuid "8571f76d-153e-452d-b2c5-ee74b500924b")
+		)
+		(fp_line
+			(start -3.45 -2.75)
+			(end -3.45 2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "1d166570-f90d-4228-b476-7b46306ef234")
+		)
+		(fp_line
+			(start -3.45 2.75)
+			(end 3.45 2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "902fa923-0540-4621-8dba-38d5bba5c196")
+		)
+		(fp_line
+			(start 3.45 -2.75)
+			(end -3.45 -2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "dfba67c4-f73d-4005-bf3c-f8d868b825db")
+		)
+		(fp_line
+			(start 3.45 2.75)
+			(end 3.45 -2.75)
+			(stroke
+				(width 0.05)
+				(type solid)
+			)
+			(layer "F.CrtYd")
+			(uuid "c7a26a67-b7a0-4f3b-abae-1a325978ad46")
+		)
+		(fp_line
+			(start -2.5 -2.5)
+			(end -2.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "1cf94887-214f-44c6-9948-a389d215653d")
+		)
+		(fp_line
+			(start -2.5 2.5)
+			(end 2.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "cd588002-5e68-425c-a03c-a559fecaf15b")
+		)
+		(fp_line
+			(start 2.5 -2.5)
+			(end -2.5 -2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "4112510f-9e4f-4bb4-92fa-eee2c121efc4")
+		)
+		(fp_line
+			(start 2.5 1.5)
+			(end 1.5 2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "d75a96a7-e86a-42c1-a7c4-4a063b692ce4")
+		)
+		(fp_line
+			(start 2.5 2.5)
+			(end 2.5 -2.5)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(layer "F.Fab")
+			(uuid "3b6fd9fb-84c0-4396-9b3c-a9193691bfa1")
+		)
+		(fp_circle
+			(center 0 0)
+			(end 0 -2)
+			(stroke
+				(width 0.1)
+				(type solid)
+			)
+			(fill no)
+			(layer "F.Fab")
+			(uuid "49ff6ac0-fbf7-4280-a06a-39771db882a0")
+		)
+		(fp_text user "1"
+			(at -4 -1.6 0)
+			(unlocked yes)
+			(layer "F.SilkS")
+			(uuid "27d8cefe-74f3-4d7e-9e0d-e8bd960b360a")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.15)
+				)
+			)
+		)
+		(fp_text user "${REFERENCE}"
+			(at 0 0 0)
+			(layer "F.Fab")
+			(uuid "de7dd483-5925-4ed7-9bfc-5ff641d76972")
+			(effects
+				(font
+					(size 0.8 0.8)
+					(thickness 0.15)
+				)
+			)
+		)
+		(pad "1" smd roundrect
+			(at -2.45 -1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 3 "+5V")
+			(pinfunction "VDD")
+			(pintype "power_in")
+			(uuid "1302ce3f-17c0-4973-84c7-304c6bea8862")
+		)
+		(pad "2" smd roundrect
+			(at -2.45 1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 7 "Net-(D4-DOUT)")
+			(pinfunction "DOUT")
+			(pintype "output")
+			(uuid "ada2d20c-afa1-47fd-8c5e-cdb464e66d9c")
+		)
+		(pad "3" smd roundrect
+			(at 2.45 1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 2 "GND")
+			(pinfunction "VSS")
+			(pintype "power_in")
+			(uuid "7c968157-791b-43b2-95a8-a2bfbe34e961")
+		)
+		(pad "4" smd roundrect
+			(at 2.45 -1.65)
+			(size 1.5 0.9)
+			(layers "F.Cu" "F.Mask" "F.Paste")
+			(roundrect_rratio 0.1)
+			(net 6 "Net-(D3-DOUT)")
+			(pinfunction "DIN")
+			(pintype "input")
+			(uuid "9fccc905-8a97-451c-b15e-0a9045459306")
 		)
 		(embedded_fonts no)
 		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
@@ -13667,942 +14585,6 @@
 			(pinfunction "DIN")
 			(pintype "input")
 			(uuid "2ad8ff84-a6fe-4649-bd1a-6fda7d396ae9")
-		)
-		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
-		(layer "B.Cu")
-		(uuid "02849f34-a1d2-4f08-8e35-ec69e22cf367")
-		(at 38 86 180)
-		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
-		(tags "LED RGB NeoPixel PLCC-4 5050")
-		(property "Reference" "D3"
-			(at 0 3.5 0)
-			(layer "B.SilkS")
-			(uuid "5247e003-cb26-432a-80f1-a4e527e6f175")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Value" "WS2812B"
-			(at 0 -4 0)
-			(layer "B.Fab")
-			(uuid "31403d17-35b8-48b2-bdea-60c1b7967fc8")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "4a8d7e79-4943-4923-b2e3-9a50241cecab")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Description" "RGB LED with integrated controller"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "7273473f-642d-4651-b74a-bd021c2a0c63")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property ki_fp_filters "LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*")
-		(path "/f6bc66d5-a971-4a26-95d9-d8cc7baf3481")
-		(sheetname "/")
-		(sheetfile "FunzlBoard.kicad_sch")
-		(attr smd)
-		(fp_line
-			(start 3.5 -2.3)
-			(end 3.5 2.75)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "423d6dad-7798-413f-be23-9c5a0fe52fb3")
-		)
-		(fp_line
-			(start 3.05 -2.75)
-			(end 3.5 -2.3)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "c3bfb7da-c14c-41ef-a213-0e3864be1419")
-		)
-		(fp_line
-			(start 2.7 -0.9)
-			(end 2.7 0.9)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "3ad56572-bba1-43c8-94bf-e7817db53eff")
-		)
-		(fp_line
-			(start -2.7 -0.9)
-			(end -2.7 0.9)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "25a81001-0b75-484e-b722-73a7b6852cf2")
-		)
-		(fp_line
-			(start -3.5 2.75)
-			(end 3.5 2.75)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "21c88500-caf6-4982-a887-465dacec6b48")
-		)
-		(fp_line
-			(start -3.5 2.75)
-			(end -3.5 -2.75)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "24d3d9d9-582b-4fa3-8d2b-471a6183f630")
-		)
-		(fp_line
-			(start -3.5 -2.75)
-			(end 3.05 -2.75)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "a183e8f6-b6d2-4d90-ac4e-0f2f235849e9")
-		)
-		(fp_line
-			(start 3.45 2.75)
-			(end -3.45 2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "dc8b0061-bfba-4bf2-9b66-9580c583e9c2")
-		)
-		(fp_line
-			(start 3.45 -2.75)
-			(end 3.45 2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "3fb62ecd-7596-4c16-b7bb-ab8e3719e7b8")
-		)
-		(fp_line
-			(start -3.45 2.75)
-			(end -3.45 -2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "1e8bcb6a-7c00-4e1c-ae45-47240bb07730")
-		)
-		(fp_line
-			(start -3.45 -2.75)
-			(end 3.45 -2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "e0a2acb2-3e85-4865-af74-7f9b411addf3")
-		)
-		(fp_line
-			(start 2.5 2.5)
-			(end -2.5 2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "10380e52-9681-4cb1-beea-34bdf96a6240")
-		)
-		(fp_line
-			(start 2.5 -1.5)
-			(end 1.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "e8802904-8727-42aa-aa0f-2192754462e6")
-		)
-		(fp_line
-			(start 2.5 -2.5)
-			(end 2.5 2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "73c04893-3696-4509-b774-2d2806f4de22")
-		)
-		(fp_line
-			(start -2.5 2.5)
-			(end -2.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "bd9725fc-1069-441a-835c-eea724894334")
-		)
-		(fp_line
-			(start -2.5 -2.5)
-			(end 2.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "00462c84-abad-4b4d-9c6c-3ae5af1d81cd")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 0 2)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "B.Fab")
-			(uuid "dd0e9f95-05d2-4638-b43f-9a717c39aec1")
-		)
-		(fp_text user "1"
-			(at -4 1.6 0)
-			(unlocked yes)
-			(layer "B.SilkS")
-			(uuid "2e9fb7e6-b213-46d8-86d7-694792e736e6")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(uuid "0b279f23-f6ed-4e35-a669-821fa0b7f5fc")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(pad "1" smd roundrect
-			(at -2.45 1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 3 "+5V")
-			(pinfunction "VDD")
-			(pintype "power_in")
-			(uuid "2f973115-fc75-4e76-8e9a-e2728f82c0e3")
-		)
-		(pad "2" smd roundrect
-			(at -2.45 -1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 6 "Net-(D3-DOUT)")
-			(pinfunction "DOUT")
-			(pintype "output")
-			(uuid "8ffff43b-9bc6-486a-aaca-ab87a32074b6")
-		)
-		(pad "3" smd roundrect
-			(at 2.45 -1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 2 "GND")
-			(pinfunction "VSS")
-			(pintype "power_in")
-			(uuid "6d1278f8-4546-412f-8246-5000b2d77bbe")
-		)
-		(pad "4" smd roundrect
-			(at 2.45 1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 5 "Net-(D2-DOUT)")
-			(pinfunction "DIN")
-			(pintype "input")
-			(uuid "a402e417-533a-4f5d-a261-038df8a2484c")
-		)
-		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
-		(layer "B.Cu")
-		(uuid "8dda4000-4c49-4112-9470-bfb998da6ba4")
-		(at 20 86 180)
-		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
-		(tags "LED RGB NeoPixel PLCC-4 5050")
-		(property "Reference" "D2"
-			(at 0 3.5 0)
-			(layer "B.SilkS")
-			(uuid "e4ce5a5f-95c0-43b9-8d44-365e438ad7cd")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Value" "WS2812B"
-			(at 0 -4 0)
-			(layer "B.Fab")
-			(uuid "3cfb8682-4819-4266-bbc9-25bc6f552ff1")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "9b2842b6-390b-448a-aa6f-f4ea533ebb71")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Description" "RGB LED with integrated controller"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "7d8b10c7-830b-4766-a569-69d3806274e4")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property ki_fp_filters "LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*")
-		(path "/4c17fbaf-82ca-4005-8b3e-072bee61da5e")
-		(sheetname "/")
-		(sheetfile "FunzlBoard.kicad_sch")
-		(attr smd)
-		(fp_line
-			(start 3.5 -2.3)
-			(end 3.5 2.75)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "ce59b317-fbe0-4839-ad76-9e24497d6ab3")
-		)
-		(fp_line
-			(start 3.05 -2.75)
-			(end 3.5 -2.3)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "8f57d71f-1b53-4f32-a024-c49f7aa3f16a")
-		)
-		(fp_line
-			(start 2.7 -0.9)
-			(end 2.7 0.9)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "e1cfdde6-b91e-4d8d-b9bd-48fb353bd2ef")
-		)
-		(fp_line
-			(start -2.7 -0.9)
-			(end -2.7 0.9)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "34fc2d90-b739-4fa8-87e5-148ba8a4b787")
-		)
-		(fp_line
-			(start -3.5 2.75)
-			(end 3.5 2.75)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "831f5dfc-06e7-4495-b1cd-5f4bf9179990")
-		)
-		(fp_line
-			(start -3.5 2.75)
-			(end -3.5 -2.75)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "0a76dac3-8cca-407a-acce-99dde6f42d67")
-		)
-		(fp_line
-			(start -3.5 -2.75)
-			(end 3.05 -2.75)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "4c1f01b3-0067-4ba5-b69a-85eb561bca16")
-		)
-		(fp_line
-			(start 3.45 2.75)
-			(end -3.45 2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "afc0ad43-150a-44e7-a30b-35a5dde6b2a0")
-		)
-		(fp_line
-			(start 3.45 -2.75)
-			(end 3.45 2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "693e7449-f4f6-41d6-bd41-a2d5509c60cc")
-		)
-		(fp_line
-			(start -3.45 2.75)
-			(end -3.45 -2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "b749debe-25a8-4349-b88e-a1039f279fb7")
-		)
-		(fp_line
-			(start -3.45 -2.75)
-			(end 3.45 -2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "e55ae9f8-97ae-48cf-b59f-9b62b70ef43a")
-		)
-		(fp_line
-			(start 2.5 2.5)
-			(end -2.5 2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "c8ac9b8c-44c6-4ed9-88dd-c0b1964d2fd2")
-		)
-		(fp_line
-			(start 2.5 -1.5)
-			(end 1.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "25c2bf0e-6e77-4755-8f2e-50225b1ca75a")
-		)
-		(fp_line
-			(start 2.5 -2.5)
-			(end 2.5 2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "211ed486-abb0-46dc-9b03-331b8ce73b4c")
-		)
-		(fp_line
-			(start -2.5 2.5)
-			(end -2.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "71bdfc33-bf02-4421-87e7-da6f4df14693")
-		)
-		(fp_line
-			(start -2.5 -2.5)
-			(end 2.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "20f507b1-bf21-4354-ad58-b6eb34b2fca9")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 0 2)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "B.Fab")
-			(uuid "173979d5-d1af-47ce-9182-9ee008d29435")
-		)
-		(fp_text user "1"
-			(at -4 1.6 0)
-			(unlocked yes)
-			(layer "B.SilkS")
-			(uuid "383b262e-f724-4829-9030-c143b1a75b7d")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(uuid "478e5f31-a7ba-43d6-b6d2-85737d91c281")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(pad "1" smd roundrect
-			(at -2.45 1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 3 "+5V")
-			(pinfunction "VDD")
-			(pintype "power_in")
-			(uuid "9198d0f6-3aa3-411b-aac7-1caac161fc8d")
-		)
-		(pad "2" smd roundrect
-			(at -2.45 -1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 5 "Net-(D2-DOUT)")
-			(pinfunction "DOUT")
-			(pintype "output")
-			(uuid "757aa509-871c-48f0-8c44-d40f8ad6ef12")
-		)
-		(pad "3" smd roundrect
-			(at 2.45 -1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 2 "GND")
-			(pinfunction "VSS")
-			(pintype "power_in")
-			(uuid "5079615d-60d5-43d2-bf8b-b00640ea6e24")
-		)
-		(pad "4" smd roundrect
-			(at 2.45 1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 4 "Net-(D1-DOUT)")
-			(pinfunction "DIN")
-			(pintype "input")
-			(uuid "16006de5-3f38-4556-b362-d7a4cc036ed6")
-		)
-		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
-			(offset
-				(xyz 0 0 0)
-			)
-			(scale
-				(xyz 1 1 1)
-			)
-			(rotate
-				(xyz 0 0 0)
-			)
-		)
-	)
-	(footprint "LED_SMD:LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm"
-		(layer "B.Cu")
-		(uuid "ac3bfb4a-2b50-4604-82dc-0867b0d1e313")
-		(at 56 86 180)
-		(descr "5.0mm x 5.0mm Addressable RGB LED NeoPixel, https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf")
-		(tags "LED RGB NeoPixel PLCC-4 5050")
-		(property "Reference" "D4"
-			(at 0 3.5 0)
-			(layer "B.SilkS")
-			(uuid "7c77afb2-ee56-4e33-9eb2-9c8bcbfa1ba1")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Value" "WS2812B"
-			(at 0 -4 0)
-			(layer "B.Fab")
-			(uuid "9c11ea5b-efa3-4bae-b44f-607f0bd7cb24")
-			(effects
-				(font
-					(size 1 1)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Datasheet" "https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "b4b64a44-68a7-4983-a3d3-19c55cd1bbdb")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property "Description" "RGB LED with integrated controller"
-			(at 0 0 0)
-			(unlocked yes)
-			(layer "B.Fab")
-			(hide yes)
-			(uuid "ddcef443-6227-45b5-ac60-499d61fab571")
-			(effects
-				(font
-					(size 1.27 1.27)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(property ki_fp_filters "LED*WS2812*PLCC*5.0x5.0mm*P3.2mm*")
-		(path "/06339716-1234-493f-8143-2b6a3ac00f98")
-		(sheetname "/")
-		(sheetfile "FunzlBoard.kicad_sch")
-		(attr smd)
-		(fp_line
-			(start 3.5 -2.3)
-			(end 3.5 2.75)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "8571f76d-153e-452d-b2c5-ee74b500924b")
-		)
-		(fp_line
-			(start 3.05 -2.75)
-			(end 3.5 -2.3)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "6f43c17b-8220-4c96-b3e8-2f01d2cad65d")
-		)
-		(fp_line
-			(start 2.7 -0.9)
-			(end 2.7 0.9)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "ac655185-2f45-4067-8303-17aaaf6f93bd")
-		)
-		(fp_line
-			(start -2.7 -0.9)
-			(end -2.7 0.9)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "040d0092-c929-495c-982f-193c3817d995")
-		)
-		(fp_line
-			(start -3.5 2.75)
-			(end 3.5 2.75)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "bd7e78b3-1f30-4eb7-ad19-07703e6b0b75")
-		)
-		(fp_line
-			(start -3.5 2.75)
-			(end -3.5 -2.75)
-			(stroke
-				(width 0.12)
-				(type default)
-			)
-			(layer "B.SilkS")
-			(uuid "54aa58bc-25dc-4a1b-b900-c714fe3a9cc0")
-		)
-		(fp_line
-			(start -3.5 -2.75)
-			(end 3.05 -2.75)
-			(stroke
-				(width 0.12)
-				(type solid)
-			)
-			(layer "B.SilkS")
-			(uuid "babb20d4-57f2-4bec-9bbd-417e7d8c9682")
-		)
-		(fp_line
-			(start 3.45 2.75)
-			(end -3.45 2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "dfba67c4-f73d-4005-bf3c-f8d868b825db")
-		)
-		(fp_line
-			(start 3.45 -2.75)
-			(end 3.45 2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "c7a26a67-b7a0-4f3b-abae-1a325978ad46")
-		)
-		(fp_line
-			(start -3.45 2.75)
-			(end -3.45 -2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "1d166570-f90d-4228-b476-7b46306ef234")
-		)
-		(fp_line
-			(start -3.45 -2.75)
-			(end 3.45 -2.75)
-			(stroke
-				(width 0.05)
-				(type solid)
-			)
-			(layer "B.CrtYd")
-			(uuid "902fa923-0540-4621-8dba-38d5bba5c196")
-		)
-		(fp_line
-			(start 2.5 2.5)
-			(end -2.5 2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "4112510f-9e4f-4bb4-92fa-eee2c121efc4")
-		)
-		(fp_line
-			(start 2.5 -1.5)
-			(end 1.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "d75a96a7-e86a-42c1-a7c4-4a063b692ce4")
-		)
-		(fp_line
-			(start 2.5 -2.5)
-			(end 2.5 2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "3b6fd9fb-84c0-4396-9b3c-a9193691bfa1")
-		)
-		(fp_line
-			(start -2.5 2.5)
-			(end -2.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "1cf94887-214f-44c6-9948-a389d215653d")
-		)
-		(fp_line
-			(start -2.5 -2.5)
-			(end 2.5 -2.5)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(layer "B.Fab")
-			(uuid "cd588002-5e68-425c-a03c-a559fecaf15b")
-		)
-		(fp_circle
-			(center 0 0)
-			(end 0 2)
-			(stroke
-				(width 0.1)
-				(type solid)
-			)
-			(fill no)
-			(layer "B.Fab")
-			(uuid "49ff6ac0-fbf7-4280-a06a-39771db882a0")
-		)
-		(fp_text user "1"
-			(at -4 1.6 0)
-			(unlocked yes)
-			(layer "B.SilkS")
-			(uuid "27d8cefe-74f3-4d7e-9e0d-e8bd960b360a")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(fp_text user "${REFERENCE}"
-			(at 0 0 0)
-			(layer "B.Fab")
-			(uuid "de7dd483-5925-4ed7-9bfc-5ff641d76972")
-			(effects
-				(font
-					(size 0.8 0.8)
-					(thickness 0.15)
-				)
-				(justify mirror)
-			)
-		)
-		(pad "1" smd roundrect
-			(at -2.45 1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 3 "+5V")
-			(pinfunction "VDD")
-			(pintype "power_in")
-			(uuid "1302ce3f-17c0-4973-84c7-304c6bea8862")
-		)
-		(pad "2" smd roundrect
-			(at -2.45 -1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 7 "Net-(D4-DOUT)")
-			(pinfunction "DOUT")
-			(pintype "output")
-			(uuid "ada2d20c-afa1-47fd-8c5e-cdb464e66d9c")
-		)
-		(pad "3" smd roundrect
-			(at 2.45 -1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 2 "GND")
-			(pinfunction "VSS")
-			(pintype "power_in")
-			(uuid "7c968157-791b-43b2-95a8-a2bfbe34e961")
-		)
-		(pad "4" smd roundrect
-			(at 2.45 1.65 180)
-			(size 1.5 0.9)
-			(layers "B.Cu" "B.Mask" "B.Paste")
-			(roundrect_rratio 0.1)
-			(net 6 "Net-(D3-DOUT)")
-			(pinfunction "DIN")
-			(pintype "input")
-			(uuid "9fccc905-8a97-451c-b15e-0a9045459306")
 		)
 		(embedded_fonts no)
 		(model "${KICAD9_3DMODEL_DIR}/LED_SMD.3dshapes/LED_WS2812B_PLCC4_5.0x5.0mm_P3.2mm.step"
