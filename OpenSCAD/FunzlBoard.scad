@@ -172,7 +172,7 @@ module ComponentsFront(n = false) {
     for (i = [0 : 2]) {
       translate([i * 18, 0, Board_Size[2]])
         BananaJack(BananaJackColors[i], [0.5, 0.5, 0.5], Wall_Thickness, false);
-      translate([i * 18, -14, LedZ])
+      translate([i * 18, -12, LedZ])
         color(LED_Color)
           led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
     }

@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "FunzlBoard")(type "KiCad")(uri "${KIPRJMOD}/Lib/FunzlBoard.kicad_sym")(options "")(descr ""))
+)
