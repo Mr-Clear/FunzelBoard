@@ -22,7 +22,7 @@ Hold_Pin_Distance = 15.5;
 Signal_Pin_Width = 0.8;
 Signal_Pin_Thickness = 0.3;
 Signal_Pin_Distance = 3.75;
-Signal_Pin_Offsets = [1.8, -0.6, 1.8];
+Signal_Pin_Offsets = [0.6, -1.8, 0.6];
 
 e = 0.001;
 

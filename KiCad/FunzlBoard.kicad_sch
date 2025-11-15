@@ -389,6 +389,170 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:R_Potentiometer"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "RV"
+				(at -4.445 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "R_Potentiometer"
+				(at -2.54 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Potentiometer"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "resistor variable"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "Potentiometer*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "R_Potentiometer_0_1"
+				(rectangle
+					(start 1.016 2.54)
+					(end -1.016 -2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.143 0) (xy 2.286 0.508) (xy 2.286 -0.508) (xy 1.143 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type outline)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 1.524 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "R_Potentiometer_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 3.81 0 180)
+					(length 1.27)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "FunzlBoard:ESP32-C3_SUPERMINI_SMD"
 			(pin_names
 				(offset 1.016)
@@ -2373,6 +2537,10 @@
 		(uuid "068e360c-4576-4d83-9f49-5c7ccff6726f")
 	)
 	(no_connect
+		(at 205.74 138.43)
+		(uuid "0f91630f-9ad9-4128-8adf-381b39a725d5")
+	)
+	(no_connect
 		(at 302.26 100.33)
 		(uuid "1c8b4e0b-c3e4-46c9-a7d6-14ae8b36f86c")
 	)
@@ -2406,6 +2574,36 @@
 	)
 	(wire
 		(pts
+			(xy 173.99 106.68) (xy 151.13 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "0540d808-193b-48e3-8427-cc4cfd10f491")
+	)
+	(wire
+		(pts
+			(xy 176.53 130.81) (xy 176.53 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "089ce06a-b581-41da-ba74-31dde8a3bbd4")
+	)
+	(wire
+		(pts
+			(xy 266.7 125.73) (xy 292.1 125.73)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "097c267c-7114-47cb-8afd-874bdb734fd3")
+	)
+	(wire
+		(pts
 			(xy 15.24 140.97) (xy 15.24 30.48)
 		)
 		(stroke
@@ -2413,6 +2611,96 @@
 			(type default)
 		)
 		(uuid "1838ab92-7a60-46f7-865c-1ba66de05f73")
+	)
+	(wire
+		(pts
+			(xy 317.5 130.81) (xy 317.5 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "282c6550-8666-48b7-8561-85f427f3aa96")
+	)
+	(wire
+		(pts
+			(xy 175.26 105.41) (xy 160.02 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "285f0570-bade-4925-87d7-842b73663f1c")
+	)
+	(wire
+		(pts
+			(xy 185.42 135.89) (xy 173.99 135.89)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2fe88a7f-439a-4bed-9ead-9f47c39ccb1d")
+	)
+	(wire
+		(pts
+			(xy 185.42 138.43) (xy 172.72 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3cdd2d15-ad99-4dc7-9841-8cf6444e2d36")
+	)
+	(wire
+		(pts
+			(xy 185.42 130.81) (xy 176.53 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4dd8b3e8-480c-4d67-8078-f702c424c135")
+	)
+	(wire
+		(pts
+			(xy 185.42 128.27) (xy 177.8 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "65ae5c2b-fd57-40c4-9afc-c8f355fa3163")
+	)
+	(wire
+		(pts
+			(xy 279.4 123.19) (xy 279.4 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6a27455f-2d2f-4179-ac2d-35035ad33868")
+	)
+	(wire
+		(pts
+			(xy 304.8 128.27) (xy 304.8 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "6c0b1696-3d59-4e17-b702-075e86c7bedc")
+	)
+	(wire
+		(pts
+			(xy 151.13 106.68) (xy 151.13 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "74ab86f8-6fe1-4b07-965a-260fd30e6306")
 	)
 	(wire
 		(pts
@@ -2426,6 +2714,76 @@
 	)
 	(wire
 		(pts
+			(xy 142.24 107.95) (xy 142.24 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8986970b-5819-4756-8ee5-6e953a57e9e6")
+	)
+	(wire
+		(pts
+			(xy 176.53 104.14) (xy 168.91 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ceb9670-2312-48ec-b759-6f7391613b5c")
+	)
+	(wire
+		(pts
+			(xy 160.02 105.41) (xy 160.02 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9516a8a7-5ee5-4b09-881c-416b897a8777")
+	)
+	(wire
+		(pts
+			(xy 185.42 133.35) (xy 175.26 133.35)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "95eb14e4-9dcd-4ca2-9cee-aa1275ab0dc9")
+	)
+	(wire
+		(pts
+			(xy 173.99 135.89) (xy 173.99 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9a42cd2e-26a8-458c-92b0-a9153eb839d1")
+	)
+	(wire
+		(pts
+			(xy 292.1 125.73) (xy 292.1 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a3dd51ce-67e7-4000-866b-b87c3ec25e90")
+	)
+	(wire
+		(pts
+			(xy 172.72 107.95) (xy 142.24 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a4be894d-9609-4783-8ed5-1caa0c1f8a15")
+	)
+	(wire
+		(pts
 			(xy 15.24 30.48) (xy 22.86 30.48)
 		)
 		(stroke
@@ -2433,6 +2791,66 @@
 			(type default)
 		)
 		(uuid "a70471ef-13fc-476c-bde6-333d5267d418")
+	)
+	(wire
+		(pts
+			(xy 266.7 128.27) (xy 304.8 128.27)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a94a5db6-c3c7-4e62-bc9d-088af993d96a")
+	)
+	(wire
+		(pts
+			(xy 177.8 128.27) (xy 177.8 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "b203a0eb-12dc-4322-8420-c0f0a515484e")
+	)
+	(wire
+		(pts
+			(xy 172.72 138.43) (xy 172.72 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "bfbe6e5d-09d3-46da-8a54-9759d67351ae")
+	)
+	(wire
+		(pts
+			(xy 168.91 104.14) (xy 168.91 102.87)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c4456383-b81e-4c68-8aea-b831ddf9b1fc")
+	)
+	(wire
+		(pts
+			(xy 266.7 130.81) (xy 317.5 130.81)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c96febe4-7592-434c-a1f2-5f5b39e127ec")
+	)
+	(wire
+		(pts
+			(xy 175.26 133.35) (xy 175.26 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "ca200f22-4eae-470a-b6ea-bde287709630")
 	)
 	(wire
 		(pts
@@ -2453,6 +2871,16 @@
 			(type default)
 		)
 		(uuid "e886484b-e04d-4413-b801-5aeb5318c5e4")
+	)
+	(wire
+		(pts
+			(xy 266.7 123.19) (xy 279.4 123.19)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f02af2c8-6fce-4703-91e6-bb6ca6ba3d5c")
 	)
 	(wire
 		(pts
@@ -2657,6 +3085,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR022")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 173.99 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "04296fd7-9d73-4417-8045-4f9a68b38136")
+		(property "Reference" "#PWR0106"
+			(at 173.99 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 173.99 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 173.99 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 173.99 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 173.99 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "f5140baf-0913-4903-810c-14ff578e928a")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0106")
 					(unit 1)
 				)
 			)
@@ -3087,6 +3581,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR058")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 172.72 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1574692b-8366-4559-adce-b31506e6077e")
+		(property "Reference" "#PWR0108"
+			(at 172.72 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 172.72 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 172.72 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 172.72 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 172.72 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d3079278-5de7-47a0-83de-55577bbc0c85")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0108")
 					(unit 1)
 				)
 			)
@@ -3946,6 +4506,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Potentiometer")
+		(at 160.02 99.06 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2bbd5aba-1702-4439-92b3-b56e33c1711a")
+		(property "Reference" "RV3"
+			(at 160.02 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer"
+			(at 160.02 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:Slider"
+			(at 160.02 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 160.02 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Potentiometer"
+			(at 160.02 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "5aeef1ef-4a1d-40fd-9b80-7691ea5e9884")
+		)
+		(pin "1"
+			(uuid "0a1c13b9-8a2c-4c61-92bc-310435962275")
+		)
+		(pin "3"
+			(uuid "6e145e7e-9514-4153-9a1d-18c018569d02")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "RV3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "LED:WS2812B")
 		(at 274.32 60.96 0)
 		(unit 1)
@@ -4289,6 +4920,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Potentiometer")
+		(at 177.8 99.06 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2f9c355a-2503-43c0-bfb3-d103bdb1c9d0")
+		(property "Reference" "RV1"
+			(at 177.8 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer"
+			(at 177.8 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:Slider"
+			(at 177.8 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 177.8 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Potentiometer"
+			(at 177.8 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "bc07994e-3835-47a9-a2dd-fbe8f632955b")
+		)
+		(pin "1"
+			(uuid "d921bd92-55cc-40e4-8b23-7be45a5526bd")
+		)
+		(pin "3"
+			(uuid "7eafafed-b526-4aad-93b4-c3e9f96e2009")
+		)
+		(instances
+			(project ""
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "RV1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 140.97 128.27 0)
 		(unit 1)
@@ -4349,6 +5051,72 @@
 			(project ""
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR089")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 165.1 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "321a1575-b929-4428-a885-69eb16607055")
+		(property "Reference" "#PWR0107"
+			(at 165.1 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 165.1 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 165.1 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 165.1 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 165.1 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "001aa46a-ae7e-4b6a-a80f-bd00c2a190b8")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0107")
 					(unit 1)
 				)
 			)
@@ -4887,6 +5655,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "D15")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 181.61 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4120d06d-7000-4128-85a9-7cce3a6af942")
+		(property "Reference" "#PWR0105"
+			(at 181.61 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 181.61 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 181.61 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 181.61 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 181.61 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "14820c67-7642-4d15-8374-df55b4f481e6")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0105")
 					(unit 1)
 				)
 			)
@@ -5732,6 +6566,73 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 185.42 143.51 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4f4aff5a-8881-4381-9ccf-3a2df238a98a")
+		(property "Reference" "#PWR0115"
+			(at 189.23 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 181.61 143.5099 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 185.42 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 185.42 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 185.42 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8fb5328e-4953-4d9e-867b-ec9a4e0ab92d")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0115")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 259.08 53.34 0)
 		(unit 1)
@@ -5925,6 +6826,77 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR092")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Potentiometer")
+		(at 168.91 99.06 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "512457ed-0b2c-4c26-ba15-5e97b3b74250")
+		(property "Reference" "RV2"
+			(at 168.91 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer"
+			(at 168.91 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:Slider"
+			(at 168.91 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 168.91 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Potentiometer"
+			(at 168.91 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "fbed614c-2966-4772-b01a-6d51ac6e9f57")
+		)
+		(pin "1"
+			(uuid "a0c5cb75-5ea3-4e06-91d6-b92a8ca13c77")
+		)
+		(pin "3"
+			(uuid "3e0f655f-28e2-4207-bd44-c93ad740d2aa")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "RV2")
 					(unit 1)
 				)
 			)
@@ -6211,6 +7183,139 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "D31")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 156.21 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "57c9e198-b5a7-4d82-986d-71563fd1be75")
+		(property "Reference" "#PWR0109"
+			(at 156.21 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 156.21 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 156.21 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 156.21 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 156.21 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "650b2ab8-dcbc-4ba0-8076-ff44ad57d43c")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0109")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 185.42 146.05 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "57cca6dc-c667-4d87-a169-432487dc9a10")
+		(property "Reference" "#PWR0116"
+			(at 179.07 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 181.61 146.0499 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 185.42 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 185.42 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 185.42 146.05 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "8fba0d9b-40f4-4761-96e9-789d17e6ab2e")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0116")
 					(unit 1)
 				)
 			)
@@ -8163,6 +9268,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 146.05 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "8dbb43c5-3b67-486d-81c0-4b8a728dbacd")
+		(property "Reference" "#PWR0114"
+			(at 146.05 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 146.05 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 146.05 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 146.05 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 146.05 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1af759bc-2055-475c-9523-da94588220b3")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0114")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 45.72 38.1 0)
 		(unit 1)
@@ -8500,6 +9671,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR097")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 138.43 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "916e7a65-9b71-4ac6-94eb-c590a9bb7801")
+		(property "Reference" "#PWR0113"
+			(at 138.43 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 138.43 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 138.43 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 138.43 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 138.43 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1b80a54b-aeeb-4433-9d56-1ff1064d25f5")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0113")
 					(unit 1)
 				)
 			)
@@ -9060,6 +10297,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "D18")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 147.32 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9c7e9a77-a538-427a-9918-1d980c241b37")
+		(property "Reference" "#PWR0111"
+			(at 147.32 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 147.32 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 147.32 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 147.32 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 147.32 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e07a7dd5-bf0d-41df-ba21-e917db75e389")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0111")
 					(unit 1)
 				)
 			)
@@ -11937,6 +13240,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:+3V3")
+		(at 154.94 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d5ba692d-169c-4f42-922c-82f495fe232b")
+		(property "Reference" "#PWR0112"
+			(at 154.94 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 154.94 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 154.94 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 154.94 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 154.94 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "a7700563-0158-476a-b319-571758e179ed")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0112")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
 		(at 248.92 171.45 0)
 		(unit 1)
@@ -12063,6 +13432,77 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR095")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:R_Potentiometer")
+		(at 151.13 99.06 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "d9457a30-9d9d-45cf-8a8d-fb86d05cc123")
+		(property "Reference" "RV4"
+			(at 151.13 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer"
+			(at 151.13 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 151.13 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 151.13 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Potentiometer"
+			(at 151.13 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "05f39daa-642b-4d27-89ab-b9c069859507")
+		)
+		(pin "1"
+			(uuid "84a27f9e-45ce-4574-8f03-fc200b9a7824")
+		)
+		(pin "3"
+			(uuid "fcf1862a-051d-4ac8-8265-35aaf2499462")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "RV4")
 					(unit 1)
 				)
 			)
@@ -13162,6 +14602,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Potentiometer")
+		(at 142.24 99.06 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f48702cf-58f8-4c5c-807f-f6b927079e88")
+		(property "Reference" "RV5"
+			(at 142.24 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer"
+			(at 142.24 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 142.24 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 142.24 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Potentiometer"
+			(at 142.24 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "f98ddd34-64ae-4c71-a5b5-9f9b82b543c8")
+		)
+		(pin "1"
+			(uuid "7cc00c0b-385b-49d7-af9b-3729b6e2ca31")
+		)
+		(pin "3"
+			(uuid "d024a777-213e-4bde-a45a-93c9c29d080c")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "RV5")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "LED:WS2812B")
 		(at 30.48 60.96 0)
 		(unit 1)
@@ -13508,6 +15019,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR03")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:+3V3")
+		(at 163.83 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f8a2b680-9798-4dad-9a11-8e1b7a6a86fe")
+		(property "Reference" "#PWR0110"
+			(at 163.83 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "+3V3"
+			(at 163.83 93.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 163.83 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 163.83 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"+3V3\""
+			(at 163.83 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "ca907f41-1610-45ae-a0a7-382305ecd185")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0110")
 					(unit 1)
 				)
 			)
