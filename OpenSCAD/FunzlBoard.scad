@@ -62,7 +62,6 @@ Buzzer_Soldering_Point_Height = 1;
 Buzzer_Soldering_Point_Offsets = [9.5, 14.5];
 
 Battery_Mount_Thickness = 3;
-Battery_Mount_Hole_Diameter = 3.5;
 
 Screw_Hole_Wall_Thickness = 1.2;
 Fillet_Size = 2;
@@ -226,6 +225,13 @@ module ComponentsFront(n = false) {
         translate([x * 10, y * 10, LedZ])
           color(LED_Color)
             led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
+    if (!n)
+      for (x = [-1, 1]) {
+        translate([0, Rocker_Switch_Screw_Hole_Distance() / 2 * x, Board_Size[2] - Wall_Thickness - e])
+          Screw_Insert_From_Definition(Screw_Insert_Definition_Rocker_Switch(), Screw_Inserts_Color, Screws_Always_Simple);
+        translate([0, Rocker_Switch_Screw_Hole_Distance() / 2 * x, Board_Size[2] + Rocker_Switch_Plate_Thickness() + e])
+          Screw_Cylinder_Hex_From_Definition(Screw_Definition_Rocker_Switch(), Metal_Color, Screws_Always_Simple);
+      }
   }
 
   // Slider Switch
@@ -237,6 +243,13 @@ module ComponentsFront(n = false) {
         translate([0, x * 14, LedZ])
           color(LED_Color)
             led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
+      if (!n)
+        for (x = [-1, 1]) {
+          translate([0, x * Slide_Switch_Screw_Hole_Distance() / 2, Board_Size[2] - Wall_Thickness - e])
+            Screw_Insert_From_Definition(Screw_Insert_Definition_Slide_Switch(), Screw_Inserts_Color, Screws_Always_Simple);
+          translate([0, x * Slide_Switch_Screw_Hole_Distance() / 2, Board_Size[2] + Slide_Switch_Plate_Thickness() + e])
+            Screw_Cylinder_Hex_From_Definition(Screw_Definition_Slide_Switch(), Black, Screws_Always_Simple);
+        }
     }
 
   // Battery Indicator
@@ -284,9 +297,19 @@ module ComponentsRight(n = false) {
 
 module ComponentsInner(n = false) {
   // Battery Holder
-  translate([Board_Size[0] / 2, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness - Battery_Mount_Thickness])
+  translate([Board_Size[0] / 2, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness - Battery_Mount_Thickness]) {
     rotate([180, 0, 0])
       Battery("#222", "#2D42", false);
+    for (x = [-1, 1])
+      translate([x * (Battery_Mount_Holes_Distance()) / 2, 0, -Battery_Case_Thickness_Bottom()])
+        rotate([180, 0, 0])
+          Screw_Sunken_Hex_From_Definition(Screw_Definition_Battery(), Black, Screws_Always_Simple);
+
+    if (!n)
+      for (x = [-1, 1])
+        translate([x * (Battery_Mount_Holes_Distance()) / 2, 0, Screw_Insert_Definition_Battery()[1]])
+          Screw_Insert_From_Definition(Screw_Insert_Definition_Battery(), Screw_Inserts_Color, Screws_Always_Simple);
+  }
 
   // Buzzer
   for (i = [-1 : 1])
@@ -341,10 +364,10 @@ module Board_Front() {
     translate([Board_Size[0] / 2, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness]) {
       for (x = [-1, 1])
         translate([x * (Battery_Mount_Holes_Distance()) / 2, 0, -Battery_Mount_Thickness]) {
-          Pipe(Battery_Mount_Thickness, Battery_Mount_Hole_Diameter + Screw_Hole_Wall_Thickness * 2, Battery_Mount_Hole_Diameter);
+          Pipe(Battery_Mount_Thickness, Screw_Insert_Definition_Battery()[2] + Screw_Hole_Wall_Thickness * 2, Screw_Insert_Definition_Battery()[2] / 2);
           rotate([180, 0, 0])
             translate([0, 0, -Battery_Mount_Thickness])
-            FilletCylinder(Battery_Mount_Hole_Diameter + Screw_Hole_Wall_Thickness * 2, Fillet_Size, true);
+            FilletCylinder(Screw_Insert_Definition_Battery()[2] + Screw_Hole_Wall_Thickness * 2, Fillet_Size, true);
         }
     }
 
@@ -380,20 +403,18 @@ module Board_Front() {
         }
 
     // Slider Switch Screw Holes
-    Slider_Switch_Screw_Nut_Height = 2.8;
-    Slider_Switch_Screw_Nut_Diameter = 3.3;
     for (y = [-1, 1])
       translate([Slider_Switch_Position[0], Slider_Switch_Position[1], Board_Size[2] - Wall_Thickness])
         rotate([0, 0, Slider_Switch_Rotation])
-          translate([0, y * (Slide_Switch_Screw_Hole_Distance()) / 2, -Slider_Switch_Screw_Nut_Height]) {
+          translate([0, y * (Slide_Switch_Screw_Hole_Distance()) / 2, -Screw_Insert_Definition_Slide_Switch()[1]]) {
             difference() {
-              cylinder(h = Slider_Switch_Screw_Nut_Height + e, d = Slider_Switch_Screw_Nut_Diameter + 2 * Screw_Hole_Wall_Thickness);
+              cylinder(h = Screw_Insert_Definition_Slide_Switch()[1] + e, d = Screw_Insert_Definition_Slide_Switch()[2] + 2 * Screw_Hole_Wall_Thickness);
               translate([0, 0, -e])
-                cylinder(h = Slider_Switch_Screw_Nut_Height + e, d = Slider_Switch_Screw_Nut_Diameter);
+                cylinder(h = Screw_Insert_Definition_Slide_Switch()[1] + e, d = Screw_Insert_Definition_Slide_Switch()[2]);
             }
             rotate([180, 0, 0])
-              translate([0, 0, -Slider_Switch_Screw_Nut_Height])
-                FilletCylinder(Slider_Switch_Screw_Nut_Diameter / 2 + Screw_Hole_Wall_Thickness, Slider_Switch_Screw_Nut_Height);
+              translate([0, 0, -Screw_Insert_Definition_Slide_Switch()[1]])
+                FilletCylinder(Screw_Insert_Definition_Slide_Switch()[2] / 2 + Screw_Hole_Wall_Thickness, Screw_Insert_Definition_Slide_Switch()[1]);
         }
   }
 
@@ -483,7 +504,7 @@ module Buzzer_Holder() {
             sphere(1);
       }
     for (x = [-1, 1], y = [-1, 1])
-      translate([x * 30, y * (Battery_Mount_Hole_Diameter + Screw_Hole_Wall_Thickness * 2 * Fillet_Size + 3), -Battery_Mount_Thickness / 2])
+      translate([x * 30, y * (Screw_Insert_Definition_Battery()[2] + Screw_Hole_Wall_Thickness * 2 * Fillet_Size + 3), -Battery_Mount_Thickness / 2])
         cube([41, 6, Battery_Mount_Thickness - e], center=true);
   }
 }

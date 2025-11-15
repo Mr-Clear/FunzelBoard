@@ -31,6 +31,22 @@ module Screw_Cylinder_Hex(diameter, length, head_diameter, head_height, hex_size
   }
 }
 
+module Screw_Sunken_Hex(diameter, length, head_diameter, head_height, hex_size, hex_depth, negative = false, always_simple = false) {
+  translate([0, 0, -head_height]) {
+    translate([0, 0, -length])
+    if ($preview || negative || always_simple)
+      cylinder(length, d=diameter);
+    else
+      bolt(str("M", diameter), turns=turns_from_length(length, diameter), higbee_arc=30);
+
+    difference() {
+      cylinder(head_height, d1=diameter,d2=head_diameter);
+      translate([0, 0, head_height - hex_depth])
+        cylinder(hex_depth + e, d=hex_size * Hex_Relation, $fn=6);
+    }
+  }
+}
+
 module Screw_Insert(diameter, length, outer_diameter, riffle_height, riffle_diameter, negative = false, riffle_size = 0.3, always_simple = false) {
   translate([0, 0, -length])
   difference() {
@@ -65,14 +81,21 @@ module Screw_Insert(diameter, length, outer_diameter, riffle_height, riffle_diam
 function Screw_Definition_Main() = [4, 25, 7.5, 1.1, 2.5, 1.6];
 function Screw_Definition_Slide_Switch() = [2, 6, 3.7, 1.3, 1.5, 1.5];
 function Screw_Definition_Rocker_Switch() = [3, 6, 5.4, 3, 2.5, 1.8];
+function Screw_Definition_Battery() = [2.5, 3, 4.7, 1.6, 1.5, 1.2];
 // diameter, length, outer_diameter, riffle_height, riffle_diameter
 function Screw_Insert_Definition_Main() = [4, 4, 4.9, 1.1, 6];
 function Screw_Insert_Definition_Slide_Switch() = [2, 2.9, 2.9, 1.0, 3.5];
 function Screw_Insert_Definition_Rocker_Switch() = [3, 3.2, 3.5, 1.0, 4.1];
+function Screw_Insert_Definition_Battery() = [2.5, 3, 3, 1.0, 3.5];
 
 module Screw_Cylinder_Hex_From_Definition(definition, color, always_simple = false) {
   color(color)
     Screw_Cylinder_Hex(definition[0], definition[1], definition[2], definition[3], definition[4], definition[5], always_simple=always_simple);
+}
+
+module Screw_Sunken_Hex_From_Definition(definition, color, always_simple = false) {
+  color(color)
+    Screw_Sunken_Hex(definition[0], definition[1], definition[2], definition[3], definition[4], definition[5], always_simple=always_simple);
 }
 
 module Screw_Insert_From_Definition(definition, color, always_simple = false) {
@@ -103,4 +126,10 @@ module Screw_Insert_From_Definition(definition, color, always_simple = false) {
 
   translate([10, 0, -(6 - 3.2)])
     Screw_Insert_From_Definition(Screw_Insert_Definition_Rocker_Switch(), insert_color);
+
+  translate([0, 10, 0])
+    Screw_Sunken_Hex_From_Definition(Screw_Definition_Battery(), black);
+
+  translate([0, 10, -Screw_Definition_Battery()[3]])
+    Screw_Insert_From_Definition(Screw_Insert_Definition_Battery(), insert_color);
 }

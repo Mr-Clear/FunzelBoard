@@ -55,3 +55,4 @@ module Slide_Switch(switch_color, metal_color, negative = false, backlash = 0.2)
 
 function Slide_Switch_Screw_Hole_Distance() = Plate[1] - Plate[0];
 function Slide_Switch_Screw_Diameter() = Plate_Holes_Diameter;
+function Slide_Switch_Plate_Thickness() = Plate[2];

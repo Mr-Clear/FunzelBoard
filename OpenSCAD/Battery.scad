@@ -80,5 +80,6 @@ module box(size) {
 
 function Battery_Size() = Battery_Size;
 function Battery_Case_Size() = Case_Size;
+function Battery_Case_Thickness_Bottom() = Case_Thickness_Bottom;
 function Battery_Mount_Holes_Distance() = Mount_Holes_Distance;
 function Battery_Power_Holes_Diameter() = Power_Holes_Diameter;

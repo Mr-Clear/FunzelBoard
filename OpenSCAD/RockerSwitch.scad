@@ -92,3 +92,4 @@ module RockerSwitch(cap_color, metal_color, negative = false, backlash = 0.2) {
 
 function Rocker_Switch_Screw_Hole_Distance() = Screw_Hole_Distance;
 function Rocker_Switch_Screw_Diameter() = Screw_Hole_Diameter;
+function Rocker_Switch_Plate_Thickness() = Mount_Thickness;
