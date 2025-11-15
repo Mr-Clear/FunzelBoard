@@ -1796,6 +1796,222 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Switch:SW_MEC_5E"
+			(pin_names
+				(offset 1.016)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "SW"
+				(at 0.635 5.715 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(justify left)
+				)
+			)
+			(property "Value" "SW_MEC_5E"
+				(at 0 -3.175 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "http://www.apem.com/int/index.php?controller=attachment&id_attachment=1371"
+				(at 0 7.62 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "MEC 5E single pole normally-open tactile switch"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "switch normally-open pushbutton push-button"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "SW*MEC*5G*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SW_MEC_5E_0_1"
+				(polyline
+					(pts
+						(xy -2.54 0) (xy -2.54 2.54) (xy -2.286 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -2.286 3.81) (xy 2.286 3.81)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center -1.778 2.54)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 3.81) (xy 0 5.588)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 1.778 2.54)
+					(radius 0.508)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 2.54 0) (xy 2.54 2.54) (xy 2.286 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -5.08 2.54 0)
+					(length 2.54)
+					(name "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -5.08 0 0)
+					(length 2.54)
+					(name "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 2.54 180)
+					(length 2.54)
+					(name "A"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 5.08 0 180)
+					(length 2.54)
+					(name "K"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "power:+3V3"
 			(power)
 			(pin_numbers
@@ -2149,12 +2365,44 @@
 		)
 	)
 	(no_connect
+		(at 292.1 100.33)
+		(uuid "02f540d7-339d-4bb3-9dce-def473eb1e4d")
+	)
+	(no_connect
+		(at 314.96 100.33)
+		(uuid "068e360c-4576-4d83-9f49-5c7ccff6726f")
+	)
+	(no_connect
+		(at 302.26 100.33)
+		(uuid "1c8b4e0b-c3e4-46c9-a7d6-14ae8b36f86c")
+	)
+	(no_connect
 		(at 231.14 138.43)
 		(uuid "2648a4c8-4c6d-458c-a7eb-29d97ec7a2d8")
 	)
 	(no_connect
 		(at 231.14 140.97)
 		(uuid "ad41adca-da46-491b-8210-c4ffe86d06a6")
+	)
+	(no_connect
+		(at 317.5 100.33)
+		(uuid "b0436219-13fb-4ff3-8a71-8a8be653d687")
+	)
+	(no_connect
+		(at 279.4 100.33)
+		(uuid "da4c02b5-d62f-43df-80db-63f2e811df3f")
+	)
+	(no_connect
+		(at 327.66 100.33)
+		(uuid "dc6d9948-8ebc-46ab-abee-c057ea50e66e")
+	)
+	(no_connect
+		(at 289.56 100.33)
+		(uuid "e3ad5ad3-8cb8-4fbf-bbb3-ea284ed4992c")
+	)
+	(no_connect
+		(at 304.8 100.33)
+		(uuid "f656975e-9290-4ed2-933d-adfb04bfb16d")
 	)
 	(wire
 		(pts
@@ -4167,6 +4415,72 @@
 			(project ""
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR090")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 302.26 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "34a64a9c-717e-452c-a3cc-d456f278aed9")
+		(property "Reference" "#PWR0102"
+			(at 302.26 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 302.26 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 302.26 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 302.26 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 302.26 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e6efc2f6-55a7-45ff-8a07-ec0698820651")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0102")
 					(unit 1)
 				)
 			)
@@ -6619,6 +6933,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 289.56 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "6cd52f32-ab3d-41d2-995b-e7f55fcf8d4d")
+		(property "Reference" "#PWR0101"
+			(at 289.56 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 289.56 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 289.56 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 289.56 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 289.56 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "e6d6110b-25af-4642-bad0-804d99c26784")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "LED:WS2812B")
 		(at 320.04 60.96 0)
 		(unit 1)
@@ -7241,6 +7621,80 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR071")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_MEC_5E")
+		(at 284.48 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "7cfe566c-fc53-4926-8ce9-73bcb3c4d20f")
+		(property "Reference" "SW1"
+			(at 284.48 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_MEC_5E"
+			(at 284.48 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:ColorButton"
+			(at 284.48 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.apem.com/int/index.php?controller=attachment&id_attachment=1371"
+			(at 284.48 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "MEC 5E single pole normally-open tactile switch"
+			(at 284.48 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "6bc6928f-7a7a-4035-a278-551005357f26")
+		)
+		(pin "4"
+			(uuid "f7dd5e70-ee95-4d1d-996d-8f13e3283a6a")
+		)
+		(pin "1"
+			(uuid "209978a1-b23d-4b40-841b-eb4c2923f1ea")
+		)
+		(pin "3"
+			(uuid "a4b04e99-f08d-48e9-aa8a-cc4f58cea8ae")
+		)
+		(instances
+			(project ""
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "SW1")
 					(unit 1)
 				)
 			)
@@ -8112,6 +8566,80 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR079")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_MEC_5E")
+		(at 322.58 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "9598dc7c-a512-45ad-8fa8-afb57093e1c4")
+		(property "Reference" "SW4"
+			(at 322.58 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_MEC_5E"
+			(at 322.58 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:ColorButton"
+			(at 322.58 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.apem.com/int/index.php?controller=attachment&id_attachment=1371"
+			(at 322.58 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "MEC 5E single pole normally-open tactile switch"
+			(at 322.58 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "7072ab5e-a4aa-4cb7-9697-326ffb795698")
+		)
+		(pin "4"
+			(uuid "730c1937-5323-4330-9e3e-58287d43920f")
+		)
+		(pin "1"
+			(uuid "f7034d0c-c68d-40b6-be9c-90592635a447")
+		)
+		(pin "3"
+			(uuid "41a24d6d-ac25-4090-bd7a-416e9e00ad8f")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "SW4")
 					(unit 1)
 				)
 			)
@@ -9502,6 +10030,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "H8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 327.66 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "ae54070f-fb95-43e0-9f82-eb5e8e2c5c38")
+		(property "Reference" "#PWR0104"
+			(at 327.66 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 327.66 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 327.66 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 327.66 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 327.66 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "9f97bd79-9f73-4b83-be7a-d5c4931feecf")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0104")
 					(unit 1)
 				)
 			)
@@ -10993,6 +11587,80 @@
 		)
 	)
 	(symbol
+		(lib_id "Switch:SW_MEC_5E")
+		(at 297.18 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "cccf987b-6747-42de-abaf-7e1ece12f4ae")
+		(property "Reference" "SW2"
+			(at 297.18 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_MEC_5E"
+			(at 297.18 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:ColorButton"
+			(at 297.18 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.apem.com/int/index.php?controller=attachment&id_attachment=1371"
+			(at 297.18 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "MEC 5E single pole normally-open tactile switch"
+			(at 297.18 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "25f885b1-0dec-4740-a2c0-d2cacac69309")
+		)
+		(pin "4"
+			(uuid "2bb597ae-09e6-4d81-a412-4fcc948dff08")
+		)
+		(pin "1"
+			(uuid "065af238-161a-4189-a438-776e28296fe4")
+		)
+		(pin "3"
+			(uuid "ff64eac5-3e2a-4357-b445-66f980c61d58")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "SW2")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 45.72 53.34 0)
 		(unit 1)
@@ -12362,6 +13030,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 314.96 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "f1d232c4-74fc-4ef4-9ad5-822ef7c2db17")
+		(property "Reference" "#PWR0103"
+			(at 314.96 109.22 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 314.96 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 314.96 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 314.96 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 314.96 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "1e7033eb-bbc9-445d-b869-595a98aac184")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0103")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+5V")
 		(at 167.64 22.86 0)
 		(unit 1)
@@ -13227,6 +13961,80 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "D24")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Switch:SW_MEC_5E")
+		(at 309.88 102.87 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "fcc4b683-e74b-48bc-9a9e-aa86a0af49bc")
+		(property "Reference" "SW3"
+			(at 309.88 92.71 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_MEC_5E"
+			(at 309.88 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:ColorButton"
+			(at 309.88 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "http://www.apem.com/int/index.php?controller=attachment&id_attachment=1371"
+			(at 309.88 95.25 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "MEC 5E single pole normally-open tactile switch"
+			(at 309.88 102.87 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "641ade19-7a0c-4bb1-a2bb-67da4c5b4636")
+		)
+		(pin "4"
+			(uuid "530d2eea-2b71-44d6-9537-dcfd4d62dcf4")
+		)
+		(pin "1"
+			(uuid "366f7054-1bcd-411b-bd2c-08783e8adc23")
+		)
+		(pin "3"
+			(uuid "7dcbb45f-519f-42f1-8914-9334b19c5dad")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "SW3")
 					(unit 1)
 				)
 			)
