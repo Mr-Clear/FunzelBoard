@@ -12,6 +12,7 @@ use <Poti.scad>;
 use <PowerSwitch.scad>;
 use <RockerSwitch.scad>;
 use <Rounded_Cube.scad>;
+use <Screws.scad>;
 use <Slider.scad>;
 use <SlideSwitch.scad>;
 use <SmallButton.scad>;
@@ -24,6 +25,8 @@ fn_render = 100;
 
 Show_Front = true;
 Show_Back = true;
+Show_Screws = true;
+Screws_Always_Simple = true;
 Show_Components = true;
 Show_Text = true;
 Show_Buzzer_Holder = true;
@@ -48,6 +51,7 @@ SliderPositions = [1, 0, 1];
 Color_Button_Colors = ["#F00", "#FF0", "#0F0", "#00F"];
 Text_Color = "#0AF";
 Mainboard_Color = "#0808";
+Screw_Inserts_Color = "#A85";
 
 Buzzer_Thickness = 0.14;
 Buzzer_Diameter = 35;
@@ -71,14 +75,13 @@ Rocker_Switch_Position = [110, 25];
 
 Main_Screw_Positions = [[10, 10], [Board_Size[0] - 10, 10], [10, Board_Size[1] - 10], [Board_Size[0] - 10, Board_Size[1] - 10],
                         Led_Circle_Position, [70, 55], [20, 70], [140, 90], [90, 10], [70, 110]];
-Main_Screw_Diameter = 4.2;
-Main_Screw_Base_Diameter = 5.2;
-Main_Screw_Base_Height = 4;
+
+Main_Screw_Backlash = 0.2;
 Main_Screw_Base_Wall_Thickness = 1.6;
-Main_Screw_Head_Height = 2.5;
-Main_Screw_Head_Diameter = 7.5;
 Main_Screw_Head_Wall_Thickness = 1.6;
 Main_Screw_Body_Wall_Thickness = 0.8;
+Main_Screw_Base_Diameter = Screw_Definition_Main()[0] + 2 * Main_Screw_Body_Wall_Thickness;
+Main_Screw_Head_Height = Screw_Definition_Main()[3] + Main_Screw_Backlash;
 
 e = 0.001;
 
@@ -99,6 +102,10 @@ module FunzlBoard() {
 
   if (Show_Back) {
     Board_Back();
+  }
+
+  if (Show_Screws) {
+    Main_Screws();
   }
 
   if (Show_Components) {
@@ -345,9 +352,9 @@ module Board_Front() {
     for (pos = Main_Screw_Positions) {
       translate([pos[0], pos[1], Board_Size[2] - Wall_Thickness - Mainboard_Distance]) {
         difference() {
-          cylinder(h = Mainboard_Distance, d = Main_Screw_Base_Diameter + 2 * Main_Screw_Base_Wall_Thickness);
+          cylinder(Mainboard_Distance, d = Main_Screw_Base_Diameter + 2 * Main_Screw_Base_Wall_Thickness);
           translate([0, 0, -e])
-          cylinder(h = Main_Screw_Base_Height, d = Main_Screw_Base_Diameter);
+            cylinder(Screw_Insert_Definition_Main()[1], d = Screw_Insert_Definition_Main()[2]);
         }
         rotate([180, 0, 0])
           translate([0, 0, -Mainboard_Distance - e])
@@ -389,6 +396,12 @@ module Board_Front() {
                 FilletCylinder(Slider_Switch_Screw_Nut_Diameter / 2 + Screw_Hole_Wall_Thickness, Slider_Switch_Screw_Nut_Height);
         }
   }
+
+  // Main Screw Inserts
+  if (Show_Screws)
+    for (pos = Main_Screw_Positions)
+      translate([pos[0], pos[1], Board_Size[2] - Wall_Thickness - Mainboard_Distance + Screw_Insert_Definition_Main()[1] - e])
+        Screw_Insert_From_Definition(Screw_Insert_Definition_Main(), Screw_Inserts_Color, Screws_Always_Simple);
 }
 
 module Board_Back() {
@@ -399,30 +412,33 @@ module Board_Back() {
           Board();
           cube([Board_Size[0] + e, Board_Size[1] + e, Edge_Size - .05]);
         }
-        // Main Screw Heads
+        // Main Screws
         for (pos = Main_Screw_Positions) {
           translate([pos[0], pos[1], 0]) {
-            cylinder(Main_Screw_Head_Height + Main_Screw_Head_Wall_Thickness, d = Main_Screw_Head_Diameter + 2 * Main_Screw_Head_Wall_Thickness);
-            translate([0, 0, Wall_Thickness])
-              FilletCylinder(Main_Screw_Head_Diameter / 2 + Main_Screw_Head_Wall_Thickness, Main_Screw_Head_Height + Main_Screw_Head_Wall_Thickness - Wall_Thickness);
             cylinder(Board_Size[2] - Mainboard_Distance - Mainboard_Thickness - Wall_Thickness,
-                     d = Main_Screw_Diameter + Main_Screw_Body_Wall_Thickness * 2);
-            translate([0, 0, Main_Screw_Head_Height + Main_Screw_Head_Wall_Thickness])
-              FilletCylinder(Main_Screw_Diameter / 2 + Main_Screw_Body_Wall_Thickness,
-                             (Main_Screw_Head_Diameter / 2 + Main_Screw_Head_Wall_Thickness) - (Main_Screw_Diameter / 2 + Main_Screw_Body_Wall_Thickness));
+                     d = Screw_Definition_Main()[0] + Main_Screw_Body_Wall_Thickness * 2);
+            translate([0, 0, Wall_Thickness])
+              FilletCylinder(Screw_Definition_Main()[0] / 2 + Main_Screw_Body_Wall_Thickness, Main_Screw_Head_Height + Main_Screw_Head_Wall_Thickness + Main_Screw_Base_Wall_Thickness);
           }
         }
       }
       Notch(Notch_Size + Notch_Backlash);
 
-      // Main Screw Heads
+      // Main Screws
       for (pos = Main_Screw_Positions) {
         translate([pos[0], pos[1], -e]) {
-          cylinder(Board_Size[2], d = Main_Screw_Base_Diameter);
-          cylinder(Main_Screw_Head_Height, d = Main_Screw_Head_Diameter);
+          cylinder(Board_Size[2], d = Screw_Definition_Main()[0] + Main_Screw_Backlash * 2);
+          cylinder(Main_Screw_Head_Height, d = Screw_Definition_Main()[2] + Main_Screw_Backlash * 2);
         }
       }
     }
+}
+
+module Main_Screws() {
+  for (pos = Main_Screw_Positions)
+    translate([pos[0], pos[1], Screw_Definition_Main()[3]])
+      rotate([180, 0, 0])
+        Screw_Cylinder_Hex_From_Definition(Screw_Definition_Main(), Black, Screws_Always_Simple);
 }
 
 module Notch(size) {
