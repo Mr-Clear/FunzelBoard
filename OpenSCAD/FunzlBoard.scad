@@ -284,19 +284,23 @@ module ComponentsInner(n = false) {
   // Buzzer
   for (i = [-1 : 1])
     translate([Board_Size[0] / 2 + i * 60, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness - Buzzer_Thickness]) {
-      color("#880")
-        cylinder(h = Buzzer_Thickness, d = Buzzer_Diameter);
-      color("#CCC")
-        translate([0, 0, -Buzzer_Center_Thickness])
-          cylinder(h = Buzzer_Center_Thickness, d = Buzzer_Center_Diameter);
-      color(Metal_Color)
-        for (offset = Buzzer_Soldering_Point_Offsets)
-          translate([0, offset, -Buzzer_Soldering_Point_Height])
-            cylinder(h = Buzzer_Soldering_Point_Height, d = n ? Buzzer_Soldering_Point_Diameter + Backlash : Buzzer_Soldering_Point_Diameter);
-      if (n) {
-        cylinder(Wall_Thickness + Buzzer_Thickness + e, d = 6);
-      }
+      Buzzer(n);
     }
+}
+
+module Buzzer(negative = false) {
+  color("#880")
+    cylinder(h = Buzzer_Thickness, d = Buzzer_Diameter);
+  color("#CCC")
+    translate([0, 0, -Buzzer_Center_Thickness])
+      cylinder(h = Buzzer_Center_Thickness, d = Buzzer_Center_Diameter);
+  color(Metal_Color)
+    for (offset = Buzzer_Soldering_Point_Offsets)
+      translate([0, offset, -Buzzer_Soldering_Point_Height])
+        cylinder(h = Buzzer_Soldering_Point_Height, d = negative ? Buzzer_Soldering_Point_Diameter + Backlash : Buzzer_Soldering_Point_Diameter);
+  if (negative) {
+    cylinder(Wall_Thickness + Buzzer_Thickness + e, d = 6);
+  }
 }
 
 module LedCircle(num, radius, n) {
