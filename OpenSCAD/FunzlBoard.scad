@@ -18,6 +18,7 @@ use <SlideSwitch.scad>;
 use <SmallButton.scad>;
 use <Switch.scad>;
 use <ToggleButton.scad>;
+use <TrimmerH.scad>;
 use <UsbCSocket.scad>;
 
 fn_preview = 12;
@@ -71,7 +72,9 @@ Led_Circle_Position = [100, 90];
 Slider_Switch_Position = [30, 62];
 Slider_Switch_Rotation = -50;
 Rocker_Switch_Position = [110, 25];
-
+Trimmer_Position = [Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 60, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness];
+echo("Trimmer Position: ", Trimmer_Position);
+echo("Trimmer Pin X Offset: ", TrimmerH_Pin_X_Offset());
 Main_Screw_Positions = [[10, 10], [Board_Size[0] - 10, 10], [10, Board_Size[1] - 10], [Board_Size[0] - 10, Board_Size[1] - 10],
                         Led_Circle_Position, [78, 68], [20, 70], [140, 90], [90, 10], [70, 110]];
 
@@ -316,6 +319,16 @@ module ComponentsInner(n = false) {
     translate([Board_Size[0] / 2 + i * 60, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness - Buzzer_Thickness]) {
       Buzzer(n);
     }
+
+  // Trimmer
+  translate(Trimmer_Position) {
+    rotate([180, 0, 0])
+      TrimmerH("#CCC", "#222", "#999", 0);
+    if (n)
+      translate([0, 0, -TrimmerH_Center_Ascent()])
+        rotate([0, 90, 0])
+          cylinder(Board_Size.x - Trimmer_Position.x + TrimmerH_Size().x / 2 + e, d = TrimmerH_Gap_Size());
+  }
 }
 
 module Buzzer(negative = false) {
