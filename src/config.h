@@ -14,7 +14,7 @@ constexpr std::array<uint8_t, 3> BUZZER_CHANNELS = {0, 1, 2};
 constexpr int PIXELS_RING_OFFSET = 64;
 constexpr int PIXELS_RING_COUNT = 16;
 constexpr int NUM_PIXELS = PIXELS_RING_OFFSET + PIXELS_RING_COUNT;
-constexpr uint8_t MOTOR_PIN  = 1;
+constexpr uint8_t MOTOR_PIN  = 10;
 constexpr uint8_t MOTOR_TIMER = 3;
 constexpr uint8_t MOTOR_CHANNEL = 3;
 
