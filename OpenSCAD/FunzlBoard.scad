@@ -73,7 +73,7 @@ Slider_Switch_Rotation = -50;
 Rocker_Switch_Position = [110, 25];
 
 Main_Screw_Positions = [[10, 10], [Board_Size[0] - 10, 10], [10, Board_Size[1] - 10], [Board_Size[0] - 10, Board_Size[1] - 10],
-                        Led_Circle_Position, [70, 55], [20, 70], [140, 90], [90, 10], [70, 110]];
+                        Led_Circle_Position, [78, 68], [20, 70], [140, 90], [90, 10], [70, 110]];
 
 Main_Screw_Backlash = 0.2;
 Main_Screw_Base_Wall_Thickness = 1.6;
