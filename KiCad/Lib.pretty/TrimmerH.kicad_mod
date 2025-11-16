@@ -1,0 +1,218 @@
+(footprint "TrimmerH"
+	(version 20241229)
+	(generator "pcbnew")
+	(generator_version "9.0")
+	(layer "F.Cu")
+	(descr "Potentiometer, horizontal, ACP CA6-H2,5, http://www.acptechnologies.com/wp-content/uploads/2017/06/01-ACP-CA6.pdf")
+	(tags "Potentiometer horizontal ACP CA6-H2,5")
+	(property "Reference" "RV5"
+		(at -2.3 -4.56 180)
+		(layer "F.SilkS")
+		(uuid "d48a4467-3c3b-4c71-bbd6-313ed4689838")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Value" "R_Potentiometer"
+		(at -2.3 4.56 180)
+		(layer "F.Fab")
+		(uuid "6c1cc909-0d91-4f38-af1f-b05e1f463fd0")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" "~"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "e01f2ba2-eb4a-48fb-9743-41e90a5d1fff")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" "Potentiometer"
+		(at 0 0 180)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "ec30ffa9-e537-4692-9a3f-b6c44d9c0172")
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -2.41 -1.11)
+		(end 1.31 -1.11)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "b4396a00-f94f-40bd-b53d-b2c7ff412e61")
+	)
+	(fp_line
+		(start -2.41 1.11)
+		(end -2.41 -1.11)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "bb6c4ba3-9341-4a6e-a393-1fdc45ee78b7")
+	)
+	(fp_line
+		(start -2.41 1.466)
+		(end -2.41 -1.466)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "1a86d6ca-9aba-4158-9911-5b4cf5eef0dc")
+	)
+	(fp_line
+		(start -1.59 -3.26)
+		(end 1.31 -3.26)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "8660d3fe-dd45-40a5-bc4e-cbe7ab998dbb")
+	)
+	(fp_line
+		(start 1.31 -3.26)
+		(end 1.31 3.260001)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "57e6cecc-bcc3-48ba-b031-21c2880ab889")
+	)
+	(fp_line
+		(start 1.31 -1.11)
+		(end 1.31 1.11)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "56bc754f-93e5-47b5-838f-5f7a8d59c05c")
+	)
+	(fp_line
+		(start 1.31 1.11)
+		(end -2.41 1.11)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "088a84b5-8a63-44b2-895a-894d0543db81")
+	)
+	(fp_line
+		(start 1.31 3.260001)
+		(end -1.59 3.26)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e5209a0f-4921-436b-ace4-252a0375aac1")
+	)
+	(fp_poly
+		(pts
+			(xy -3.36 -3.56) (xy 1.46 -3.56) (xy 1.46 3.560001) (xy -3.36 3.56)
+		)
+		(stroke
+			(width 0.05)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.CrtYd")
+		(uuid "3f4c4878-ef56-4e3f-8a85-45df44aa0d33")
+	)
+	(fp_poly
+		(pts
+			(xy -2.3 -3.149999) (xy 1.2 -3.15) (xy 1.2 3.15) (xy -2.3 3.15)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "a5c636e6-5356-4a53-90ec-f66bd70ee91f")
+	)
+	(fp_poly
+		(pts
+			(xy -2.3 -1) (xy 1.2 -1) (xy 1.2 1) (xy -2.3 1)
+		)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(fill no)
+		(layer "F.Fab")
+		(uuid "25a6cf16-448a-4db7-930f-be936b7dfca4")
+	)
+	(fp_text user "${REFERENCE}"
+		(at -0.55 0 180)
+		(layer "F.Fab")
+		(uuid "553c6c42-b6b4-42a6-8554-d2b3e72a4636")
+		(effects
+			(font
+				(size 0.78 0.78)
+				(thickness 0.12)
+			)
+		)
+	)
+	(pad "1" thru_hole circle
+		(at -2.34 -2.54)
+		(size 2 2)
+		(drill 1.3)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "569825f6-eede-4486-9cb7-09a728012f04")
+	)
+	(pad "2" thru_hole circle
+		(at 0.2 0)
+		(size 2 2)
+		(drill 1.3)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "b1877734-e037-4a1c-b675-9e86a5a5f3ac")
+	)
+	(pad "3" thru_hole circle
+		(at -2.34 2.54)
+		(size 2 2)
+		(drill 1.3)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "dac55977-c519-4a6c-ab60-3fe7a7b19a29")
+	)
+	(embedded_fonts no)
+	(model "${KICAD9_3DMODEL_DIR}/Potentiometer_THT.3dshapes/Potentiometer_ACP_CA6-H2,5_Horizontal.step"
+		(offset
+			(xyz 0 0 0)
+		)
+		(scale
+			(xyz 1 1 1)
+		)
+		(rotate
+			(xyz 0 0 0)
+		)
+	)
+)

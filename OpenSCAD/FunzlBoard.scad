@@ -20,6 +20,7 @@ use <Switch.scad>;
 use <ToggleButton.scad>;
 use <TrimmerH.scad>;
 use <UsbCSocket.scad>;
+use <Vibrator.scad>;
 
 fn_preview = 12;
 fn_render = 100;
@@ -73,8 +74,7 @@ Slider_Switch_Position = [30, 62];
 Slider_Switch_Rotation = -50;
 Rocker_Switch_Position = [110, 25];
 Trimmer_Position = [Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 60, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness];
-echo("Trimmer Position: ", Trimmer_Position);
-echo("Trimmer Pin X Offset: ", TrimmerH_Pin_X_Offset());
+Vibrator_Positions = [[0, 45, 0], [Board_Size.x, 45, 180]];
 Main_Screw_Positions = [[10, 10], [Board_Size[0] - 10, 10], [10, Board_Size[1] - 10], [Board_Size[0] - 10, Board_Size[1] - 10],
                         Led_Circle_Position, [78, 68], [20, 70], [140, 90], [90, 10], [70, 110]];
 
@@ -329,6 +329,13 @@ module ComponentsInner(n = false) {
         rotate([0, 90, 0])
           cylinder(Board_Size.x - Trimmer_Position.x + TrimmerH_Size().x / 2 + e, d = TrimmerH_Gap_Size());
   }
+
+  // Vibrators
+  for (Vibrator_Position = Vibrator_Positions)
+    translate([Vibrator_Position.x, Vibrator_Position.y, Board_Size.z - Wall_Thickness - Vibrator_Size()[1]])
+      rotate([0, 0, Vibrator_Position[2]])
+        translate([Wall_Thickness + Vibrator_Size()[0] / 2, 0, 0])
+          Vibrator();
 }
 
 module Buzzer(negative = false) {
@@ -354,13 +361,20 @@ module LedCircle(num, radius, n) {
           led_cap(negative=n, color=LED_Color, metal_color=Metal_Color);
 }
 
+module Board_Outer() {
+  Rounded_Cube(Board_Size, Edge_Size);
+}
+module Board_Inner() {
+  translate([Wall_Thickness, Wall_Thickness, Wall_Thickness])
+    Rounded_Cube([Board_Size[0] - Wall_Thickness * 2, Board_Size[1] - Wall_Thickness * 2, Board_Size[2] - Wall_Thickness * 2],
+                  Edge_Size - Wall_Thickness);
+}
+
 module Board() {
   color(Board_Color)
     difference() {
-      Rounded_Cube(Board_Size, Edge_Size);
-      translate([Wall_Thickness, Wall_Thickness, Wall_Thickness])
-        Rounded_Cube([Board_Size[0] - Wall_Thickness * 2, Board_Size[1] - Wall_Thickness * 2, Board_Size[2] - Wall_Thickness * 2],
-                     Edge_Size - Wall_Thickness);
+      Board_Outer();
+      Board_Inner();
     }
 }
 
@@ -428,6 +442,42 @@ module Board_Front() {
             rotate([180, 0, 0])
               translate([0, 0, -Screw_Insert_Definition_Slide_Switch()[1]])
                 FilletCylinder(Screw_Insert_Definition_Slide_Switch()[2] / 2 + Screw_Hole_Wall_Thickness, Screw_Insert_Definition_Slide_Switch()[1]);
+        }
+
+    // Vibrators
+    vibrator_holder_height = min(Vibrator_Size()[1] - Vibrator_Plastic_Length(), Board_Size.z - Wall_Thickness - Edge_Size);
+    for (Vibrator_Position = Vibrator_Positions)
+      intersection() {
+        translate([Vibrator_Position.x, Vibrator_Position.y, Board_Size.z - Wall_Thickness - vibrator_holder_height]) {
+          rotate([0, 0, Vibrator_Position[2]])
+            translate([Wall_Thickness + Vibrator_Size()[0] / 2, 0, 0]) {
+              difference() {
+                hull() {
+                  cylinder(vibrator_holder_height, d = Vibrator_Size()[0] + Wall_Thickness * 2);
+                  translate([-Vibrator_Size()[0] / 2 - Wall_Thickness, -Vibrator_Size()[0] / 2 - Wall_Thickness, 0])
+                    cube([e, Vibrator_Size()[0] + Wall_Thickness * 2 , vibrator_holder_height]);
+                }
+                translate([0, 0, -e])
+                  cylinder(vibrator_holder_height, d = Vibrator_Size()[0] + Backlash * 2);
+              }
+              translate([0, 0, vibrator_holder_height])
+                rotate([180, 0, 0])
+                  FilletCylinder(Vibrator_Size()[0] / 2 + Wall_Thickness, Edge_Size / 2);
+              translate([0, Vibrator_Size()[0] / 2 + Wall_Thickness, vibrator_holder_height])
+                rotate([0, 90, 90])
+                  FilletLinear(Vibrator_Size()[0] / 2, Edge_Size / 2);
+              translate([-Vibrator_Size()[0] / 2, -Vibrator_Size()[0] / 2 - Wall_Thickness, vibrator_holder_height])
+                rotate([0, 90, -90])
+                  FilletLinear(Vibrator_Size()[0] / 2, Edge_Size / 2);
+              translate([-Vibrator_Size()[0] / 2, Vibrator_Size()[0] / 2 + Wall_Thickness, vibrator_holder_height])
+                rotate([-90, 0, 0])
+                  FilletLinear(vibrator_holder_height, Edge_Size / 2);
+              translate([-Vibrator_Size()[0] / 2, -Vibrator_Size()[0] / 2 - Wall_Thickness, 0])
+                rotate([90, 0, 0])
+                  FilletLinear(vibrator_holder_height, Edge_Size / 2);
+            }
+          }
+          Board_Outer();
         }
   }
 
