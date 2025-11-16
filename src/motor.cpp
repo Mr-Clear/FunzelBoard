@@ -17,26 +17,32 @@ void Motor::init() {
   };
   ledc_timer_config(&timer_cfg);
 
-  ledc_channel_config_t chan_cfg = {
-      .gpio_num   = MOTOR_PIN,
-      .speed_mode = LEDC_LOW_SPEED_MODE,
-      .channel    = static_cast<ledc_channel_t>(MOTOR_CHANNEL),
-      .intr_type  = LEDC_INTR_DISABLE,
-      .timer_sel  = static_cast<ledc_timer_t>(MOTOR_TIMER),
-      .duty       = 0,
-      .hpoint     = 0,
-      .flags      = { .output_invert = 0 }
-  };
-  ledc_channel_config(&chan_cfg);
+  for (size_t i = 0; i < MOTOR_PINS.size(); ++i) {
+    uint8_t pin = MOTOR_PINS[i];
+    uint8_t channel = MOTOR_CHANNELS[i];
+    ledc_channel_config_t chan_cfg = {
+        .gpio_num   = pin,
+        .speed_mode = LEDC_LOW_SPEED_MODE,
+        .channel    = static_cast<ledc_channel_t>(channel),
+        .intr_type  = LEDC_INTR_DISABLE,
+        .timer_sel  = static_cast<ledc_timer_t>(MOTOR_TIMER),
+        .duty       = 0,
+        .hpoint     = 0,
+        .flags      = { .output_invert = 0 }
+    };
+    ledc_channel_config(&chan_cfg);
+  }
 }
 
-void Motor::setSpeed(float speed) {
+void Motor::setSpeed(int channel, float speed) {
     speed = std::clamp(speed, 0.0f, 1.0f);
     uint32_t duty = static_cast<uint32_t>(std::round(speed * 255.0f));
-    ledc_set_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(MOTOR_CHANNEL), duty);
-    ledc_update_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(MOTOR_CHANNEL));
+    ledc_set_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(MOTOR_CHANNELS[channel]), duty);
+    ledc_update_duty(LEDC_LOW_SPEED_MODE, static_cast<ledc_channel_t>(MOTOR_CHANNELS[channel]));
 }
 
 void Motor::stop() {
-    setSpeed(0);
+    for (uint8_t channel = 0; channel < MOTOR_CHANNELS.size(); ++channel) {
+        setSpeed(channel, 0.0f);
+    }
 }

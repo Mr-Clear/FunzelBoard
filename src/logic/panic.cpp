@@ -13,7 +13,8 @@ void PanicState::enter() {
 void PanicState::update() {
   const bool c = (currentData.now() / 313) % 2;
   const bool b = (currentData.now() / 427) % 2;
-  const bool m = (currentData.now() / 220) % 2;
+  const std::array<bool, 2> m = {(currentData.now() / 220) % 2 == 0, ((currentData.now() + 60) / 220) % 2 == 0};
+
   const Color color = c ? RED : BLACK;
   for (int i = 0; i < NUM_PIXELS; i++) {
     Pixels::setColor(i, color);
@@ -30,7 +31,10 @@ void PanicState::update() {
     Pixels::setColor(PIXELS_RING_OFFSET + (i + rotation) % PIXELS_RING_COUNT, ringColor);
   }
 
-  Motor::setSpeed(m ? 1 : 0);
+  for (int i = 0; i < MOTOR_PINS.size(); i++) {
+    Motor::setSpeed(i, m[i] ? 1.0f : 0.0f);
+  }
+
   for (int i = 0; i < BUZZER_PINS.size(); i++) {
     float f = 1 + i / 10.f;
     Buzzer::tone(i, b ? 1700 * f : 2100 * f);

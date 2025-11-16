@@ -1,5 +1,5 @@
 namespace Motor {
     void init();
-    void setSpeed(float speed);
+    void setSpeed(int channel, float speed);
     void stop();
 }

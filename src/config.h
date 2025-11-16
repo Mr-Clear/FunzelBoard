@@ -14,9 +14,9 @@ constexpr std::array<uint8_t, 3> BUZZER_CHANNELS = {0, 1, 2};
 constexpr int PIXELS_RING_OFFSET = 64;
 constexpr int PIXELS_RING_COUNT = 16;
 constexpr int NUM_PIXELS = PIXELS_RING_OFFSET + PIXELS_RING_COUNT;
-constexpr uint8_t MOTOR_PIN  = 10;
+constexpr std::array<uint8_t, 2> MOTOR_PINS = {5, 6};
 constexpr uint8_t MOTOR_TIMER = 3;
-constexpr uint8_t MOTOR_CHANNEL = 3;
+constexpr std::array<uint8_t, 2> MOTOR_CHANNELS = {3, 4};
 
 constexpr std::array<uint8_t, 8> POTI_MAP = {0, 1, 2, 3, 4, 5, 6, 7};
 constexpr uint8_t POTI_REF_LO = POTI_MAP[0];
