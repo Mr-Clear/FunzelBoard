@@ -21961,7 +21961,7 @@
 	(footprint "Lib:Battery_Management"
 		(layer "B.Cu")
 		(uuid "4d3a6068-05fc-4908-9c38-2c84fc14adad")
-		(at 153.6 31.54 180)
+		(at 153 32 180)
 		(property "Reference" "U4"
 			(at 0 0.5 0)
 			(unlocked yes)

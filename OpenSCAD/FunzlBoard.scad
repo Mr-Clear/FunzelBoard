@@ -1,6 +1,7 @@
 use <BananaJack.scad>;
 use <Battery.scad>;
 use <BatteryIndicator.scad>;
+use <BatteryManagement.scad>;
 use <CableEntry.scad>;
 use <ColorButton.scad>;
 use <DipButton.scad>;
@@ -76,6 +77,7 @@ Rocker_Switch_Position = [110, 25];
 Trimmer_Positions = [[Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 45, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness],
                      [Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 30, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness]];
 Vibrator_Positions = [[0, 60, 0], [Board_Size.x, 60, 180]];
+Battery_Management_Position = [153, 123];
 Main_Screw_Positions = [[10, 10], [Board_Size[0] - 10, 10], [10, Board_Size[1] - 10], [Board_Size[0] - 10, Board_Size[1] - 10],
                         Led_Circle_Position, [78, 68], [20, 70], [140, 90], [90, 10], [70, 110]];
 
@@ -338,6 +340,11 @@ module ComponentsInner(n = false) {
       rotate([0, 0, Vibrator_Position[2]])
         translate([Wall_Thickness + Vibrator_Size()[0] / 2, 0, 0])
           Vibrator();
+
+  // Battery Management Board
+  translate([Battery_Management_Position.x, Battery_Management_Position.y, Board_Size.z - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness - BatteryManagement_Distance(Mainboard_Thickness)])
+    rotate([0, 0, 180])
+      BatteryManagement("#080", "#888", "#222");
 }
 
 module Buzzer(negative = false) {
