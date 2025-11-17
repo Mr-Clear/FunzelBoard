@@ -82,11 +82,13 @@ function Screw_Definition_Main() = [4, 25, 7.5, 1.1, 2.5, 1.6];
 function Screw_Definition_Slide_Switch() = [2, 6, 3.7, 1.3, 1.5, 1.5];
 function Screw_Definition_Rocker_Switch() = [3, 6, 5.4, 3, 2.5, 1.8];
 function Screw_Definition_Battery() = [2.5, 3, 4.7, 1.6, 1.5, 1.2];
+function Screw_Definition_Battery_Indicator() = [2, 4, 3.6, 1.3, 1.5, 1.0];
 // diameter, length, outer_diameter, riffle_height, riffle_diameter
 function Screw_Insert_Definition_Main() = [4, 4, 4.9, 1.1, 6];
 function Screw_Insert_Definition_Slide_Switch() = [2, 2.9, 2.9, 1.0, 3.5];
 function Screw_Insert_Definition_Rocker_Switch() = [3, 3.2, 3.5, 1.0, 4.1];
 function Screw_Insert_Definition_Battery() = [2.5, 3, 3, 1.0, 3.5];
+function Screw_Insert_Definition_Battery_Indicator() = [2, 2.9, 3.0, 1.0, 3.5];
 
 module Screw_Cylinder_Hex_From_Definition(definition, color, always_simple = false) {
   color(color)
@@ -132,4 +134,10 @@ module Screw_Insert_From_Definition(definition, color, always_simple = false) {
 
   translate([0, 10, -Screw_Definition_Battery()[3]])
     Screw_Insert_From_Definition(Screw_Insert_Definition_Battery(), insert_color);
+
+  translate([0, -10, 0])
+    Screw_Cylinder_Hex_From_Definition(Screw_Definition_Battery_Indicator(), black);
+
+  translate([0, -10, 0])
+    Screw_Insert_From_Definition(Screw_Insert_Definition_Battery_Indicator(), insert_color);
 }

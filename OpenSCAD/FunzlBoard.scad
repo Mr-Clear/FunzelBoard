@@ -74,6 +74,7 @@ Led_Circle_Position = [100, 90];
 Slider_Switch_Position = [30, 62];
 Slider_Switch_Rotation = -50;
 Rocker_Switch_Position = [110, 25];
+BatteryIndicator_Position = [158, 90];
 Trimmer_Positions = [[Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 45, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness],
                      [Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 30, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness]];
 Vibrator_Positions = [[0, 60, 0], [Board_Size.x, 60, 180]];
@@ -262,8 +263,17 @@ module ComponentsFront(n = false) {
     }
 
   // Battery Indicator
-  translate([158, 90, Board_Size[2] + e])
+  translate([BatteryIndicator_Position.x, BatteryIndicator_Position.y, Board_Size[2] + e]) {
       BatteryIndicator(Metal_Color, n);
+      for (y = [-1, 1])
+        if (!n)
+          translate([0, y * BatteryIndicator_Board_Holes_Offset(), 0]) {
+            translate([0, 0, -BatteryIndicator_Size().z])
+              Screw_Cylinder_Hex_From_Definition(Screw_Definition_Battery_Indicator(), Black, Screws_Always_Simple);
+            translate([0, 0, -BatteryIndicator_Size().z - BatteryIndicator_Board_Size().z])
+              Screw_Insert_From_Definition(Screw_Insert_Definition_Battery_Indicator(), Screw_Inserts_Color, Screws_Always_Simple);
+        }
+  }
 
   // DIP Button
   translate([158, 65, Board_Size[2] - Wall_Thickness - 0.5])
@@ -407,6 +417,18 @@ module Board_Front() {
           rotate([180, 0, 0])
             translate([0, 0, -Battery_Mount_Thickness])
             FilletCylinder(Screw_Insert_Definition_Battery()[2] + Screw_Hole_Wall_Thickness * 2, Fillet_Size, true);
+        }
+    }
+
+    // Battery Indicator Mount
+    translate([BatteryIndicator_Position.x, BatteryIndicator_Position.y, Board_Size[2] + e]) {
+      for (y = [-1, 1])
+        translate([0, y * BatteryIndicator_Board_Holes_Offset(), 0]) {
+          translate([0, 0, -BatteryIndicator_Size().z])
+            Pipe(BatteryIndicator_Size().z - Wall_Thickness, Screw_Insert_Definition_Battery_Indicator()[2] / 2 + Screw_Hole_Wall_Thickness, Screw_Insert_Definition_Battery_Indicator()[2] / 2);
+          translate([0, 0, -Wall_Thickness])
+            rotate([180, 0, 0])
+              FilletCylinder(Screw_Insert_Definition_Battery_Indicator()[2] / 2 + Screw_Hole_Wall_Thickness, Fillet_Size);
         }
     }
 

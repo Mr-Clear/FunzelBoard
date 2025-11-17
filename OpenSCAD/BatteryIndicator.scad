@@ -27,6 +27,10 @@ Pin_Length = 7;
 e = 0.01;
 
 BatteryIndicator("#999");
+function BatteryIndicator_Size() = Size;
+function BatteryIndicator_Board_Size() = Board_Size;
+function BatteryIndicator_Board_Holes_Offset() = Board_Holes_Offset;
+function BatteryIndicator_Board_Holes_Diameter() = Board_Holes_Diameter;
 
 module BatteryIndicator(metal_color, negative = false) {
   translate([-Size[0] / 2, -Size[1] / 2, -Size[2]]) {
@@ -44,7 +48,7 @@ module BatteryIndicator(metal_color, negative = false) {
           cube(Board_Size);
         for (y = [-1, 1]) {
           translate([Board_Size[0] / 2, Board_Size[1] / 2 + y * Board_Holes_Offset, -e/2])
-            cylinder(h = Board_Size[2] + e, d = 3);
+            cylinder(h = Board_Size[2] + e, d = Board_Holes_Diameter);
         }
       }
       color(metal_color) {
