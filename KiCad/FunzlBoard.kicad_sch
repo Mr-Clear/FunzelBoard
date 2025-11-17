@@ -1290,6 +1290,142 @@
 			)
 			(embedded_fonts no)
 		)
+		(symbol "Device:Fuse"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(property "Reference" "F"
+				(at 2.032 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Fuse"
+				(at -1.905 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at -1.778 0 90)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Datasheet" "~"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "Fuse"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_keywords" "fuse"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "ki_fp_filters" "*Fuse*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "Fuse_0_1"
+				(rectangle
+					(start -0.762 -2.54)
+					(end 0.762 2.54)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 2.54) (xy 0 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Fuse_1_1"
+				(pin passive line
+					(at 0 3.81 270)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 0 -3.81 90)
+					(length 1.27)
+					(name "~"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "2"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
 		(symbol "Device:R"
 			(pin_numbers
 				(hide yes)
@@ -5379,7 +5515,7 @@
 	)
 	(wire
 		(pts
-			(xy 49.53 125.73) (xy 49.53 115.57)
+			(xy 49.53 125.73) (xy 49.53 102.87)
 		)
 		(stroke
 			(width 0)
@@ -5456,6 +5592,16 @@
 			(type default)
 		)
 		(uuid "4a72716d-a6b5-4914-b139-f2f17bb9bff2")
+	)
+	(wire
+		(pts
+			(xy 46.99 111.76) (xy 46.99 115.57)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4ba449a9-eeae-46df-9b34-874cf9d097e4")
 	)
 	(wire
 		(pts
@@ -6126,6 +6272,16 @@
 			(type default)
 		)
 		(uuid "a5c9bbc4-5a21-4269-8d51-119bb05cbb6f")
+	)
+	(wire
+		(pts
+			(xy 46.99 102.87) (xy 46.99 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "a689c4fe-a24a-4260-b25f-60ee7041382c")
 	)
 	(wire
 		(pts
@@ -15555,7 +15711,7 @@
 	)
 	(symbol
 		(lib_id "Connector:Conn_01x02_Socket")
-		(at 46.99 110.49 90)
+		(at 46.99 97.79 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -15563,7 +15719,7 @@
 		(dnp no)
 		(uuid "67866106-c5bd-4cba-9a8f-207705efbc5d")
 		(property "Reference" "J16"
-			(at 47.244 107.188 0)
+			(at 47.244 94.488 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15572,7 +15728,7 @@
 			)
 		)
 		(property "Value" "BAT"
-			(at 49.784 106.934 0)
+			(at 49.784 94.234 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15581,7 +15737,7 @@
 			)
 		)
 		(property "Footprint" "Lib:Connector2"
-			(at 46.99 110.49 0)
+			(at 46.99 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15590,7 +15746,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 46.99 110.49 0)
+			(at 46.99 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -15599,7 +15755,7 @@
 			)
 		)
 		(property "Description" "Generic connector, single row, 01x02, script generated"
-			(at 46.99 110.49 0)
+			(at 46.99 97.79 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -23492,6 +23648,75 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "D33")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:Fuse")
+		(at 46.99 107.95 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "c825f6c8-c42f-4d22-99be-68f9c9d93066")
+		(property "Reference" "F1"
+			(at 43.18 106.172 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "Fuse"
+			(at 41.402 108.966 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Fuse:Fuseholder_Clip-5x20mm_Littelfuse_111_Inline_P20.00x5.00mm_D1.05mm_Horizontal"
+			(at 45.212 107.95 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 46.99 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Fuse"
+			(at 46.99 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "cf06455d-4d8d-4e4e-b108-e18dacc7741e")
+		)
+		(pin "1"
+			(uuid "b6f76bdb-621f-48a8-a305-ca7269932469")
+		)
+		(instances
+			(project ""
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "F1")
 					(unit 1)
 				)
 			)
