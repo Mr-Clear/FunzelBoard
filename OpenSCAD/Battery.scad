@@ -15,6 +15,7 @@ Mount_Holes_Distance = 55;
 Power_Holes_Diameter = 8;
 
 Battery_Size = [70, 21.3];
+Backlash = 0.5;
 
 Negative = false;
 
@@ -63,7 +64,7 @@ module Battery(case_color, battery_color, negative=false) {
   color(battery_color)
     translate([0, 0, Case_Thickness_Bottom + Battery_Size[1] / 2])
       rotate([0, 90, 0])
-        cylinder(Battery_Size[0], d = Battery_Size[1], center=true);
+        cylinder(negative ? Case_Size.x : Battery_Size[0], d = negative ? Battery_Size[1] + Backlash : Battery_Size[1], center=true);
 }
 
 module box(size) {

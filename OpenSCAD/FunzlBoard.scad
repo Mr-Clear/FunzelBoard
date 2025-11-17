@@ -106,7 +106,10 @@ module FunzlBoard() {
     }
 
   if (Show_Back) {
-    Board_Back();
+    difference() {
+      Board_Back();
+      ComponentsInner(true);
+    }
   }
 
   if (Show_Screws) {
@@ -305,7 +308,7 @@ module ComponentsInner(n = false) {
   // Battery Holder
   translate([Board_Size[0] / 2, Board_Size[1] - Edge_Size - Buzzer_Diameter / 2, Board_Size[2] - Wall_Thickness - Battery_Mount_Thickness]) {
     rotate([180, 0, 0])
-      Battery("#222", "#2D42", false);
+      Battery("#222", "#2D42", n);
     for (x = [-1, 1])
       translate([x * (Battery_Mount_Holes_Distance()) / 2, 0, -Battery_Case_Thickness_Bottom()])
         rotate([180, 0, 0])

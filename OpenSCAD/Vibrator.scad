@@ -8,7 +8,7 @@ Plastic_Cylinder_Length = 1.2;
 Plastic_Small_Diameter = 4.3;
 Wire_Diameter = 0.7;
 Wire_Distance = 2.7;
-Wire_Length = 5;
+Wire_Length = 1;
 
 Vibrator();
 
