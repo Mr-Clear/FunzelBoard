@@ -344,7 +344,7 @@ module ComponentsInner(n = false) {
   // Battery Management Board
   translate([Battery_Management_Position.x, Battery_Management_Position.y, Board_Size.z - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness - BatteryManagement_Distance(Mainboard_Thickness)])
     rotate([0, 0, 180])
-      BatteryManagement("#080", "#888", "#222");
+      BatteryManagement("#090", Metal_Color, Black);
 }
 
 module Buzzer(negative = false) {
