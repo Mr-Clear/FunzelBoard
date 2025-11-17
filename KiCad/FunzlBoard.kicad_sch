@@ -4366,6 +4366,16 @@
 	)
 	(wire
 		(pts
+			(xy 171.45 140.97) (xy 171.45 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "141190a9-0f27-4b24-83f9-fc0ac3f764b5")
+	)
+	(wire
+		(pts
 			(xy 78.74 148.59) (xy 78.74 175.26)
 		)
 		(stroke
@@ -4453,6 +4463,16 @@
 			(type default)
 		)
 		(uuid "2ca53b07-3836-49de-b08a-321e7786e833")
+	)
+	(wire
+		(pts
+			(xy 132.08 102.87) (xy 132.08 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2f0d6f48-001c-4501-801f-a5aea798b78b")
 	)
 	(wire
 		(pts
@@ -4766,6 +4786,16 @@
 	)
 	(wire
 		(pts
+			(xy 185.42 140.97) (xy 171.45 140.97)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "75815b71-94e1-45af-9580-34e9a8414f22")
+	)
+	(wire
+		(pts
 			(xy 266.7 133.35) (xy 288.29 133.35)
 		)
 		(stroke
@@ -4883,6 +4913,16 @@
 			(type default)
 		)
 		(uuid "933e2a44-06e2-4709-b3bc-293de89ec149")
+	)
+	(wire
+		(pts
+			(xy 171.45 109.22) (xy 132.08 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "937c939e-7126-4bb4-9372-c83b89526535")
 	)
 	(wire
 		(pts
@@ -5627,6 +5667,28 @@
 		(uuid "dca2105c-3d21-43af-8019-df0550f2be08")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 146.05 92.5672 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "REF"
+		(shape input)
+		(at 135.89 99.06 90)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "f039c7b2-db3c-4c86-9525-fbf415d901de")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 135.89 92.5672 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -10866,6 +10928,77 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:R_Potentiometer")
+		(at 132.08 99.06 270)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "57f7e048-f218-446d-847c-49d06cf52e64")
+		(property "Reference" "RV4"
+			(at 132.08 92.71 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "R_Potentiometer"
+			(at 132.08 95.25 90)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Lib:TrimmerH"
+			(at 132.08 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 132.08 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Potentiometer"
+			(at 132.08 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "7aae16af-e929-4ac7-8e36-f98b12ca2334")
+		)
+		(pin "1"
+			(uuid "35ab9b69-2e71-49ef-8989-09dd454dd955")
+		)
+		(pin "3"
+			(uuid "5e3d9cfe-12e9-4c58-831f-18a1489d2646")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "RV4")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Analog_ADC:ADS7828")
 		(at 195.58 138.43 0)
 		(unit 1)
@@ -13426,6 +13559,72 @@
 			(project "FunzlBoard"
 				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
 					(reference "#PWR05")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 128.27 99.06 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "804b37e8-94fe-48b2-b153-f421ffa9ffb0")
+		(property "Reference" "#PWR0135"
+			(at 128.27 105.41 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 128.27 104.14 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 128.27 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 128.27 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 128.27 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0ba5eb3b-e5e4-4ed6-9b07-d4f32c4cb095")
+		)
+		(instances
+			(project "FunzlBoard"
+				(path "/969bb173-34d7-4b46-8a59-72ed8ea1ad7c"
+					(reference "#PWR0135")
 					(unit 1)
 				)
 			)

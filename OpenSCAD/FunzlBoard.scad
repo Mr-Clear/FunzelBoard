@@ -73,8 +73,9 @@ Led_Circle_Position = [100, 90];
 Slider_Switch_Position = [30, 62];
 Slider_Switch_Rotation = -50;
 Rocker_Switch_Position = [110, 25];
-Trimmer_Position = [Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 60, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness];
-Vibrator_Positions = [[0, 45, 0], [Board_Size.x, 45, 180]];
+Trimmer_Positions = [[Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 45, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness],
+                     [Board_Size.x - Wall_Thickness - TrimmerH_Size().x / 2 - Backlash, 30, Board_Size[2] - Wall_Thickness - Mainboard_Distance - Mainboard_Thickness]];
+Vibrator_Positions = [[0, 60, 0], [Board_Size.x, 60, 180]];
 Main_Screw_Positions = [[10, 10], [Board_Size[0] - 10, 10], [10, Board_Size[1] - 10], [Board_Size[0] - 10, Board_Size[1] - 10],
                         Led_Circle_Position, [78, 68], [20, 70], [140, 90], [90, 10], [70, 110]];
 
@@ -320,15 +321,16 @@ module ComponentsInner(n = false) {
       Buzzer(n);
     }
 
-  // Trimmer
-  translate(Trimmer_Position) {
-    rotate([180, 0, 0])
-      TrimmerH("#CCC", "#222", "#999", 0);
-    if (n)
-      translate([0, 0, -TrimmerH_Center_Ascent()])
-        rotate([0, 90, 0])
-          cylinder(Board_Size.x - Trimmer_Position.x + TrimmerH_Size().x / 2 + e, d = TrimmerH_Gap_Size());
-  }
+  // Trimmers
+  for (pos = Trimmer_Positions)
+    translate(pos) {
+      rotate([180, 0, 0])
+        TrimmerH("#CCC", "#222", "#999", 0);
+      if (n)
+        translate([0, 0, -TrimmerH_Center_Ascent()])
+          rotate([0, 90, 0])
+            cylinder(Board_Size.x - pos.x + TrimmerH_Size().x / 2 + e, d = TrimmerH_Gap_Size());
+    }
 
   // Vibrators
   for (Vibrator_Position = Vibrator_Positions)
